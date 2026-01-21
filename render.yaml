@@ -26,11 +26,10 @@ services:
         sync: false
 
   # 2. Frontend Static Site
-  - type: web
+  - type: static
     name: vexstorm-frontend
-    env: static
     buildCommand: npm install && npm run build
-    staticPublishDir: dist
+    publishDir: dist
     envVars:
       - key: VITE_API_URL
         sync: false # Should point to your backend URL (e.g. https://vexstorm-backend.onrender.com)
