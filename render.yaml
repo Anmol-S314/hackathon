@@ -26,9 +26,9 @@ services:
         sync: false
 
   # 2. Frontend Static Site
-  - type: static
+  - type: web
     name: vexstorm-frontend
-    plan: free
+    env: static
     buildCommand: npm install && npm run build
     staticPublishDir: dist
     envVars:
