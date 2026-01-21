@@ -1,0 +1,88 @@
+html {
+  scroll-behavior: smooth;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-purple-dark text-white font-body antialiased overflow-x-hidden;
+    background: radial-gradient(circle at center, #2e0050 0%, #05001a 100%);
+  }
+
+  /* Comic Halftone Overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display uppercase tracking-wider text-white;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .comic-card {
+    @apply bg-white border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000];
+  }
+
+  .btn-comic {
+    @apply px-4 py-2 bg-yellow-400 text-black border-[2px] border-black font-display text-base uppercase tracking-wider shadow-[3px_3px_0px_#000] hover:bg-yellow-300 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all inline-block;
+  }
+
+  .btn-comic-primary {
+    @apply px-4 py-2 bg-neon-green text-black border-[2px] border-black font-display text-base uppercase tracking-wider shadow-[3px_3px_0px_#000] hover:bg-lime-400 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all inline-block;
+  }
+
+  .text-pop {
+    @apply font-display text-white;
+    -webkit-text-stroke: 0.8px black;
+    text-shadow: 2px 2px 0px #000;
+  }
+
+  .section-container {
+    @apply py-12 px-4 max-w-5xl mx-auto relative z-10;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border-[3px] border-black text-black placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-purple-primary/30 transition-all font-bold;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Luckiest Guy', cursive;
+  }
+
+  .font-comic {
+    font-family: 'Bangers', cursive;
+  }
+
+  .font-stencil {
+    font-family: 'Black Ops One', cursive;
+  }
+
+  .comic-outline {
+    filter: drop-shadow(3px 3px 0px #000);
+  }
+
+  .text-outline-small {
+    -webkit-text-stroke: 1px #000;
+  }
+}

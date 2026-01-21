@@ -1,0 +1,46 @@
+/* Countdown Timer Specific Styles */
+.countdown-container {
+    margin: 3rem 0;
+    padding: 20px;
+    border: 2px dashed var(--text-white);
+    background: rgba(11, 14, 20, 0.9);
+}
+
+.countdown-label {
+    text-align: center;
+    color: var(--accent-cyan);
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.timer-wrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-value {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    background: var(--bg-panel);
+    padding: 10px;
+    border: 1px solid #555;
+    min-width: 80px;
+    text-align: center;
+    color: var(--primary-amber);
+}
+
+.time-unit {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+    font-weight: bold;
+}

@@ -1,0 +1,124 @@
+/* --- REGISTRATION FORM - CYBER BRUTALIST --- */
+.registration-section {
+    padding: 100px 5%;
+    display: flex;
+    justify-content: center;
+    background: var(--bg-deep);
+    position: relative;
+    border-top: 4px solid var(--primary-amber);
+}
+
+.form-container {
+    background: var(--bg-panel);
+    padding: 60px;
+    border: 2px solid var(--text-white);
+    box-shadow: 20px 20px 0px #080a0f;
+    width: 100%;
+    max-width: 800px;
+}
+
+.form-header {
+    margin-bottom: 40px;
+    border-left: 10px solid var(--accent-cyan);
+    padding-left: 20px;
+}
+
+.form-header h2 {
+    font-family: 'Impact', sans-serif;
+    font-size: 3.5rem;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    color: var(--text-white);
+}
+
+.highlight {
+    color: var(--accent-cyan);
+    text-shadow: 5px 5px 0px rgba(0, 240, 255, 0.2);
+}
+
+.form-header p {
+    color: var(--accent-cyan);
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+.hack-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    color: var(--text-white);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.input-group input,
+.input-group select {
+    padding: 18px;
+    background: var(--bg-deep);
+    border: 2px solid #333;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--accent-cyan);
+    background: #1a1a1a;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.input-group input::placeholder {
+    color: #555;
+}
+
+.btn-submit {
+    margin-top: 20px;
+    padding: 25px;
+    background: var(--primary-amber);
+    color: #000;
+    border: none;
+    font-weight: 900;
+    font-family: 'Impact', sans-serif;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    box-shadow: 8px 8px 0px #fff;
+    transition: all 0.2s;
+}
+
+.btn-submit:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 11px 11px 0px #fff;
+    filter: brightness(1.1);
+}
+
+.btn-submit:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px #fff;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 30px;
+    }
+
+    .form-header h2 {
+        font-size: 2.5rem;
+    }
+}

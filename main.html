@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataVex | AI, Data & Digital Transformation</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- International Telephone Input CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* The smooth scrolling is now handled by JavaScript for better cross-browser compatibility. */
+        }
+
+        /* Fade-in animation for sections */
+        .animate-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        /* Phone Input Overrides */
+        .iti {
+            width: 100%;
+            display: block;
+        }
+
+        .iti__country-list {
+            z-index: 50;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .iti--separate-dial-code input {
+            padding-left: 90px !important;
+        }
+
+        #contact-form input,
+        #contact-form select,
+        #contact-form textarea,
+        .iti__country-name,
+        .iti__dial-code {
+            color: #1a202c !important;
+            /* Tailwind gray-900 */
+        }
+
+        .iti__selected-dial-code {
+            color: #6b7280 !important;
+            /* Tailwind gray-500 - Soft Grey */
+            font-size: 0.95rem;
+        }
+
+        .delay-500 {
+            animation-delay: 0.5s;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-indigo-800 text-white py-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <!-- Logo on the left-hand side of the header -->
+            <a href="#" class="flex-shrink-0">
+                <img src="images/datavex_new.png" alt="DataVex AI" class="h-10 w-30">
+            </a>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8 text-lg font-medium">
+                    <li><a href="#about" class="hover:text-indigo-200 transition-colors">About</a></li>
+                    <li><a href="#offerings" class="hover:text-indigo-200 transition-colors">Services</a></li>
+                    <li><a href="#solutions" class="hover:text-indigo-200 transition-colors">Solutions</a></li>
+                    <li><a href="#technology" class="hover:text-indigo-200 transition-colors">Tech Stack</a></li>
+                    <li><a href="#team" class="hover:text-indigo-200 transition-colors">Team</a></li>
+                    <li><a href="http://localhost:5174"
+                            class="bg-yellow-400 text-black px-4 py-1 rounded font-bold hover:bg-yellow-300 transition-colors">Hackathon
+                            2026</a></li>
+                    <li><a href="#contact" class="hover:text-indigo-200 transition-colors">Contact</a></li>
+                </ul>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white text-2xl" id="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="fixed inset-0 bg-indigo-900 bg-opacity-95 z-50 flex flex-col items-center justify-center hidden">
+            <button class="absolute top-4 right-4 text-white text-3xl" id="close-mobile-menu">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul class="flex flex-col space-y-6 text-2xl text-white font-medium">
+                <li><a href="#about" class="hover:text-indigo-200 transition-colors mobile-menu-link">About</a></li>
+                <li><a href="#offerings" class="hover:text-indigo-200 transition-colors mobile-menu-link">Services</a>
+                </li>
+                <li><a href="#solutions" class="hover:text-indigo-200 transition-colors mobile-menu-link">Solutions</a>
+                </li>
+                <li><a href="#technology" class="hover:text-indigo-200 transition-colors mobile-menu-link">Tech
+                        Stack</a></li>
+                <li><a href="#team" class="hover:text-indigo-200 transition-colors mobile-menu-link">Team</a></li>
+                <li><a href="http://localhost:5174" class="text-yellow-400 font-bold mobile-menu-link">Hackathon
+                        2026</a></li>
+                <li><a href="#contact" class="hover:text-indigo-200 transition-colors mobile-menu-link">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+        class="relative bg-gradient-to-br from-indigo-700 to-purple-800 text-white py-32 md:py-40 text-center overflow-hidden">
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Futuristic+AI+DJ+on+stage'); background-size: cover; background-position: center;">
+        </div>
+        <div class="relative z-10 container mx-auto px-4 animate-fade-in">
+            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight">
+                Driving Business Growth <br class="hidden sm:inline" /> with AI and Data Innovation
+            </h2>
+            <p class="text-xl md:text-2xl mb-10 opacity-90">
+                Pioneering the intersection of AI, Cloud, and Digital Transformation.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#offerings"
+                    class="inline-block bg-white text-indigo-700 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
+                    Discover Our Services
+                </a>
+                <a href="http://localhost:5174"
+                    class="inline-block bg-yellow-400 text-black px-10 py-4 rounded-full text-lg font-bold hover:bg-yellow-300 transition-all transform hover:scale-105 shadow-xl">
+                    <i class="fas fa-rocket mr-2"></i> Join VexStorm Hackathon
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Hackathon Sticker -->
+    <a href="https://hackathon.datavex.ai" class="fixed bottom-6 right-6 z-[100] group hidden md:block">
+        <div
+            class="bg-yellow-400 border-[3px] border-black p-4 shadow-[8px_8px_0px_#000] rotate-3 group-hover:rotate-0 transition-transform relative">
+            <span
+                class="absolute -top-3 -left-3 bg-red-600 text-white text-[10px] px-2 py-0.5 font-black uppercase transform -rotate-12 border-2 border-black">New</span>
+            <div class="font-display font-black text-black leading-none text-center">
+                <div class="text-xs uppercase opacity-80 mb-1">Join the Arena</div>
+                <div class="text-2xl">HACKATHON</div>
+                <div class="text-lg text-blue-800">IS LIVE!</div>
+            </div>
+            <div
+                class="mt-2 bg-black text-white text-[10px] py-1 px-2 text-center font-bold uppercase tracking-widest group-hover:bg-indigo-600 transition-colors">
+                Register +
+            </div>
+        </div>
+    </a>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4 animate-fade-in delay-100">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900">About DataVex</h3>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="text-lg text-gray-700 leading-relaxed space-y-6">
+                    <p>
+                        DataVex is a visionary technology company specializing in AI, data science, cloud
+                        infrastructure, and digital transformation. We blend cutting-edge research with scalable product
+                        development to solve real-world industry challenges.
+                    </p>
+                    <p>
+                        Our mission is to empower businesses to harness the power of data and intelligent systems,
+                        creating measurable impact and driving sustainable growth. We are strategically positioned to
+                        help organizations navigate the complexities of digital transformation.
+                    </p>
+                </div>
+                <div class="p-6 bg-indigo-50 rounded-lg shadow-inner text-indigo-800">
+                    <h4 class="text-2xl font-semibold mb-4 flex items-center"><i class="fas fa-lightbulb mr-3"></i>
+                        Vision & Approach</h4>
+                    <ul class="list-disc list-inside space-y-2 text-lg">
+                        <li>Data-driven, research-backed innovation</li>
+                        <li>Practical application and product development</li>
+                        <li>Delivering measurable impact across industries</li>
+                        <li>End-to-end technological expertise</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Services Section -->
+    <section id="offerings" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4 animate-fade-in delay-200">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900">Our Core Services</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center"><i class="fas fa-code"></i></div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Application Development</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        Full-stack development for enterprise-grade, cloud-native, and mobile-first solutions.
+                    </p>
+                </div>
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center"><i class="fas fa-brain"></i></div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">AI & Data Analytics</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        Custom AI solutions, predictive analytics, deep learning models, and data privacy-focused
+                        deployments.
+                    </p>
+                </div>
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center"><i class="fas fa-cloud"></i></div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Cloud & DevOps</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        Expertise in AWS, GCP, Azure. End-to-end CI/CD pipelines, automation, scalability, and cost
+                        optimization.
+                    </p>
+                </div>
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center"><i class="fas fa-handshake"></i></div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Digital Transformation</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        Strategic IT consulting, process automation, and bespoke solutions to optimize your business
+                        operations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solutions" class="py-20 bg-white">
+        <div class="container mx-auto px-4 animate-fade-in delay-300">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900">Our Flagship Solutions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- AI-Powered PropTech Solution -->
+                <div
+                    class="bg-gray-100 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">AI-Powered PropTech Solutions</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        Our flagship PropTech solution leverages AI, RPA, and Generative AI to revolutionize the real
+                        estate industry. We automate repetitive tasks, use advanced AI for predictive analysis, and
+                        employ GenAI for immersive virtual tours and automated marketing content.
+                    </p>
+                </div>
+                <!-- Data-Driven Marketing AI -->
+                <div
+                    class="bg-gray-100 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Data-Driven Marketing AI</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        We build custom AI agents that analyze market trends and customer data to optimize marketing
+                        campaigns. Our solutions predict customer behavior and automate content creation, maximizing
+                        your ROI and engagement.
+                    </p>
+                </div>
+                <!-- Automated Financial Analysis -->
+                <div
+                    class="bg-gray-100 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-2">
+                    <div class="text-5xl text-indigo-600 mb-6 text-center">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Automated Financial Analysis</h4>
+                    <p class="text-gray-600 leading-relaxed text-center">
+                        Our solution automates financial reporting, risk assessment, and fraud detection using machine
+                        learning models. It provides real-time insights and forecasts, helping businesses make smarter,
+                        faster financial decisions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Opportunity Section -->
+    <section class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4 animate-fade-in delay-400">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900">Market Opportunity & Impact</h3>
+            <div class="max-w-4xl mx-auto text-lg text-gray-700 leading-relaxed space-y-6 text-center">
+                <p>
+                    DataVex is strategically positioned to capitalize on the rapidly expanding digital transformation
+                    market. Our analysis indicates a significant and growing demand for our integrated technology
+                    services and AI solutions.
+                </p>
+                <p>
+                    We've seen initial market traction with partnerships that validate the demand for our offerings. Our
+                    solutions have delivered tangible results, including reduced operational costs and improved
+                    efficiency for our clients.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack Section -->
+    <section id="technology" class="py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-4 animate-fade-in">
+            <h3 class="text-4xl font-bold text-center mb-12 text-indigo-300">Our Robust Technology Stack</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+                    <h4 class="text-2xl font-semibold text-indigo-400 mb-4 flex items-center"><i
+                            class="fas fa-laptop-code mr-3"></i> Frontend</h4>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>React.js for dynamic UI development</li>
+                        <li>Vue.js for web applications</li>
+                        <li>Responsive design patterns</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+                    <h4 class="text-2xl font-semibold text-indigo-400 mb-4 flex items-center"><i
+                            class="fas fa-server mr-3"></i> Backend Systems</h4>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>FastAPI and Node.js for high-performance APIs</li>
+                        <li>PostgreSQL and MongoDB for databases</li>
+                        <li>Microservices architecture</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+                    <h4 class="text-2xl font-semibold text-indigo-400 mb-4 flex items-center"><i
+                            class="fas fa-robot mr-3"></i> AI & Data Science</h4>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Custom AI models for data processing</li>
+                        <li>Machine learning for predictive analytics</li>
+                        <li>Natural Language Processing (NLP)</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+                    <h4 class="text-2xl font-semibold text-indigo-400 mb-4 flex items-center"><i
+                            class="fas fa-cloud-upload-alt mr-3"></i> Cloud Infrastructure</h4>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>AWS, GCP, and Azure platform services</li>
+                        <li>Docker for containerization</li>
+                        <li>Kubernetes for orchestration</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+                    <h4 class="text-2xl font-semibold text-indigo-400 mb-4 flex items-center"><i
+                            class="fas fa-chart-area mr-3"></i> Monitoring & Analytics</h4>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Prometheus for metrics collection</li>
+                        <li>Grafana for visualization dashboards</li>
+                        <li>ELK Stack for log aggregation</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+                    <h4 class="text-2xl font-semibold text-indigo-400 mb-4 flex items-center"><i
+                            class="fas fa-lock mr-3"></i> Security Framework</h4>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Zero-trust architecture</li>
+                        <li>Automated vulnerability scanning</li>
+                        <li>Data encryption</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Team Section -->
+    <section id="team" class="py-20 bg-white">
+        <div class="container mx-auto px-4 animate-fade-in">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900">Our Leadership Team</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-5xl mx-auto">
+                <!-- Rajesh Kotian -->
+                <div
+                    class="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Rajesh" alt="Rajesh Kotian"
+                        class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500">
+                    <h4 class="text-2xl font-bold text-gray-800">Rajesh Kotian</h4>
+                    <p class="text-indigo-600 font-medium mb-3">CEO & Founder</p>
+                    <p class="text-gray-600 text-sm">20+ years in enterprise IT, project/program management, and AI
+                        strategy at global organizations like HCL, Wipro, Credit Suisse.</p>
+                </div>
+                <!-- Gaurav J -->
+                <div
+                    class="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Gaurav+J" alt="Gaurav J"
+                        class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500">
+                    <h4 class="text-2xl font-bold text-gray-800">Gaurav J</h4>
+                    <p class="text-indigo-600 font-medium mb-3">Head of AI Research</p>
+                </div>
+                <!-- Sudhir S -->
+                <div
+                    class="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Sudhir" alt="Sudhir S"
+                        class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500">
+                    <h4 class="text-2xl font-bold text-gray-800">Sudhir S</h4>
+                    <p class="text-indigo-600 font-medium mb-3">CIO</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information Section -->
+    <section id="contact" class="bg-indigo-900 text-white py-24">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16 animate-fade-in">
+                    <h3 class="text-4xl md:text-5xl font-black mb-6">Let's Build the Future Together</h3>
+                    <p class="text-xl opacity-80 max-w-2xl mx-auto">Have a project in mind or want to learn more about
+                        our
+                        AI solutions? Reach out to our team.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    <!-- Contact Info & Socials -->
+                    <div class="space-y-12 animate-fade-in delay-100">
+                        <div class="flex items-start space-x-6">
+                            <div class="bg-indigo-800 p-4 rounded-2xl shadow-lg border border-indigo-700 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-3xl text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-indigo-200 mb-2">Our Office</h4>
+                                <p class="text-lg opacity-90">2nd Floor, Lotus Paradise Plaza</p>
+                                <p class="text-lg opacity-90">Bendorwell, Bendoor, Mangaluru, Karnataka 575002</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-6">
+                            <div class="bg-indigo-800 p-4 rounded-2xl shadow-lg border border-indigo-700 flex-shrink-0">
+                                <i class="fas fa-envelope text-3xl text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-indigo-200 mb-2">Email Us</h4>
+                                <p class="text-lg"><a href="mailto:info@datavex.ai"
+                                        class="hover:text-yellow-400 transition-colors">info@datavex.ai</a></p>
+                                <p class="text-lg opacity-70 mt-1">For support: <a href="mailto:support@datavex.ai"
+                                        class="hover:text-yellow-400">support@datavex.ai</a></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-6">
+                            <div class="bg-indigo-800 p-4 rounded-2xl shadow-lg border border-indigo-700 flex-shrink-0">
+                                <i class="fas fa-phone-alt text-3xl text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-indigo-200 mb-2">Call Us</h4>
+                                <p class="text-lg opacity-90">+91-78925-20323</p>
+                                <p class="text-sm opacity-60 mt-1">Available Mon-Sat, 9AM-7PM IST</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 border-t border-indigo-800">
+                            <h4 class="text-xl font-bold text-indigo-200 mb-6">Stay Connected</h4>
+                            <div class="flex space-x-6 text-3xl">
+                                <a href="#"
+                                    class="text-white hover:text-yellow-400 transition-all transform hover:scale-110"><i
+                                        class="fab fa-linkedin"></i></a>
+                                <a href="#"
+                                    class="text-white hover:text-yellow-400 transition-all transform hover:scale-110"><i
+                                        class="fab fa-twitter"></i></a>
+                                <a href="#"
+                                    class="text-white hover:text-yellow-400 transition-all transform hover:scale-110"><i
+                                        class="fab fa-medium"></i></a>
+                                <a href="#"
+                                    class="text-white hover:text-yellow-400 transition-all transform hover:scale-110"><i
+                                        class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div
+                        class="bg-white rounded-3xl p-8 md:p-10 shadow-2xl animate-fade-in delay-200 border border-gray-100">
+                        <form id="contact-form" class="space-y-6">
+                            <!-- Progress Indicator -->
+                            <div class="flex items-center justify-between mb-8 max-w-xs mx-auto">
+                                <div class="flex flex-col items-center">
+                                    <div id="step-1-indicator"
+                                        class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm transition-all duration-300">
+                                        1</div>
+                                    <span class="text-[10px] mt-1 font-bold text-indigo-600 uppercase">Contact</span>
+                                </div>
+                                <div class="flex-1 h-1 mx-2 bg-gray-200 rounded-full relative overflow-hidden">
+                                    <div id="progress-bar"
+                                        class="absolute top-0 left-0 h-full bg-indigo-600 w-0 transition-all duration-300">
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div id="step-2-indicator"
+                                        class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm transition-all duration-300">
+                                        2</div>
+                                    <span class="text-[10px] mt-1 font-bold text-gray-400 uppercase">Project</span>
+                                </div>
+                            </div>
+
+                            <!-- Step 1: Basic Info -->
+                            <div id="form-step-1" class="space-y-6 transition-all duration-300 opacity-100">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="name">Name *</label>
+                                        <input type="text" id="name" name="name" required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            placeholder="John Carter">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="email">Email
+                                            *</label>
+                                        <input type="email" id="email" name="email" required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            placeholder="john@example.com">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2"
+                                            for="company">Company</label>
+                                        <input type="text" id="company" name="company"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            placeholder="Acme Corp">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="phone">Phone
+                                            *</label>
+                                        <input type="tel" id="phone" name="phone" required
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            placeholder="">
+                                    </div>
+                                </div>
+
+                                <button type="button" id="next-btn"
+                                    class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all flex items-center justify-center space-x-2 transform active:scale-[0.98]">
+                                    <span>Next Step</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+
+                            <!-- Step 2: Project Info -->
+                            <div id="form-step-2"
+                                class="hidden space-y-6 transition-all duration-300 opacity-0 translate-x-4">
+                                <h4 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Project Details</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="projectStage">Project
+                                            Stage</label>
+                                        <select id="projectStage" name="projectStage"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                            <option value="" disabled selected>Select stage...</option>
+                                            <option value="Idea/Concept">Idea/Concept</option>
+                                            <option value="MVP/Prototype">MVP/Prototype</option>
+                                            <option value="Scaling/Growth">Scaling/Growth</option>
+                                            <option value="Established Enterprise">Established Enterprise</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="budget">Estimated
+                                            Budget</label>
+                                        <select id="budget" name="budget"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                            <option value="" disabled selected>Select budget...</option>
+                                            <option value="Under $5k">Under $5k</option>
+                                            <option value="$5k - $20k">$5k - $20k</option>
+                                            <option value="$20k - $50k">$20k - $50k</option>
+                                            <option value="$50k+">$50k+</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="aiUsage">Current AI
+                                            Usage?</label>
+                                        <select id="aiUsage" name="aiUsage"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                            <option value="" disabled selected>Select...</option>
+                                            <option value="Extensive">Extensive</option>
+                                            <option value="Somewhat">Somewhat</option>
+                                            <option value="None">None</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2"
+                                            for="location">Location</label>
+                                        <input type="text" id="location" name="location"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            placeholder="City, Country">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2"
+                                            for="employees">Employees</label>
+                                        <select id="employees" name="employees"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                            <option value="" disabled selected>Select size...</option>
+                                            <option value="1">1 (Founder)</option>
+                                            <option value="2-10">2-10</option>
+                                            <option value="11-50">11-50</option>
+                                            <option value="50+">50+</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 font-semibold mb-2" for="experience">Tech
+                                            Experience</label>
+                                        <select id="experience" name="experience"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                            <option value="" disabled selected>Select...</option>
+                                            <option value="Beginner">Beginner</option>
+                                            <option value="Intermediate">Intermediate</option>
+                                            <option value="Expert">Expert</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2" for="message">Project
+                                        Goal</label>
+                                    <textarea id="message" name="message" rows="4"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        placeholder="Reduce manual work, improve customer experience..."></textarea>
+                                </div>
+
+                                <div class="flex space-x-4">
+                                    <button type="button" id="prev-btn"
+                                        class="flex-1 bg-gray-100 text-gray-700 font-bold py-4 rounded-xl hover:bg-gray-200 transition-all">
+                                        Back
+                                    </button>
+                                    <button type="submit" id="submit-btn"
+                                        class="flex-[2] bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all flex items-center justify-center space-x-2 transform active:scale-[0.98]">
+                                        <span>Send Message</span>
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="form-message" class="hidden text-center p-4 rounded-xl font-medium"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2025 DataVex Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu functionality
+            document.getElementById('mobile-menu-button').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.remove('hidden');
+            });
+
+            document.getElementById('close-mobile-menu').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+
+            // Smooth scrolling for all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Get the target element from the href attribute
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    // If the target element exists, scroll to it smoothly
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // For mobile links, close the menu after clicking
+                    if (this.classList.contains('mobile-menu-link')) {
+                        document.getElementById('mobile-menu').classList.add('hidden');
+                    }
+                });
+            });
+
+            // Contact form multi-step logic
+            const contactForm = document.getElementById('contact-form');
+            const formStep1 = document.getElementById('form-step-1');
+            const formStep2 = document.getElementById('form-step-2');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const step2Indicator = document.getElementById('step-2-indicator');
+            const submitBtn = document.getElementById('submit-btn');
+            const formMessage = document.getElementById('form-message');
+            const phoneInput = document.getElementById('phone');
+
+            // Initialize International Phone Input
+            let iti;
+            if (phoneInput) {
+                iti = window.intlTelInput(phoneInput, {
+                    initialCountry: "in",
+                    separateDialCode: true,
+                    autoPlaceholder: "off",
+                    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/utils.js",
+                });
+
+                // Focus input when clicking dial code area
+                const dialCode = document.querySelector('.iti__selected-dial-code');
+                if (dialCode) {
+                    dialCode.addEventListener('click', () => phoneInput.focus());
+                }
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    // Basic validation for Step 1
+                    const name = document.getElementById('name');
+                    const email = document.getElementById('email');
+                    const phone = document.getElementById('phone');
+
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    const isEmailValid = emailRegex.test(email.value);
+                    const isPhoneValid = iti ? iti.isValidNumber() : true;
+
+                    if (name.checkValidity() && isEmailValid && isPhoneValid) {
+                        formStep1.classList.add('opacity-0', '-translate-x-4');
+                        setTimeout(() => {
+                            formStep1.classList.add('hidden');
+                            formStep2.classList.remove('hidden');
+                            setTimeout(() => {
+                                formStep2.classList.remove('opacity-0', 'translate-x-4');
+                                progressBar.style.width = '100%';
+                                step2Indicator.classList.remove('bg-gray-200', 'text-gray-500');
+                                step2Indicator.classList.add('bg-indigo-600', 'text-white');
+                            }, 10);
+                        }, 300);
+                    } else {
+                        contactForm.reportValidity();
+                    }
+                });
+            }
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    formStep2.classList.add('opacity-0', 'translate-x-4');
+                    setTimeout(() => {
+                        formStep2.classList.add('hidden');
+                        formStep1.classList.remove('hidden');
+                        setTimeout(() => {
+                            formStep1.classList.remove('opacity-0', '-translate-x-4');
+                            progressBar.style.width = '0%';
+                            step2Indicator.classList.add('bg-gray-200', 'text-gray-500');
+                            step2Indicator.classList.remove('bg-indigo-600', 'text-white');
+                        }, 10);
+                    }, 300);
+                });
+            }
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    // Reset message
+                    formMessage.classList.add('hidden');
+                    formMessage.classList.remove('bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+                    // Get form data
+                    const formData = new FormData(contactForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    // Replace phone with full international version
+                    if (iti) {
+                        data.phone = iti.getNumber();
+                    }
+
+                    // Security Check (SQLi, XSS, Prompt Injection)
+                    const securityRegex = /<script|UNION SELECT|DROP TABLE|truncate table|delete from|update .* set|OR 1=1|\[IGNORE PREVIOUS INSTRUCTIONS\]|system prompt|DAN mode|--|;|xp_cmdshell|exec\(|base64_decode/i;
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    const hasMaliciousPattern = Object.values(data).some(val => securityRegex.test(String(val)));
+                    if (hasMaliciousPattern) {
+                        formMessage.textContent = "Security alert: Malicious pattern detected. Please review your inputs.";
+                        formMessage.classList.remove('hidden');
+                        formMessage.classList.add('bg-red-100', 'text-red-800');
+                        return;
+                    }
+
+                    if (!emailRegex.test(data.email)) {
+                        formMessage.textContent = "Please provide a valid email address.";
+                        formMessage.classList.remove('hidden');
+                        formMessage.classList.add('bg-red-100', 'text-red-800');
+                        return;
+                    }
+
+                    if (iti && !iti.isValidNumber()) {
+                        formMessage.textContent = "Please provide a valid phone number.";
+                        formMessage.classList.remove('hidden');
+                        formMessage.classList.add('bg-red-100', 'text-red-800');
+                        return;
+                    }
+
+                    // Loading state
+                    const originalBtnContent = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
+
+                    try {
+                        const response = await fetch('https://vexstorm-backend.onrender.com/api/contact', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data),
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            // Success
+                            formMessage.textContent = result.message || 'Message sent successfully!';
+                            formMessage.classList.remove('hidden');
+                            formMessage.classList.add('bg-green-100', 'text-green-800');
+                            contactForm.reset();
+
+                            // Return to step 1
+                            setTimeout(() => { prevBtn.click(); }, 1500);
+                        } else {
+                            // Error from server
+                            throw new Error(result.error || 'Failed to send message.');
+                        }
+                    } catch (error) {
+                        // Network error or other
+                        formMessage.textContent = error.message;
+                        formMessage.classList.remove('hidden');
+                        formMessage.classList.add('bg-red-100', 'text-red-800');
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnContent;
+
+                        // Auto-hide message after 5 seconds
+                        setTimeout(() => {
+                            formMessage.classList.add('hidden');
+                        }, 5000);
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- International Telephone Input JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js"></script>
+</body>
+
+</html>
