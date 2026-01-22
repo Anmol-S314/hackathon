@@ -81,18 +81,18 @@ app.use(cors({
 // 3. Rate Limiting (Global)
 const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
+    max: 500, // Increased limit for general API usage
     standardHeaders: true,
     legacyHeaders: false,
     message: { error: "Too many requests, please try again later." }
 });
 app.use(globalLimiter);
 
-// 4. Stricter Rate Limiting for Registration/Payment (Increased for Dev Testing)
+// 4. Stricter Rate Limiting for Registration/Payment
 const authLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    max: 100, // Increased from 10 to 100 for testing
-    message: { error: "Too many registration attempts. Please wait a while." }
+    max: 50, // Strict limit for form submissions (50/hour)
+    message: { error: "Too many attempts. Please wait a while." }
 });
 
 app.use(express.json({ limit: '10kb' })); // Limit body size to prevent DoS
@@ -624,86 +624,23 @@ app.post('/api/contact', authLimiter, async (req, res) => {
             return res.status(400).json({ error: "Invalid email address." });
         }
 
-        // Send Email
+        // Send Email (DISABLED: Using Daily Digest Strategy)
+        /*
         const { data: emailData, error: emailError } = await resend.emails.send({
             from: `DataVex Inquiries <${HACKATHON_SENDER}>`,
             to: CONTACT_RECEIVER,
             reply_to: email, // Resend uses 'reply_to' (snake_case)
             subject: `New Project Inquiry from ${name}`,
-            html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    <div style="background-color: #4f46e5; padding: 24px; color: white;">
-                        <h2 style="margin: 0; font-size: 24px;">New Contact Submission</h2>
-                        <p style="margin: 4px 0 0 0; opacity: 0.8;">Detailed project inquiry details</p>
-                    </div>
-                    <div style="padding: 24px; background-color: #ffffff;">
-                        <h3 style="color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Contact Info</h3>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600; width: 140px;">Name:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${name}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Email:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;"><a href="mailto:${email}" style="color: #4f46e5; text-decoration: none;">${email}</a></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Phone:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${phone || 'Not Specified'}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Company:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${company || 'Not Specified'}</td>
-                            </tr>
-                             <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Location:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${location || 'Not Specified'}</td>
-                            </tr>
-                        </table>
-
-                        <h3 style="color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Project Qualification</h3>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600; width: 140px;">Project Stage:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${projectStage || 'Not Specified'}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Estimated Budget:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${budget || 'Not Specified'}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">AI Usage:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${aiUsage || 'Not Specified'}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Employees:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${employees || 'Not Specified'}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #64748b; font-weight: 600;">Tech Experience:</td>
-                                <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; color: #1e293b;">${experience || 'Not Specified'}</td>
-                            </tr>
-                        </table>
-
-                        <div style="margin-top: 24px;">
-                            <p style="color: #64748b; font-weight: 600; margin-bottom: 8px;">Main Goal & Message:</p>
-                            <div style="background-color: #f8fafc; padding: 16px; border-radius: 8px; color: #334155; line-height: 1.6; white-space: pre-wrap;">${message}</div>
-                        </div>
-                    </div>
-                    <div style="background-color: #f1f5f9; padding: 16px; text-align: center; color: #94a3b8; font-size: 12px;">
-                        This email was sent from the DataVex contact form.
-                    </div>
-                </div>
-            `
+            html: `...` // (Snippet omitted for brevity)
         });
 
         if (emailError) {
-            console.error("❌ Resend API Error:", emailError);
-            return res.status(400).json({ error: "Failed to send email. " + emailError.message });
+             console.error("❌ Resend API Error:", emailError);
+             // return res.status(400).json({ error: "Failed to send email. " + emailError.message });
         }
-
         console.log("✅ Inquiry Sent via Resend:", emailData);
-
+        */
+        console.log("✅ Inquiry queue for Daily Digest.");
 
         res.json({ status: 'success', message: 'Thank you for your inquiry. Our team will get back to you shortly.' });
     } catch (error) {
@@ -737,44 +674,49 @@ cron.schedule('55 23 * * *', async () => {
         console.log(`📨 Found ${leads.length} inquiries. Sending digest...`);
 
         // Generate HTML Table
-        const tableRows = leads.map(lead => `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 10px;"><strong>${lead.name}</strong><br/><a href="mailto:${lead.email}">${lead.email}</a></td>
-                <td style="padding: 10px;">${lead.company || '-'}</td>
-                <td style="padding: 10px;">${lead.project_stage || '-'}</td>
-                <td style="padding: 10px;">${lead.budget || '-'}</td>
-                <td style="padding: 10px; font-size: 12px; color: #555;">${(lead.message || '').substring(0, 100)}...</td>
-            </tr>
-        `).join('');
-
-        const { data: reportData, error: reportError } = await resend.emails.send({
-            from: `DataVex Reports <${HACKATHON_SENDER}>`,
-            to: CONTACT_RECEIVER,
-            subject: `📊 Daily Inquiry Digest (${leads.length} Leads) - ${new Date().toLocaleDateString()}`,
-            html: `
-                <div style="font-family: sans-serif; padding: 20px;">
-                    <h2 style="color: #4f46e5;">Daily Lead Report</h2>
-                    <p>Here is a summary of the contact inquiries received today:</p>
-                    
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px;">
                         <thead style="background: #f3f4f6; text-align: left;">
                             <tr>
-                                <th style="padding: 10px;">Contact</th>
-                                <th style="padding: 10px;">Company</th>
-                                <th style="padding: 10px;">Stage</th>
-                                <th style="padding: 10px;">Budget</th>
-                                <th style="padding: 10px;">Message Snippet</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Contact</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Company & Loc</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Details (Stage, Teams, Tech)</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">AI & Budget</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Project Goal</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${tableRows}
+                            ${leads.map(lead => `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
+                                        <strong>${lead.name}</strong><br/>
+                                        <a href="mailto:${lead.email}" style="color: #4f46e5;">${lead.email}</a><br/>
+                                        ${lead.phone || '-'}
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
+                                        <strong>${lead.company || '-'}</strong><br/>
+                                        ${lead.location || '-'}
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
+                                        <strong>Stage:</strong> ${lead.project_stage || '-'}<br/>
+                                        <strong>Size:</strong> ${lead.employees || '-'}<br/>
+                                        <strong>Exp:</strong> ${lead.experience || '-'}
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
+                                        <strong>Use:</strong> ${lead.ai_usage || '-'}<br/>
+                                        <strong>Bud:</strong> ${lead.budget || '-'}
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
+                                        ${(lead.message || '').replace(/\n/g, '<br/>')}
+                                    </td>
+                                </tr>
+                            `).join('')}
                         </tbody>
                     </table>
 
                     <p style="margin-top: 30px; font-size: 12px; color: #888;">
                         This automated report was generated by the DataVex Server.
                     </p>
-                </div>
+                </div >
             `
         });
 
@@ -789,4 +731,4 @@ cron.schedule('55 23 * * *', async () => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Backend running on port ${ PORT } `));
