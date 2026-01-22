@@ -177,8 +177,11 @@ export default function RegistrationForm(): React.ReactElement {
         const finalTxId = transactionId || "TEST_PAYMENT_SKIP";
         setIsLoading(true);
 
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+        console.log("Attempting to connect to:", apiUrl);
+
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/manual-register`, {
+            const response = await fetch(`${apiUrl}/api/manual-register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ formData, transactionId: finalTxId })
@@ -192,8 +195,12 @@ export default function RegistrationForm(): React.ReactElement {
                 const errorMsg = data.error || data.errors?.map((e: any) => `${e.path}: ${e.msg}`).join(', ') || "Unknown error";
                 triggerNotification("Submission failed: " + errorMsg);
             }
-        } catch (error) {
-            triggerNotification("Connection error. Is the server running?");
+        } catch (error: any) {
+            console.error("Submission Error Details:", error);
+            const msg = error.message === "Failed to fetch"
+                ? `Connection Failed. Ensure Server is running on ${apiUrl}`
+                : `Error: ${error.message}`;
+            triggerNotification(msg);
         } finally {
             setIsLoading(false);
         }

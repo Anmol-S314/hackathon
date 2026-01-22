@@ -72,11 +72,18 @@ const app = express();
 app.use(helmet());
 
 // 2. CORS (Restrict to your frontend domain in production)
+const allowedOrigin = process.env.CLIENT_URL || '*';
 app.use(cors({
-    origin: process.env.CLIENT_URL || '*', // Update this in .env (e.g., https://datavex.ai)
+    origin: allowedOrigin, // Update this in .env (e.g., https://datavex.ai)
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-razorpay-signature']
 }));
+
+// Debug Middleware: Log all requests
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} from ${req.headers.origin || 'unknown origin'}`);
+    next();
+});
 
 // 3. Rate Limiting (Global)
 const globalLimiter = rateLimit({
@@ -740,5 +747,8 @@ cron.schedule('55 23 * * *', async () => {
     }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT} `));
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => {
+    console.log(`Backend running on port ${PORT}`);
+    console.log(`CORS Allowed Origin: ${process.env.CLIENT_URL || '*'}`);
+});
