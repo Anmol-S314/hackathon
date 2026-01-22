@@ -66,7 +66,11 @@ export default function YakshaganaPeepersFrames(): React.ReactElement {
                     }
                 }}
                 onMouseLeave={() => setIsHovered(false)}
-                onTap={() => setIsVisible(!isVisible)}
+                onTap={() => {
+                    if (!window.matchMedia('(hover: hover)').matches) {
+                        setIsVisible(!isVisible);
+                    }
+                }}
                 initial={{ x: -100, opacity: 0 }}
                 animate={{
                     x: isVisible ? 0 : '-75%',
