@@ -81,13 +81,27 @@ export default function YakshaganaPeepersFrames(): React.ReactElement {
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 onContextMenu={(e) => e.preventDefault()}
             >
-                <div className="relative">
+                <div className="relative w-full">
+                    {/* Spacer to maintain aspect ratio and layout */}
                     <img
-                        src={FRAMES[currentFrame]}
-                        alt="Yakshagana Character"
-                        className="w-full h-auto object-contain transition-opacity duration-200 drop-shadow-[0_0_12px_rgba(0,0,0,0.4)]"
-                        draggable={false}
+                        src={FRAMES[0]}
+                        alt=""
+                        className="w-full h-auto opacity-0 pointer-events-none"
+                        aria-hidden="true"
                     />
+
+                    {/* All frames pre-rendered and stacked */}
+                    {FRAMES.map((src, index) => (
+                        <img
+                            key={src}
+                            src={src}
+                            alt={index === currentFrame ? "Yakshagana Character" : ""}
+                            className={`absolute top-0 left-0 w-full h-full object-contain drop-shadow-[0_0_12px_rgba(0,0,0,0.4)] ${index === currentFrame ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                                }`}
+                            draggable={false}
+                            loading="eager"
+                        />
+                    ))}
                 </div>
             </motion.div>
         </div>
