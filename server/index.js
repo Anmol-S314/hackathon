@@ -107,15 +107,28 @@ app.use(express.json({ limit: '10kb' })); // Limit body size to prevent DoS
 // --- INITIALIZE SERVICES ---
 
 // Google Sheets
+const sheets = google.sheets({ version: 'v4', auth });
+const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
+
+// Helper to clean private key (strip quotes, handle newlines)
+const getPrivateKey = () => {
+    const key = process.env.GOOGLE_PRIVATE_KEY;
+    if (!key) return undefined;
+
+    // Remove starting/ending quotes if present (common copy-paste error on Render)
+    const cleanKey = key.replace(/^['"]|['"]$/g, '');
+
+    // Replace literal \n with actual newlines
+    return cleanKey.replace(/\\n/g, '\n');
+};
+
 const auth = new google.auth.GoogleAuth({
     credentials: {
         client_email: process.env.GOOGLE_CLIENT_EMAIL,
-        private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        private_key: getPrivateKey(),
     },
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
-const sheets = google.sheets({ version: 'v4', auth });
-const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 // Supabase
 const supabase = createClient(

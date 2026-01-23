@@ -177,7 +177,7 @@ export default function RegistrationForm(): React.ReactElement {
         const finalTxId = transactionId || "TEST_PAYMENT_SKIP";
         setIsLoading(true);
 
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         console.log("Attempting to connect to:", apiUrl);
 
         try {
