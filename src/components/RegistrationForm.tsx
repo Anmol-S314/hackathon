@@ -189,7 +189,7 @@ export default function RegistrationForm(): React.ReactElement {
             const data = await response.json();
 
             if (data.status === 'success') {
-                triggerNotification("Registration Submitted! We will verify your payment and email you shortly.", "success");
+                triggerNotification("Registration Submitted! We have received your entry and will get back to you soon.", "success");
                 setTimeout(() => navigate('/'), 2000);
             } else {
                 const errorMsg = data.error || data.errors?.map((e: any) => `${e.path}: ${e.msg}`).join(', ') || "Unknown error";

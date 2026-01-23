@@ -453,9 +453,9 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
 
 
 
-        // Send 'Pending' Email
+        // Send 'Pending' Email (DISABLED: Not needed)
         /*
-        await resend.emails.send({
+        resend.emails.send({
             from: `VexStorm 26 <${HACKATHON_SENDER}>`,
             to: formData.leader.email,
             subject: '⏳ Registration Received - VexStorm 26',
@@ -477,7 +477,8 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
                     </div>
                 </div>
             `
-        });
+        }).then(() => console.log(`✅ Confirmation email sent to ${formData.leader.email}`))
+            .catch(e => console.error("❌ Email background failed:", e.message));
         */
 
         res.json({ status: 'success', registrationId });
