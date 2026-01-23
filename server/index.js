@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { google } from 'googleapis';
+
 import Razorpay from 'razorpay';
 import { Resend } from 'resend';
 import crypto from 'crypto';
@@ -107,28 +107,7 @@ app.use(express.json({ limit: '10kb' })); // Limit body size to prevent DoS
 // --- INITIALIZE SERVICES ---
 
 // Google Sheets
-const sheets = google.sheets({ version: 'v4', auth });
-const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 
-// Helper to clean private key (strip quotes, handle newlines)
-const getPrivateKey = () => {
-    const key = process.env.GOOGLE_PRIVATE_KEY;
-    if (!key) return undefined;
-
-    // Remove starting/ending quotes if present (common copy-paste error on Render)
-    const cleanKey = key.replace(/^['"]|['"]$/g, '');
-
-    // Replace literal \n with actual newlines
-    return cleanKey.replace(/\\n/g, '\n');
-};
-
-const auth = new google.auth.GoogleAuth({
-    credentials: {
-        client_email: process.env.GOOGLE_CLIENT_EMAIL,
-        private_key: getPrivateKey(),
-    },
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
 
 // Supabase
 const supabase = createClient(
@@ -182,34 +161,22 @@ const otpStore = new Map();
 
 // 0. Send & Verify OTP
 app.post('/api/send-otp', authLimiter, async (req, res) => {
+    const { email, name } = req.body;
+    if (!email) return res.status(400).json({ error: "Email is required" });
+
+    // 1. Check if already registered (Supabase First, then Sheets)
     try {
-        const { email, name } = req.body;
-        if (!email) return res.status(400).json({ error: "Email is required" });
+        const { data: existingTeam } = await supabase
+            .from('registrations')
+            .select('id')
+            .eq('leader_email', email.toLowerCase().trim())
+            .single();
 
-        // 1. Check if already registered (Supabase First, then Sheets)
-        try {
-            const { data: existingTeam } = await supabase
-                .from('registrations')
-                .select('id')
-                .eq('leader_email', email.toLowerCase().trim())
-                .single();
-
-            if (existingTeam) {
-                return res.status(400).json({ error: "This email is already registered in our core database." });
-            }
-
-            // Fallback check Sheets if Supabase is empty/new
-            const checkResponse = await sheets.spreadsheets.values.get({
-                spreadsheetId: SPREADSHEET_ID,
-                range: 'Registrations!G:G',
-            });
-            const registeredEmails = checkResponse.data.values?.map(row => row[0]?.toLowerCase().trim()) || [];
-            if (registeredEmails.includes(email.toLowerCase().trim())) {
-                return res.status(400).json({ error: "This email is already registered. Access denied." });
-            }
-        } catch (e) {
-            console.log("Duplicate check note:", e.message);
+        if (existingTeam) {
+            return res.status(400).json({ error: "This email is already registered in our core database." });
         }
+
+
 
         // Generate 6-digit Code
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -433,31 +400,7 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
             console.warn("Supabase check failed, falling back to Sheets:", e.message);
         }
 
-        // 2. Check for duplicates in Google Sheets (Fallback/Double Check)
-        let rows = [];
-        try {
-            const response = await sheets.spreadsheets.values.get({
-                spreadsheetId: SPREADSHEET_ID,
-                range: 'Registrations!A:AE',
-            });
-            rows = response.data.values || [];
-        } catch (e) {
-            console.log("No existing registrations found in Sheets. Proceeding...");
-        }
 
-        const isTeamDuplicate = teamName && teamName !== 'solo' && rows.some(row => (row[2] || '').toLowerCase().trim() === teamName);
-        const isEmailDuplicate = rows.some(row => (row[6] || '').toLowerCase().trim() === leaderEmail);
-        const isTxDuplicate = rows.some(row => (row[26] || '').trim() === transactionId.trim());
-
-        if (isTeamDuplicate) {
-            return res.status(400).json({ status: 'failure', error: 'Team name taken (Sheets).' });
-        }
-        if (isEmailDuplicate) {
-            return res.status(400).json({ status: 'failure', error: 'Email registered (Sheets).' });
-        }
-        if (isTxDuplicate && transactionId !== "TEST_PAYMENT_SKIP") {
-            return res.status(400).json({ status: 'failure', error: 'Transaction ID used (Sheets).' });
-        }
 
         const registrationId = `REG-${Date.now()}`;
         // If no real transaction ID is provided (payment skipped), generate a unique one
@@ -508,48 +451,10 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
             // We continue anyway since Sheets is the primary for now
         }
 
-        // B. Write to Google Sheets
-        const values = [[
-            new Date().toISOString(),
-            registrationId,
-            formData.teamName || 'Solo',
-            formData.type,
-            formData.track,
-            formData.leader.name,
-            formData.leader.email,
-            formData.leader.phone,
-            formData.leader.college,
-            formData.leader.year,
-            formData.member1?.name || '',
-            formData.member1?.email || '',
-            formData.member1?.phone || '',
-            formData.member1?.college || '',
-            formData.member1?.year || '',
-            formData.member2?.name || '',
-            formData.member2?.email || '',
-            formData.member2?.phone || '',
-            formData.member2?.college || '',
-            formData.member2?.year || '',
-            formData.projectIdea,
-            formData.whyParticipate,
-            formData.driveLink || '', // Drive Link
-            '', // GitHub
-            '', // LinkedIn
-            'MANUAL_Payment',
-            finalTxId, // User entered UTR/ID
-            'QR_CODE_MODE',
-            '150',
-            'PENDING_VERIFICATION' // Needs manual check
-        ]];
 
-        await sheets.spreadsheets.values.append({
-            spreadsheetId: SPREADSHEET_ID,
-            range: 'Registrations',
-            valueInputOption: 'USER_ENTERED',
-            resource: { values },
-        });
 
         // Send 'Pending' Email
+        /*
         await resend.emails.send({
             from: `VexStorm 26 <${HACKATHON_SENDER}>`,
             to: formData.leader.email,
@@ -573,11 +478,13 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
                 </div>
             `
         });
+        */
 
         res.json({ status: 'success', registrationId });
     } catch (error) {
         console.error("Manual Reg Error:", error);
-        res.status(500).json({ error: error.message });
+        console.error("Stack:", error.stack);
+        res.status(500).json({ error: error.message, stack: error.stack });
     }
 });
 
