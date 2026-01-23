@@ -66,6 +66,9 @@ function sanitizeObject(obj) {
 
 const app = express();
 
+// Trust Render's proxy (Required for express-rate-limit to see real client IPs)
+app.set('trust proxy', 1);
+
 // --- SECURITY MIDDLEWARE ---
 
 // 1. Helment for secure headers
