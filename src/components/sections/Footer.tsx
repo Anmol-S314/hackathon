@@ -12,10 +12,10 @@ export default function Footer(): React.ReactElement {
                 <div className="comic-card bg-white grid grid-cols-1 md:grid-cols-4 gap-8 !p-8">
                     <div className="md:col-span-2">
                         <h2 className="text-4xl font-display text-black mb-4 uppercase italic tracking-tighter">
-                            VEXSTORM <span className="text-purple-primary text-pop">26</span>
+                            VEXSTORM'<span className="text-purple-primary text-pop">26</span>
                         </h2>
                         <p className="text-gray-900 font-bold max-w-sm mb-6 leading-tight text-sm">
-                            Empowering the next generation of AI developers. VexStorm 26 is the premier arena for building agentic AI solutions.
+                            Empowering the next generation of AI developers. VexStorm'26 is the premier arena for building agentic AI solutions.
                         </p>
                         <div className="flex gap-3">
                             <a

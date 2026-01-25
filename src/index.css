@@ -1,5 +1,7 @@
 html {
   scroll-behavior: smooth;
+  background-color: #0d001a;
+  /* Match the dark theme base */
 }
 
 @tailwind base;
@@ -10,6 +12,10 @@ html {
   body {
     @apply bg-purple-dark text-white font-body antialiased overflow-x-hidden;
     background: radial-gradient(circle at center, #2e0050 0%, #05001a 100%);
+    background-attachment: fixed;
+    overscroll-behavior: none;
+    /* Prevents white bounces on some browsers */
+    min-height: 100dvh;
   }
 
   /* Comic Halftone Overlay */

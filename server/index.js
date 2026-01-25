@@ -160,6 +160,11 @@ const CONTACT_RECEIVER = process.env.EMAIL_CONTACT_TO || 'info@datavex.ai';
 // In production, replace with Redis
 const otpStore = new Map();
 
+// --- HEALTH CHECK (Wake Up) ---
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok', service: 'DataVex Backend', timestamp: new Date().toISOString() });
+});
+
 // --- API ROUTES ---
 
 // 0. Send & Verify OTP

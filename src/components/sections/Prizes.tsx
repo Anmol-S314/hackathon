@@ -36,7 +36,7 @@ function PrizeGrid(): React.ReactElement {
                 <GrandPrize />
                 <SidePrizes />
             </div>
-            <ConsolationBanner />
+            {/* <ConsolationBanner /> */}
         </div>
     );
 }
@@ -128,27 +128,27 @@ function InternshipSlot(): React.ReactElement {
     return (
         <motion.div
             whileHover={{ scale: 1.01 }}
-            className="p-6 md:p-8 bg-pink-primary flex flex-col md:flex-row items-center justify-between gap-6 group relative cursor-default transition-all shadow-inner"
+            className="p-6 md:p-8 bg-pink-primary flex flex-col md:flex-row items-start md:items-center justify-between gap-6 group relative cursor-default transition-all shadow-inner"
         >
             <div className="flex items-center gap-6 z-10">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-[3px] border-black flex items-center justify-center shadow-[6px_6px_0px_#000] rotate-6 group-hover:rotate-12 transition-transform shrink-0">
-                    <span className="text-pink-primary text-4xl md:text-5xl font-bold">★</span>
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white border-[3px] border-black flex items-center justify-center shadow-[4px_4px_0px_#000] rotate-6 group-hover:rotate-12 transition-transform shrink-0">
+                    <span className="text-pink-primary text-2xl md:text-3xl font-bold">★</span>
                 </div>
-                <div className="flex flex-col">
-                    <h4 className="text-2xl md:text-3xl lg:text-4xl text-white [text-shadow:2px_2px_0px_#000] font-display uppercase italic leading-[0.9] mb-1">
+                <div className="flex flex-col items-start text-left">
+                    <h4 className="text-xl md:text-2xl lg:text-3xl text-white [text-shadow:2px_2px_0px_#000] font-display uppercase italic leading-[0.9] mb-1">
                         Internships
                     </h4>
-                    <p className="text-white/80 text-xs md:text-sm font-bold uppercase tracking-wide">
+                    <p className="text-white/80 text-[10px] md:text-xs font-bold uppercase tracking-wide">
                         6-Month Stipend-Based
                     </p>
                 </div>
             </div>
 
-            {/* Floating "Sticker" Badge - Moved "Outside" & MADE BIGGER */}
-            <div className="absolute -top-10 -right-0 md:-right-8 z-20 bg-yellow-400 border-[4px] border-black px-6 py-4 rotate-12 shadow-[12px_12px_0px_#000] group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 pointer-events-none">
-                <div className="text-black font-display text-4xl md:text-6xl leading-none text-center">15+</div>
-                <div className="text-black text-xs md:text-lg font-black uppercase leading-none text-center tracking-tighter mt-1">DIRECT OFFERS</div>
-                <div className="text-black/60 text-[8px] md:text-[10px] font-bold uppercase leading-none text-center mt-2 border-t border-black/20 pt-1">FOR TOP CANDIDATES</div>
+            {/* Floating "Sticker" Badge - Made slightly smaller */}
+            <div className="absolute -top-8 -right-0 md:-right-5 z-20 bg-yellow-400 border-[3px] border-black px-4 py-3 rotate-12 shadow-[8px_8px_0px_#000] group-hover:rotate-6 group-hover:scale-105 transition-all duration-300 pointer-events-none">
+                <div className="text-black font-display text-3xl md:text-5xl leading-none text-center">15+</div>
+                <div className="text-black text-[10px] md:text-sm font-black uppercase leading-none text-center tracking-tighter mt-1">DIRECT OFFERS</div>
+                <div className="text-black/60 text-[7px] md:text-[8px] font-bold uppercase leading-none text-center mt-2 border-t border-black/20 pt-1">FOR TOP CANDIDATES</div>
             </div>
 
         </motion.div>

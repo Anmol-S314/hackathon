@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { RotateCw } from 'lucide-react';
+import { RotateCw, ExternalLink } from 'lucide-react';
+import { HACKATHON_CONFIG } from '../../config';
 import CountdownTimer from '../CountdownTimer';
 import VexCharacter from '../animations/VexCharacter';
 
@@ -64,9 +65,30 @@ function HeroContent(): React.ReactElement {
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-                        <Link to="/register" className="btn-comic-primary text-xl md:text-2xl px-8 md:px-12 py-4 md:py-5 w-full sm:w-auto text-center">
-                            Register Now!
-                        </Link>
+                        {HACKATHON_CONFIG.HACKATHON_PHASE === 'PHASE_1' ? (
+                            <Link to="/register" className="btn-comic-primary text-xl md:text-2xl px-8 md:px-12 py-4 md:py-5 w-full sm:w-auto text-center">
+                                Register Now!
+                            </Link>
+                        ) : HACKATHON_CONFIG.HACKATHON_PHASE === 'SELECTION' ? (
+                            <div className="bg-yellow-400 border-[3px] border-black px-8 py-4 shadow-[4px_4px_0px_#000] -rotate-1">
+                                <span className="text-black font-display text-xl md:text-2xl uppercase italic">Selection in Progress!</span>
+                            </div>
+                        ) : (
+                            <div className="bg-neon-green border-[3px] border-black px-8 py-4 shadow-[4px_4px_0px_#000] rotate-1">
+                                <span className="text-black font-display text-xl md:text-2xl uppercase italic">Phase 2 Active!</span>
+                            </div>
+                        )}
+
+                        {HACKATHON_CONFIG.SHOW_PHASE_2_RESULTS && HACKATHON_CONFIG.PHASE_2_TEAMS_LINK && (
+                            <a
+                                href={HACKATHON_CONFIG.PHASE_2_TEAMS_LINK}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-comic text-xl md:text-2xl px-8 md:px-12 py-4 md:py-5 w-full sm:w-auto text-center flex items-center justify-center gap-2 bg-purple-primary text-white"
+                            >
+                                <ExternalLink size={24} /> Selected Teams
+                            </a>
+                        )}
                     </div>
 
                     {/* Optimized Mobile Robot: Only mount if mobile to save WebGL context */}

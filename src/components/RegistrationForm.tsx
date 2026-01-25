@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Check, Info, Loader2, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Info, Loader2, ChevronDown } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import SiliconBeachBackground from './SiliconBeachBackground';
 import { isRegistrationActive } from '../config';
@@ -287,10 +287,9 @@ export default function RegistrationForm(): React.ReactElement {
                             )}
                         </AnimatePresence>
 
-                        <footer className="bg-black py-2 px-4 md:px-6 flex justify-between items-center text-[8px] font-mono text-gray-500 uppercase tracking-[0.2em]">
+                        {/* <footer className="bg-black py-2 px-4 md:px-6 flex justify-center items-center text-[10px] font-mono text-gray-500 uppercase tracking-[0.2em]">
                             <span>[ DATA_ENCRYPTED ]</span>
-                            <span className="text-neon-green flex items-center gap-1"><Check size={10} /> RAZORPAY_SECURE</span>
-                        </footer>
+                        </footer> */}
                     </form>
                 </div>
             </div>

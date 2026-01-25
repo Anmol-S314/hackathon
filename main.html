@@ -672,6 +672,12 @@
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
+            // WAKE UP SERVER (Prevent Cold Start Delay)
+            fetch('https://vexstorm-backend.onrender.com/api/health')
+                .then(res => res.json())
+                .then(data => console.log('Server Awake:', data))
+                .catch(err => console.log('Server Wake-up Pending...', err));
+
             // Mobile menu functionality
             document.getElementById('mobile-menu-button').addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.remove('hidden');

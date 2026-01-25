@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import SiliconBeachBackground from './SiliconBeachBackground';
+
 import Hero from './sections/Hero';
 import Tracks from './sections/Tracks';
 import Prizes from './sections/Prizes';
@@ -32,7 +32,7 @@ export default function HackathonPage(): React.ReactElement {
 
     return (
         <div className="bg-purple-dark min-h-screen relative overflow-x-hidden">
-            <SiliconBeachBackground />
+
 
             {/* Global Hackathon Page Animations */}
             <YakshaganaPeepersFrames />
@@ -86,7 +86,7 @@ function Logo({ isScrolled }: { isScrolled: boolean }): React.ReactElement {
 
     return (
         <Link to="/" className={`font-display text-3xl tracking-tighter transition-all ${logoColor}`}>
-            <span className="text-pop">VEXSTORM</span> <span className={yearColor}>26</span>
+            <span className="text-pop">VEXSTORM'</span><span className={yearColor}>26</span>
         </Link>
     );
 }

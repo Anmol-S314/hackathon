@@ -349,7 +349,7 @@ export default function VexCharacter(): React.ReactElement {
                     <RobotCharacter action={action} setAction={setAction} />
                 </Float>
 
-                <ContactShadows position={[0, -1.2, 0]} opacity={0.4} scale={10} blur={2.5} far={4} />
+                <ContactShadows position={[0, -1.6, 0]} opacity={0.4} scale={10} blur={2.5} far={4} />
                 <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 1.8} minPolarAngle={Math.PI / 2.2} />
             </Canvas>
 
