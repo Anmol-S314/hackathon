@@ -41,20 +41,7 @@ function PrizeGrid(): React.ReactElement {
     );
 }
 
-function ConsolationBanner(): React.ReactElement {
-    return (
-        <div className="bg-yellow-400 border-t-[4px] border-black p-3 md:p-4 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 overflow-hidden relative">
-            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-            <span className="bg-black text-white px-3 py-0.5 text-[10px] md:text-sm font-black uppercase rotate-[-1deg] z-10">
-                FINALIST BONUS
-            </span>
-            <p className="text-black font-display text-base md:text-2xl uppercase italic tracking-tight z-10 text-center">
-                ₹1,000 Consolation reward for ALL remaining finalists!
-            </p>
-            <div className="hidden md:block w-3 h-3 bg-black rounded-full animate-pulse z-10" />
-        </div>
-    );
-}
+
 
 function GrandPrize(): React.ReactElement {
     return (
