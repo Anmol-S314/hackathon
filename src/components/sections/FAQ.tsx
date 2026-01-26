@@ -10,27 +10,31 @@ interface FAQItem {
 const FAQS: FAQItem[] = [
     {
         q: "Who gets internships?",
-        a: "Guaranteed internships for all podium winners (Top 3)! Additionally, approx. 15 chosen participants will be fast-tracked for recruitment interviews."
+        a: "Internships are guaranteed for all top 3 winning teams! Additionally, ~15 other top performers will be fast-tracked for recruitment interviews."
     },
     {
         q: "What is the team size?",
-        a: "You can register as an individual or in a team of up to 3 members. Both individual and team projects are evaluated equally."
+        a: "You must participate in a team of exactly 3 members."
     },
     {
         q: "Is there a registration fee?",
-        a: "Yes, there is a registration fee of ₹150 per team/individual to ensure committed participation and prize pool security."
+        a: "Yes, a fee of ₹350 per person applies ONLY if your team is selected for Phase-2."
     },
     {
         q: "Do I need to be an AI expert?",
-        a: "Not at all! As long as you have a passion for building cool things and are willing to learn, you're welcome. We provide workshops and mentoring."
+        a: "No! Basic coding skills are required, but you don't need to be an AI expert. We welcome anyone willing to learn and build."
     },
     {
-        q: "Is the finale onsite or remote?",
-        a: "The final 2 days of pitching and evaluation will be held onsite at Skill Labs. Selected finalists will be invited."
+        q: "Is the finale online or offline?",
+        a: "The Phase-2 and Grand Finale will be an offline event held at Skill Labs. Selected finalists will be invited"
     },
     {
         q: "Can I participate in multiple tracks?",
         a: "No, each team must select one primary track to focus their project on during the hackathon."
+    },
+    {
+        q: "What about the problem statements?",
+        a: "Exact problem statements will be revealed onsite during Phase-2. Note that these may differ from the broad tracks mentioned in Phase-1."
     }
 ];
 

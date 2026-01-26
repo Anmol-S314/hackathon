@@ -12,6 +12,8 @@ import FAQ from './sections/FAQ';
 import Footer from './sections/Footer';
 import YakshaganaPeepersFrames from './YakshaganaPeepersFrames';
 import VexCharacter from './animations/VexCharacter';
+import AnnouncementPost from './AnnouncementPost';
+
 
 /**
  * Main landing page for the VexStorm 26 Hackathon.
@@ -32,6 +34,7 @@ export default function HackathonPage(): React.ReactElement {
 
     return (
         <div className="bg-purple-dark min-h-screen relative overflow-x-hidden">
+            <AnnouncementPost />
 
 
             {/* Global Hackathon Page Animations */}

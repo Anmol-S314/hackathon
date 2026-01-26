@@ -4,6 +4,7 @@ import { ArrowLeft, Info, Loader2, ChevronDown } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import SiliconBeachBackground from './SiliconBeachBackground';
 import { isRegistrationActive } from '../config';
+import AnnouncementPost from './AnnouncementPost';
 
 // Types & Constants
 type FormStep = 'info' | 'details';
@@ -14,6 +15,7 @@ interface PersonInfo {
     phone: string;
     college: string;
     year: string;
+    shirtSize: string;
 }
 
 interface RegistrationData {
@@ -43,7 +45,8 @@ const INITIAL_PERSON: PersonInfo = {
     email: '',
     phone: '',
     college: '',
-    year: ''
+    year: '',
+    shirtSize: ''
 };
 
 const INITIAL_FORM: RegistrationData = {
@@ -56,7 +59,7 @@ const INITIAL_FORM: RegistrationData = {
     projectIdea: '',
     whyParticipate: '',
     driveLink: '',
-    teamSize: 1
+    teamSize: 3
 };
 
 const SECURITY_REGEX = /<script|UNION SELECT|DROP TABLE|truncate table|delete from|update .* set|OR 1=1|\[IGNORE PREVIOUS INSTRUCTIONS\]|system prompt|DAN mode|--|;|xp_cmdshell|exec\(|base64_decode/i;
@@ -162,11 +165,11 @@ export default function RegistrationForm(): React.ReactElement {
             return triggerNotification("INVALID LEADER EMAIL FORMAT.");
         }
 
-        if (formData.teamSize >= 2 && !EMAIL_REGEX.test(formData.member1.email)) {
+        if (!EMAIL_REGEX.test(formData.member1.email)) {
             return triggerNotification("INVALID AGENT 2 EMAIL FORMAT.");
         }
 
-        if (formData.teamSize === 3 && !EMAIL_REGEX.test(formData.member2.email)) {
+        if (!EMAIL_REGEX.test(formData.member2.email)) {
             return triggerNotification("INVALID AGENT 3 EMAIL FORMAT.");
         }
 
@@ -212,6 +215,7 @@ export default function RegistrationForm(): React.ReactElement {
     if (!isRegistrationOpen) {
         return (
             <div className="bg-purple-dark min-h-screen relative overflow-x-hidden font-body text-black flex items-center justify-center">
+                <AnnouncementPost />
                 <SiliconBeachBackground />
                 <div className="relative z-10 w-full max-w-md px-4">
                     <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white font-bold mb-8 transition-colors">
@@ -238,6 +242,7 @@ export default function RegistrationForm(): React.ReactElement {
 
     return (
         <div className="bg-purple-dark min-h-screen relative overflow-hidden flex flex-col">
+            <AnnouncementPost />
             <SiliconBeachBackground />
 
             <div className="relative z-10 pt-12 pb-20 px-4 flex-1 overflow-y-auto w-full">
@@ -363,8 +368,39 @@ function StepInfo({
     onNext,
     triggerNotification
 }: StepInfoProps): React.ReactElement {
-    const [activeDropdown, setActiveDropdown] = useState<'leader' | 'member1' | 'member2' | 'teamSize' | null>(null);
-    const [hasSelectedSize, setHasSelectedSize] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+    // Placeholder for colleges - User will provide the list
+    const COLLEGES = [
+        "NITK Surathkal",
+        "Sahyadri College of Engg.",
+        "St. Joseph Engg. College (SJEC)",
+        "Canara Engineering College",
+        "Mangalore Inst. of Tech (MITE)",
+        "Alva’s Inst. of Engg. (AIET)",
+        "A.J. Institute of Engg. (AJIET)",
+        "Yenepoya Inst. of Technology",
+        "Srinivas Inst. of Tech (SIT)",
+        "Srinivas University (SUCET)",
+        "P.A. College of Engineering",
+        "Bearys Inst. of Tech (BIT)",
+        "Shree Devi Inst. of Tech (SDIT)",
+        "Vivekananda College (VCET)",
+        "KVG College of Engineering",
+        "SDM Inst. of Technology",
+        "Prasanna College of Engg.",
+        "Karavali Inst. of Technology",
+        "Mangalore Marine College",
+        "Manipal Inst. of Tech (MIT)",
+        "NMAM Inst. of Tech (Nitte)",
+        "Shri Madhwa Vadiraja (SMVITM)",
+        "Moodlakatte Inst. (MITK)",
+        "Govt. Engg. College Karwar",
+        "Anjuman Inst. (AITM) Bhatkal",
+        "KLS Vishwanathrao (VDIT) Haliyal",
+        "Girijabai Sail Inst. (GSIT) Karwar",
+        "Other"
+    ];
 
     function validateAndProceed(): void {
         const { teamName, leader, member1, member2 } = formData;
@@ -384,29 +420,29 @@ function StepInfo({
             return triggerNotification("INVALID LEADER PHONE (MIN 10 DIGITS).");
         }
 
-        // 3. Members validation based on teamSize
-        if (formData.teamSize >= 2) {
-            if (!member1.name || !member1.email || !member1.phone || !member1.year || (member1.year !== 'POST GRAD' && !member1.college)) {
-                return triggerNotification("Please fill in Agent 2 (Member 1) details.");
-            }
-            if (!EMAIL_REGEX.test(member1.email)) {
-                return triggerNotification("INVALID AGENT 2 EMAIL FORMAT.");
-            }
-            if (!PHONE_REGEX.test(member1.phone)) {
-                return triggerNotification("INVALID AGENT 2 PHONE (MIN 10 DIGITS).");
-            }
+        // 3. Members validation (ALWAYS 3)
+        if (!member1.name || !member1.email || !member1.phone || !member1.year || (member1.year !== 'POST GRAD' && !member1.college) || !member1.shirtSize) {
+            return triggerNotification("Please fill in Agent 2 (Member 1) details including shirt size.");
+        }
+        if (!EMAIL_REGEX.test(member1.email)) {
+            return triggerNotification("INVALID AGENT 2 EMAIL FORMAT.");
+        }
+        if (!PHONE_REGEX.test(member1.phone)) {
+            return triggerNotification("INVALID AGENT 2 PHONE (MIN 10 DIGITS).");
         }
 
-        if (formData.teamSize === 3) {
-            if (!member2.name || !member2.email || !member2.phone || !member2.year || (member2.year !== 'POST GRAD' && !member2.college)) {
-                return triggerNotification("Please fill in Agent 3 (Member 2) details.");
-            }
-            if (!EMAIL_REGEX.test(member2.email)) {
-                return triggerNotification("INVALID AGENT 3 EMAIL FORMAT.");
-            }
-            if (!PHONE_REGEX.test(member2.phone)) {
-                return triggerNotification("INVALID AGENT 3 PHONE (MIN 10 DIGITS).");
-            }
+        if (!member2.name || !member2.email || !member2.phone || !member2.year || (member2.year !== 'POST GRAD' && !member2.college || !member2.shirtSize)) {
+            return triggerNotification("Please fill in Agent 3 (Member 2) details including shirt size.");
+        }
+        if (!EMAIL_REGEX.test(member2.email)) {
+            return triggerNotification("INVALID AGENT 3 EMAIL FORMAT.");
+        }
+        if (!PHONE_REGEX.test(member2.phone)) {
+            return triggerNotification("INVALID AGENT 3 PHONE (MIN 10 DIGITS).");
+        }
+
+        if (!leader.shirtSize) {
+            return triggerNotification("Please select a shirt size for the Leader.");
         }
 
         onNext();
@@ -417,49 +453,7 @@ function StepInfo({
             <h2 className="text-2xl font-display text-black uppercase tracking-tight">SQUAD PROTOCOL</h2>
 
             <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="md:col-span-2">
-                        <InputGroup label="TEAM IDENTITY" placeholder="TEAM NAME" name="teamName" value={formData.teamName} onChange={onFieldChange} required />
-                    </div>
-                    <div className="space-y-1">
-                        <label className="block text-xs font-bold uppercase text-black">TEAM SIZE</label>
-                        <div className="relative">
-                            <div
-                                onClick={() => setActiveDropdown(activeDropdown === 'teamSize' ? null : 'teamSize')}
-                                className="input-field !py-3 !px-4 flex justify-between items-center cursor-pointer bg-white"
-                            >
-                                <span className={`text-sm ${hasSelectedSize ? 'text-black' : 'text-gray-400'}`}>
-                                    {formData.teamSize} {formData.teamSize === 1 ? 'AGENT' : 'AGENTS'}
-                                </span>
-                                <ChevronDown size={16} className={`text-black transition-transform ${activeDropdown === 'teamSize' ? 'rotate-180' : ''}`} />
-                            </div>
-                            <AnimatePresence>
-                                {activeDropdown === 'teamSize' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000]"
-                                    >
-                                        {[1, 2, 3].map(size => (
-                                            <div
-                                                key={size}
-                                                onClick={() => {
-                                                    setFormData(prev => ({ ...prev, teamSize: size }));
-                                                    setHasSelectedSize(true);
-                                                    setActiveDropdown(null);
-                                                }}
-                                                className="p-3 font-bold cursor-pointer uppercase border-b border-black last:border-0 hover:bg-neon-green text-xs text-black"
-                                            >
-                                                {size} {size === 1 ? 'AGENT' : 'AGENTS'}
-                                            </div>
-                                        ))}
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    </div>
-                </div>
+                <InputGroup label="TEAM IDENTITY" placeholder="TEAM NAME" name="teamName" value={formData.teamName} onChange={onFieldChange} required />
 
                 <div className="space-y-1">
                     <label className="block text-xs font-bold uppercase text-black">MISSION TRACK</label>
@@ -492,42 +486,62 @@ function StepInfo({
                 setActiveDropdown={setActiveDropdown}
                 onFieldChange={onFieldChange}
                 setFormData={setFormData}
+                colleges={COLLEGES}
             />
 
-            {formData.teamSize >= 2 && (
-                <PersonFieldsSection
-                    title="AGENT 2 (MEMBER 1)"
-                    data={formData.member1}
-                    section="member1"
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                    onFieldChange={onFieldChange}
-                    setFormData={setFormData}
-                />
-            )}
+            <PersonFieldsSection
+                title="AGENT 2 (MEMBER 1)"
+                data={formData.member1}
+                section="member1"
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+                onFieldChange={onFieldChange}
+                setFormData={setFormData}
+                colleges={COLLEGES}
+            />
 
-            {formData.teamSize === 3 && (
-                <PersonFieldsSection
-                    title="AGENT 3 (MEMBER 2)"
-                    data={formData.member2}
-                    section="member2"
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                    onFieldChange={onFieldChange}
-                    setFormData={setFormData}
-                />
-            )}
+            <PersonFieldsSection
+                title="AGENT 3 (MEMBER 2)"
+                data={formData.member2}
+                section="member2"
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+                onFieldChange={onFieldChange}
+                setFormData={setFormData}
+                colleges={COLLEGES}
+            />
 
             <button onClick={validateAndProceed} type="button" className="btn-comic-primary w-full !text-base !py-4 shadow-[6px_6px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
                 CONFIRM SQUAD
             </button>
-        </motion.div>
+        </motion.div >
     );
 }
 
 function PersonFieldsSection({
-    title, data, section, activeDropdown, setActiveDropdown, onFieldChange, setFormData
+    title, data, section, activeDropdown, setActiveDropdown, onFieldChange, setFormData, colleges
 }: any): React.ReactElement {
+    const SHIRT_SIZES = ['S', 'M', 'L'];
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const toggleDropdown = (key: string) => {
+        setActiveDropdown(activeDropdown === key ? null : key);
+    };
+
+    // Reset search when this specific dropdown closes
+    useEffect(() => {
+        if (activeDropdown !== `${section}_college`) {
+            setSearchTerm("");
+        }
+    }, [activeDropdown, section]);
+
+    // Forgiving search: remove special chars and spaces for comparison
+    const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    const filteredColleges = (colleges || []).filter((c: string) =>
+        normalize(c).includes(normalize(searchTerm))
+    );
+
     return (
         <div className="space-y-3 pt-4 border-t-2 border-black border-dashed">
             <h3 className="text-sm font-display text-black uppercase mb-1 bg-neon-green inline-block px-2 border-2 border-black -rotate-1">{title}</h3>
@@ -538,20 +552,67 @@ function PersonFieldsSection({
 
                 <input className="input-field text-sm" placeholder="PHONE *" name="phone" value={data.phone} onChange={(e) => onFieldChange(e, section)} required type="tel" />
 
-                {data.year !== 'POST GRAD' && (
-                    <input className="input-field text-sm" placeholder="COLLEGE *" name="college" value={data.college} onChange={(e) => onFieldChange(e, section)} required />
-                )}
-
+                {/* College Custom Dropdown */}
                 <div className="relative">
                     <div
-                        onClick={() => setActiveDropdown(activeDropdown === section ? null : section)}
+                        onClick={() => data.year !== 'POST GRAD' && toggleDropdown(`${section}_college`)}
+                        className={`input-field text-sm flex justify-between items-center cursor-pointer bg-white ${data.year === 'POST GRAD' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        <span className={data.college ? "text-black" : "text-gray-500"}>
+                            {data.year === 'POST GRAD' ? 'N/A' : (data.college || "SELECT COLLEGE *")}
+                        </span>
+                        <ChevronDown size={16} className={`transition-transform ${activeDropdown === `${section}_college` ? 'rotate-180' : ''}`} />
+                    </div>
+                    <AnimatePresence>
+                        {activeDropdown === `${section}_college` && data.year !== 'POST GRAD' && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000] max-h-[200px] overflow-y-auto"
+                            >
+                                <div className="p-2 border-b-2 border-black bg-gray-50 sticky top-0 z-10">
+                                    <input
+                                        type="text"
+                                        className="w-full text-xs font-bold uppercase p-2 border-2 border-gray-300 focus:border-black outline-none bg-white text-black"
+                                        placeholder="SEARCH..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onClick={(e) => e.stopPropagation()}
+                                        autoFocus
+                                    />
+                                </div>
+                                {filteredColleges.map((c: string, i: number) => (
+                                    <div
+                                        key={i}
+                                        onClick={() => {
+                                            setFormData((prev: any) => ({
+                                                ...prev,
+                                                [section]: { ...prev[section], college: c }
+                                            }));
+                                            setActiveDropdown(null);
+                                        }}
+                                        className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
+                                    >
+                                        {c}
+                                    </div>
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Year Custom Dropdown */}
+                <div className="relative">
+                    <div
+                        onClick={() => toggleDropdown(`${section}_year`)}
                         className="input-field text-sm flex justify-between items-center cursor-pointer bg-white"
                     >
                         <span className={data.year ? "text-black" : "text-gray-500"}>{data.year || "SELECT YEAR"}</span>
-                        <ChevronDown size={16} className={`transition-transform ${activeDropdown === section ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={16} className={`transition-transform ${activeDropdown === `${section}_year` ? 'rotate-180' : ''}`} />
                     </div>
                     <AnimatePresence>
-                        {activeDropdown === section && (
+                        {activeDropdown === `${section}_year` && (
                             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000]">
                                 {YEARS.map(y => (
                                     <div
@@ -566,6 +627,38 @@ function PersonFieldsSection({
                                         className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
                                     >
                                         {y}
+                                    </div>
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Shirt Size Custom Dropdown */}
+                <div className="relative">
+                    <div
+                        onClick={() => toggleDropdown(`${section}_shirt`)}
+                        className="input-field text-sm flex justify-between items-center cursor-pointer bg-white"
+                    >
+                        <span className={data.shirtSize ? "text-black" : "text-gray-500"}>{data.shirtSize || "T-SHIRT SIZE *"}</span>
+                        <ChevronDown size={16} className={`transition-transform ${activeDropdown === `${section}_shirt` ? 'rotate-180' : ''}`} />
+                    </div>
+                    <AnimatePresence>
+                        {activeDropdown === `${section}_shirt` && (
+                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000]">
+                                {SHIRT_SIZES.map(s => (
+                                    <div
+                                        key={s}
+                                        onClick={() => {
+                                            setFormData((prev: any) => ({
+                                                ...prev,
+                                                [section]: { ...prev[section], shirtSize: s }
+                                            }));
+                                            setActiveDropdown(null);
+                                        }}
+                                        className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
+                                    >
+                                        {s}
                                     </div>
                                 ))}
                             </motion.div>
