@@ -534,18 +534,13 @@ function PersonFieldsSection({
     title, data, section, activeDropdown, setActiveDropdown, onFieldChange, setFormData, colleges
 }: any): React.ReactElement {
     const SHIRT_SIZES = ['S', 'M', 'L'];
-    const [searchTerm, setSearchTerm] = useState("");
+
 
     const toggleDropdown = (key: string) => {
         setActiveDropdown(activeDropdown === key ? null : key);
     };
 
-    // Reset search when this specific dropdown closes
-    useEffect(() => {
-        if (activeDropdown !== `${section}_college`) {
-            setSearchTerm("");
-        }
-    }, [activeDropdown, section]);
+
 
     // Forgiving search: remove special chars and spaces for comparison
     const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
