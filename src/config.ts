@@ -9,6 +9,13 @@ export const HACKATHON_CONFIG = {
     HACKATHON_DATE: '2026-02-10T09:00:00', // Target date for countdown
     REGISTRATION_DEADLINE: '2026-02-09T23:59:59', // Optional: Auto-close date
 
+    // Timeline Display Dates
+    TIMELINE: {
+        REGISTRATION: 'NOW - FEB 9',
+        DEVELOPMENT: 'FEB 10 - MAR 05',
+        FINALE: 'MAR 08 - MAR 09'
+    },
+
     // Contact & Socials
     CONTACT_EMAIL: 'info@datavex.ai',
     COMPANY_NAME: 'VexStorm', // or DataVex
@@ -19,7 +26,7 @@ export const HACKATHON_CONFIG = {
     // Phase 2 Data (Future Proofing)
     PHASE_2_TEAMS_LINK: 'https://docs.google.com/document/d/1rezO4PyOJUXpE1cT_UI7GkE_NZPIJvDyOHGhn_EUcc0/edit?usp=drivesdk', // Link to a PDF or Sheet with 60 selected teams
     // ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 2 announcement
-    ANNOUNCEMENT_BANNER:'',
+    ANNOUNCEMENT_BANNER: '',
 
     // Location
     LOCATION: {

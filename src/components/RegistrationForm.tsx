@@ -38,7 +38,7 @@ const TRACKS = [
     { id: 'Lore-Keeper', label: 'LORE-KEEPER', sub: 'Education AI', color: 'bg-red-500' }
 ];
 
-const YEARS = ['1ST YEAR', '2ND YEAR', '3RD YEAR', '4TH YEAR', 'POST GRAD'];
+const YEARS = ['3RD YEAR', '4TH YEAR', 'POST GRAD'];
 
 const INITIAL_PERSON: PersonInfo = {
     name: '',
@@ -533,7 +533,7 @@ function StepInfo({
 function PersonFieldsSection({
     title, data, section, activeDropdown, setActiveDropdown, onFieldChange, setFormData, colleges
 }: any): React.ReactElement {
-    const SHIRT_SIZES = ['S', 'M', 'L'];
+    const SHIRT_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
 
     const toggleDropdown = (key: string) => {
@@ -669,7 +669,12 @@ function PersonFieldsSection({
                     </div>
                     <AnimatePresence>
                         {activeDropdown === `${section}_shirt` && (
-                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000]">
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000] max-h-[160px] overflow-y-auto"
+                            >
                                 {SHIRT_SIZES.map(s => (
                                     <div
                                         key={s}
@@ -680,7 +685,7 @@ function PersonFieldsSection({
                                             }));
                                             setActiveDropdown(null);
                                         }}
-                                        className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
+                                        className={`p-3 text-xs font-bold hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0 ${data.shirtSize === s ? 'bg-neon-green text-black' : 'text-black'}`}
                                     >
                                         {s}
                                     </div>

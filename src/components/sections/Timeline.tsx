@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { HACKATHON_CONFIG } from '../../config';
 
 interface Phase {
     nr: string;
@@ -13,21 +14,21 @@ const phases: Phase[] = [
     {
         nr: "01",
         title: "Registration",
-        date: "Feb 10 - Feb 20",
+        date: HACKATHON_CONFIG.TIMELINE.REGISTRATION,
         desc: "Assemble your squad of elite engineers. Secure your spot in the arena.",
         color: "bg-cyan-400"
     },
     {
         nr: "02",
         title: "Development",
-        date: "Feb 22 - March 05",
+        date: HACKATHON_CONFIG.TIMELINE.DEVELOPMENT,
         desc: "The grind begins. Build your agentic solutions in the remote phase.",
         color: "bg-yellow-400"
     },
     {
         nr: "03",
         title: "Finale",
-        date: "March 08 - March 09",
+        date: HACKATHON_CONFIG.TIMELINE.FINALE,
         desc: "Final stand at Skill Labs. Pitch your creation to the Council.",
         color: "bg-pink-primary"
     }
