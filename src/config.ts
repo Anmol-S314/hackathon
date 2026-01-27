@@ -18,7 +18,8 @@ export const HACKATHON_CONFIG = {
 
     // Phase 2 Data (Future Proofing)
     PHASE_2_TEAMS_LINK: 'https://docs.google.com/document/d/1rezO4PyOJUXpE1cT_UI7GkE_NZPIJvDyOHGhn_EUcc0/edit?usp=drivesdk', // Link to a PDF or Sheet with 60 selected teams
-    ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 2 announcement
+    // ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 2 announcement
+    ANNOUNCEMENT_BANNER:'',
 
     // Location
     LOCATION: {

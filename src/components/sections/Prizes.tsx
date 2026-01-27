@@ -48,9 +48,9 @@ function GrandPrize(): React.ReactElement {
         <div className="lg:col-span-6 bg-[#8B5CF6] p-6 relative flex flex-col items-center justify-center min-h-[350px] border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black overflow-hidden text-center z-10">
             {/* 1st Place Tag */}
             <motion.div
-                initial={{ x: -100, rotate: -25 }}
-                whileInView={{ x: 0, rotate: -15 }}
-                className="absolute -top-10 -left-10 bg-orange-500 border-[4px] border-black px-10 py-5 rotate-[-15deg] shadow-[6px_6px_0px_#000]"
+                initial={{ scale: 0, rotate: -15 }}
+                whileInView={{ scale: 1.2, rotate: 6 }}
+                className="absolute top-6 left-6 bg-orange-500 border-[4px] border-black px-4 py-2 rotate-6 shadow-[4px_4px_0px_#000]"
             >
                 <span className="text-white font-display text-4xl">1 ST</span>
             </motion.div>

@@ -33,9 +33,9 @@ interface RegistrationData {
 
 const TRACKS = [
     { id: 'Bio-Genesis', label: 'BIO-GENESIS', sub: 'Healthcare AI', color: 'bg-emerald-500' },
-    { id: 'Capital-Core', label: 'CAPITAL-CORE', sub: 'FinTech Rebels', color: 'bg-amber-500' },
-    { id: 'Grid-Master', label: 'GRID-MASTER', sub: 'Infrastructure', color: 'bg-blue-500' },
-    { id: 'Lore-Keeper', label: 'LORE-KEEPER', sub: 'EdTech Entities', color: 'bg-red-500' }
+    { id: 'Capital-Core', label: 'CAPITAL-CORE', sub: 'FinTech AI', color: 'bg-amber-500' },
+    { id: 'Grid-Master', label: 'GRID-MASTER', sub: 'Infrastructure & Smart Cities AI', color: 'bg-blue-500' },
+    { id: 'Lore-Keeper', label: 'LORE-KEEPER', sub: 'Education AI', color: 'bg-red-500' }
 ];
 
 const YEARS = ['1ST YEAR', '2ND YEAR', '3RD YEAR', '4TH YEAR', 'POST GRAD'];
@@ -402,6 +402,18 @@ function StepInfo({
         "Other"
     ];
 
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (activeDropdown && !target.closest('.dropdown-container')) {
+                setActiveDropdown(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [activeDropdown]);
+
     function validateAndProceed(): void {
         const { teamName, leader, member1, member2 } = formData;
 
@@ -479,7 +491,7 @@ function StepInfo({
             </div>
 
             <PersonFieldsSection
-                title="LEADER INTEL"
+                title="TEAM LEADER"
                 data={formData.leader}
                 section="leader"
                 activeDropdown={activeDropdown}
@@ -490,7 +502,7 @@ function StepInfo({
             />
 
             <PersonFieldsSection
-                title="AGENT 2 (MEMBER 1)"
+                title="AGENT 2"
                 data={formData.member1}
                 section="member1"
                 activeDropdown={activeDropdown}
@@ -501,7 +513,7 @@ function StepInfo({
             />
 
             <PersonFieldsSection
-                title="AGENT 3 (MEMBER 2)"
+                title="AGENT 3"
                 data={formData.member2}
                 section="member2"
                 activeDropdown={activeDropdown}
@@ -538,8 +550,11 @@ function PersonFieldsSection({
     // Forgiving search: remove special chars and spaces for comparison
     const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
 
+    // Filter colleges based on input, but show all if input matches a valid college strictly (so they can validly re-select)
+    // Actually, standard combobox logic: filter by partial match.
+    // If the value exactly matches one, we still show list? Usually yes.
     const filteredColleges = (colleges || []).filter((c: string) =>
-        normalize(c).includes(normalize(searchTerm))
+        normalize(c).includes(normalize(data.college || ""))
     );
 
     return (
@@ -552,17 +567,33 @@ function PersonFieldsSection({
 
                 <input className="input-field text-sm" placeholder="PHONE *" name="phone" value={data.phone} onChange={(e) => onFieldChange(e, section)} required type="tel" />
 
-                {/* College Custom Dropdown */}
-                <div className="relative">
-                    <div
-                        onClick={() => data.year !== 'POST GRAD' && toggleDropdown(`${section}_college`)}
-                        className={`input-field text-sm flex justify-between items-center cursor-pointer bg-white ${data.year === 'POST GRAD' ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                        <span className={data.college ? "text-black" : "text-gray-500"}>
-                            {data.year === 'POST GRAD' ? 'N/A' : (data.college || "SELECT COLLEGE *")}
-                        </span>
-                        <ChevronDown size={16} className={`transition-transform ${activeDropdown === `${section}_college` ? 'rotate-180' : ''}`} />
+                {/* College Unified Combobox */}
+                <div className="relative dropdown-container">
+                    <div className="relative">
+                        <input
+                            disabled={data.year === 'POST GRAD'}
+                            className={`input-field text-sm w-full uppercase ${data.year === 'POST GRAD' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            placeholder={data.year === 'POST GRAD' ? 'N/A' : "SELECT OR TYPE COLLEGE *"}
+                            value={data.year === 'POST GRAD' ? 'N/A' : (data.college || '')}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setFormData((prev: any) => ({
+                                    ...prev,
+                                    [section]: { ...prev[section], college: val }
+                                }));
+                                if (!activeDropdown) setActiveDropdown(`${section}_college`);
+                            }}
+                            onFocus={() => {
+                                if (data.year !== 'POST GRAD') setActiveDropdown(`${section}_college`);
+                            }}
+                            required
+                        />
+                        <ChevronDown
+                            size={16}
+                            className={`absolute right-3 top-1/2 -translate-y-1/2 transition-transform pointer-events-none ${activeDropdown === `${section}_college` ? 'rotate-180' : ''}`}
+                        />
                     </div>
+
                     <AnimatePresence>
                         {activeDropdown === `${section}_college` && data.year !== 'POST GRAD' && (
                             <motion.div
@@ -571,39 +602,37 @@ function PersonFieldsSection({
                                 exit={{ opacity: 0, y: -10 }}
                                 className="absolute top-full left-0 right-0 bg-white border-2 border-black z-50 shadow-[4px_4px_0px_#000] max-h-[200px] overflow-y-auto"
                             >
-                                <div className="p-2 border-b-2 border-black bg-gray-50 sticky top-0 z-10">
-                                    <input
-                                        type="text"
-                                        className="w-full text-xs font-bold uppercase p-2 border-2 border-gray-300 focus:border-black outline-none bg-white text-black"
-                                        placeholder="SEARCH..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        onClick={(e) => e.stopPropagation()}
-                                        autoFocus
-                                    />
-                                </div>
-                                {filteredColleges.map((c: string, i: number) => (
-                                    <div
-                                        key={i}
-                                        onClick={() => {
-                                            setFormData((prev: any) => ({
-                                                ...prev,
-                                                [section]: { ...prev[section], college: c }
-                                            }));
-                                            setActiveDropdown(null);
-                                        }}
-                                        className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
-                                    >
-                                        {c}
+                                {filteredColleges.length > 0 ? (
+                                    filteredColleges.map((c: string, i: number) => (
+                                        <div
+                                            key={i}
+                                            onClick={() => {
+                                                setFormData((prev: any) => ({
+                                                    ...prev,
+                                                    [section]: {
+                                                        ...prev[section],
+                                                        college: c === 'Other' ? '' : c
+                                                    }
+                                                }));
+                                                setActiveDropdown(null);
+                                            }}
+                                            className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
+                                        >
+                                            {c}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="p-3 text-xs font-bold text-gray-500 uppercase italic">
+                                        Type your college name...
                                     </div>
-                                ))}
+                                )}
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
 
                 {/* Year Custom Dropdown */}
-                <div className="relative">
+                <div className="relative dropdown-container">
                     <div
                         onClick={() => toggleDropdown(`${section}_year`)}
                         className="input-field text-sm flex justify-between items-center cursor-pointer bg-white"
@@ -635,7 +664,7 @@ function PersonFieldsSection({
                 </div>
 
                 {/* Shirt Size Custom Dropdown */}
-                <div className="relative">
+                <div className="relative dropdown-container">
                     <div
                         onClick={() => toggleDropdown(`${section}_shirt`)}
                         className="input-field text-sm flex justify-between items-center cursor-pointer bg-white"
@@ -666,7 +695,7 @@ function PersonFieldsSection({
                     </AnimatePresence>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

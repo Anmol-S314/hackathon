@@ -19,19 +19,19 @@ const tracks: Track[] = [
     },
     {
         title: "Capital-Core",
-        desc: "FinTech Rebels. Create fraud detection agents and personalized financial advisors.",
+        desc: "FinTech AI. Create fraud detection agents and personalized financial advisors.",
         icon: Shield,
         color: "bg-purple-400"
     },
     {
         title: "Grid-Master",
-        desc: "Infrastructure & Smart Cities. Traffic management agents and energy optimization.",
+        desc: "Infrastructure & Smart Cities AI. Create agents for traffic management and energy efficiency.",
         icon: Cpu,
         color: "bg-orange-400"
     },
     {
         title: "Lore-Keeper",
-        desc: "Education. Personalized learning tutors that adapt to every student.",
+        desc: "Education AI. Create personalized learning tutors that adapt to every student.",
         icon: GraduationCap,
         color: "bg-green-400"
     }
