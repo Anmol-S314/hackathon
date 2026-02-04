@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Info, Loader2, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Info, Loader2, ChevronDown, ExternalLink } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import SiliconBeachBackground from './SiliconBeachBackground';
-import { isRegistrationActive } from '../config';
+import { isRegistrationActive, HACKATHON_CONFIG } from '../config';
 import AnnouncementPost from './AnnouncementPost';
+
+// ... (existing types remain unchanged)
 
 // Types & Constants
 type FormStep = 'info' | 'details';
@@ -97,8 +99,20 @@ export default function RegistrationForm(): React.ReactElement {
     const [step, setStep] = useState<FormStep>('info');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formData, setFormData] = useState<RegistrationData>(INITIAL_FORM);
+    const [deviceId, setDeviceId] = useState<string>('');
 
-    // Verification state
+    // Security: Honeypot & Timer
+    const startTime = useRef<number>(Date.now());
+    const [honeypot, setHoneypot] = useState<string>('');
+
+    useEffect(() => {
+        let id = localStorage.getItem('registration_device_id');
+        if (!id) {
+            id = (crypto as any).randomUUID?.() || Math.random().toString(36).substring(2) + Date.now().toString(36);
+            localStorage.setItem('registration_device_id', id || '');
+        }
+        setDeviceId(id || '');
+    }, []);
 
 
     // Modals & Notifications
@@ -180,14 +194,22 @@ export default function RegistrationForm(): React.ReactElement {
         const finalTxId = transactionId || "TEST_PAYMENT_SKIP";
         setIsLoading(true);
 
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const apiUrl = import.meta.env.VITE_API_URL;
         console.log("Attempting to connect to:", apiUrl);
 
         try {
-            const response = await fetch(`${apiUrl}/api/manual-register`, {
+            const duration = Date.now() - startTime.current;
+            // FIXED: Removed extra /api since env variable already has it
+            const response = await fetch(`${apiUrl}/manual-register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ formData, transactionId: finalTxId })
+                body: JSON.stringify({
+                    formData,
+                    transactionId: finalTxId,
+                    deviceId,
+                    honeypot,
+                    duration
+                })
             });
             const data = await response.json();
 
@@ -273,6 +295,20 @@ export default function RegistrationForm(): React.ReactElement {
                     </div>
 
                     <form onSubmit={handleSubmission} className="comic-card p-5 md:p-8 space-y-6 relative mb-12">
+                        {/* BOT TRAP: HoneyPot Field (Invisible to humans) */}
+                        <div className="fixed opacity-0 pointer-events-none w-0 h-0 overflow-hidden" aria-hidden="true" tabIndex={-1}>
+                            <label htmlFor="fax_number">Fax Number</label>
+                            <input
+                                type="text"
+                                id="fax_number"
+                                name="fax_number"
+                                value={honeypot}
+                                onChange={(e) => setHoneypot(e.target.value)}
+                                autoComplete="off"
+                                tabIndex={-1}
+                            />
+                        </div>
+
                         <AnimatePresence mode="wait">
                             {step === 'info' ? (
                                 <StepInfo
@@ -707,7 +743,20 @@ function StepDetails({ formData, isLoading, onFieldChange, onBack }: any): React
             <div className="space-y-4">
                 <TextAreaGroup label="BRIEF INTEL *" placeholder="WHAT ARE YOU BUILDING?" name="projectIdea" value={formData.projectIdea} onChange={onFieldChange} />
                 <TextAreaGroup label="WHY THIS ARENA?" placeholder="MOTIVATION..." name="whyParticipate" value={formData.whyParticipate} onChange={onFieldChange} />
-                <InputGroup label="DRIVE LINK (PPT/PDF) *" placeholder="GOOGLE DRIVE LINK..." name="driveLink" value={formData.driveLink} onChange={onFieldChange} />
+                <div className="space-y-3">
+                    <InputGroup label="DRIVE LINK (PPT/PDF) *" placeholder="GOOGLE DRIVE LINK..." name="driveLink" value={formData.driveLink} onChange={onFieldChange} />
+                    <div className="pt-1">
+                        <a
+                            href={HACKATHON_CONFIG.PPT_TEMPLATE_LINK}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-xs font-black text-purple-600 hover:text-white hover:bg-purple-600 px-4 py-3 border-2 border-purple-600 border-dashed rounded-sm transition-all uppercase tracking-widest group"
+                        >
+                            <ExternalLink size={16} className="group-hover:rotate-12 transition-transform" />
+                            Get Resource: Phase 1 PPT Template
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <div className="bg-purple-100 p-4 border-[3px] border-black shadow-[6px_6px_0px_#000]">

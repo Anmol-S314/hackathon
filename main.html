@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataVex | AI, Data & Digital Transformation</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- SECURITY: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com https://cdn.jsdelivr.net; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; 
+        font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; 
+        img-src 'self' data: https://placehold.co https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; 
+        connect-src 'self' https://asia-south1-vexstorm-e3375.cloudfunctions.net http://localhost:* http://127.0.0.1:*;
+    ">
     <!-- Tailwind CSS CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts (Inter) -->
@@ -400,22 +410,27 @@
                     <p class="text-gray-600 text-sm">20+ years in enterprise IT, project/program management, and AI
                         strategy at global organizations like HCL, Wipro, Credit Suisse.</p>
                 </div>
-                <!-- Gaurav J -->
+                <!-- Sandesh Poojary -->
                 <div
                     class="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Gaurav+J" alt="Gaurav J"
+                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Sandesh" alt="Sandesh Poojary"
                         class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500">
-                    <h4 class="text-2xl font-bold text-gray-800">Gaurav J</h4>
-                    <p class="text-indigo-600 font-medium mb-3">Head of AI Research</p>
+                    <h4 class="text-2xl font-bold text-gray-800">Sandesh Poojary</h4>
+                    <p class="text-indigo-600 font-medium mb-3">Director & Infra Lead</p>
+                    <p class="text-gray-600 text-sm">Data Center Infrastructure Leader & Serial
+                        Entrepreneur with 20+ years delivering carrier-grade, Tier III/IV mission-critical environments
+                        and driving Datavex’s AI energy vision.</p>
                 </div>
-                <!-- Sudhir S -->
+                <!-- Sreekanth (Sree) -->
                 <div
                     class="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Sudhir" alt="Sudhir S"
+                    <img src="https://placehold.co/120x120/E0E0E0/424242?text=Sree" alt="Sreekanth K Arimanithaya"
                         class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500">
-                    <h4 class="text-2xl font-bold text-gray-800">Sudhir S</h4>
-                    <p class="text-indigo-600 font-medium mb-3">CIO</p>
-
+                    <h4 class="text-2xl font-bold text-gray-800">Sreekanth K Arimanithaya</h4>
+                    <p class="text-indigo-600 font-medium mb-3">Director, Advisor & Coach</p>
+                    <p class="text-gray-600 text-sm">30+ years as Global CXO (EY, DXC, Britannia).
+                        Managing Partner at Singularity University (India), driving AI transformation and enterprise
+                        reinvention.</p>
                 </div>
             </div>
         </div>
@@ -519,14 +534,14 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="block text-gray-700 font-semibold mb-2" for="name">Name *</label>
-                                        <input type="text" id="name" name="name" required
+                                        <input type="text" id="name" name="name" required maxlength="100"
                                             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                             placeholder="John Carter">
                                     </div>
                                     <div>
                                         <label class="block text-gray-700 font-semibold mb-2" for="email">Email
                                             *</label>
-                                        <input type="email" id="email" name="email" required
+                                        <input type="email" id="email" name="email" required maxlength="100"
                                             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                             placeholder="john@example.com">
                                     </div>
@@ -536,7 +551,7 @@
                                     <div>
                                         <label class="block text-gray-700 font-semibold mb-2"
                                             for="company">Company</label>
-                                        <input type="text" id="company" name="company"
+                                        <input type="text" id="company" name="company" maxlength="100"
                                             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                             placeholder="Acme Corp">
                                     </div>
@@ -637,7 +652,7 @@
                                 <div>
                                     <label class="block text-gray-700 font-semibold mb-2" for="message">Project
                                         Goal</label>
-                                    <textarea id="message" name="message" rows="4"
+                                    <textarea id="message" name="message" rows="4" maxlength="2000"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                         placeholder="Reduce manual work, improve customer experience..."></textarea>
                                 </div>
@@ -672,11 +687,16 @@
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
-            // WAKE UP SERVER (Prevent Cold Start Delay)
-            fetch('https://vexstorm-backend.onrender.com/api/health')
-                .then(res => res.json())
-                .then(data => console.log('Server Awake:', data))
-                .catch(err => console.log('Server Wake-up Pending...', err));
+            // AUTOMATIC BACKEND SWITCHER
+            const isLocal = window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1' ||
+                window.location.protocol === 'file:';
+
+            const backendUrl = isLocal
+                ? 'http://localhost:5001/vexstorm-e3375/asia-south1/api'
+                : 'https://asia-south1-vexstorm-e3375.cloudfunctions.net/api';
+
+            console.log('Using Backend URL:', backendUrl);
 
             // Mobile menu functionality
             document.getElementById('mobile-menu-button').addEventListener('click', () => {
@@ -768,6 +788,14 @@
                 });
             }
 
+            // Wake-up on Interaction (Optional for Firebase, but kept for reliability)
+            const nameInput = document.getElementById('name');
+            if (nameInput) {
+                nameInput.addEventListener('focus', () => {
+                    fetch(`${backendUrl}/health`).catch(() => { });
+                }, { once: true });
+            }
+
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
                     formStep2.classList.add('opacity-0', 'translate-x-4');
@@ -833,7 +861,7 @@
                     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
 
                     try {
-                        const response = await fetch('https://vexstorm-backend.onrender.com/api/contact', {
+                        const response = await fetch(`${backendUrl}/contact`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

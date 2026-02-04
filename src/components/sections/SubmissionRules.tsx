@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Layout, Zap, Target, AlertTriangle } from 'lucide-react';
+import { Layout, Zap, Target, AlertTriangle, ExternalLink } from 'lucide-react';
 import { HACKATHON_CONFIG } from '../../config';
 
 export default function SubmissionRules(): React.ReactElement {
@@ -105,6 +105,19 @@ export default function SubmissionRules(): React.ReactElement {
                             <span className="text-red-600 underline mr-1">NOTE:</span>
                             Phase 2 problem statements are provided by VexStorm & may be different from your Phase 1 PPT concept.
                         </p>
+                    </div>
+
+                    <div className="mt-8 text-center">
+                        <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">Resources Required</p>
+                        <a
+                            href={HACKATHON_CONFIG.PPT_TEMPLATE_LINK}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 bg-white/5 hover:bg-yellow-400 text-yellow-400 hover:text-black border-2 border-yellow-400/30 hover:border-black px-6 py-3 transition-all duration-300 font-display text-sm uppercase italic tracking-wider group"
+                        >
+                            <ExternalLink size={16} className="group-hover:rotate-12 transition-transform" />
+                            Download Phase 1 Official Template
+                        </a>
                     </div>
                 </div>
             </div>

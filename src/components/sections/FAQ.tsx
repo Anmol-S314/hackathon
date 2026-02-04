@@ -10,7 +10,7 @@ interface FAQItem {
 const FAQS: FAQItem[] = [
     {
         q: "Who gets internships?",
-        a: "Internships are guaranteed for all top 3 winning teams! Additionally, ~15 other top performers will be fast-tracked for recruitment interviews."
+        a: "The top 15 best participants win an opportunity for a paid internship."
     },
     {
         q: "What is the team size?",
@@ -35,6 +35,10 @@ const FAQS: FAQItem[] = [
     {
         q: "What about the problem statements?",
         a: "Exact problem statements will be revealed onsite during Phase-2. Note that these may differ from the broad tracks mentioned in Phase-1."
+    },
+    {
+        q: "Are the track ideas fixed?",
+        a: "No! The ideas mentioned are just examples to spark your creativity. You can build anything that fits the broad theme of the track."
     }
 ];
 

@@ -6,14 +6,14 @@ export const HACKATHON_CONFIG = {
     SHOW_PHASE_2_RESULTS: false, // Set to true to show the selected 60 teams section
 
     // Dates
-    HACKATHON_DATE: '2026-02-10T09:00:00', // Target date for countdown
-    REGISTRATION_DEADLINE: '2026-02-09T23:59:59', // Optional: Auto-close date
+    HACKATHON_DATE: '2026-02-21T09:00:00', // Target date for countdown
+    REGISTRATION_DEADLINE: '2026-02-11T23:59:59', // Optional: Auto-close date
 
     // Timeline Display Dates
     TIMELINE: {
-        REGISTRATION: 'NOW - FEB 9',
-        DEVELOPMENT: 'FEB 10 - MAR 05',
-        FINALE: 'MAR 08 - MAR 09'
+        REGISTRATION: 'NOW - FEB 11',
+        DEVELOPMENT: 'FEB 12 - FEB 15',
+        FINALE: 'FEB 21 - FEB 22'
     },
 
     // Contact & Socials
@@ -24,7 +24,8 @@ export const HACKATHON_CONFIG = {
     },
 
     // Phase 2 Data (Future Proofing)
-    PHASE_2_TEAMS_LINK: 'https://docs.google.com/document/d/1rezO4PyOJUXpE1cT_UI7GkE_NZPIJvDyOHGhn_EUcc0/edit?usp=drivesdk', // Link to a PDF or Sheet with 60 selected teams
+    PHASE_2_TEAMS_LINK: 'https://docs.google.com/presentation/d/your-template-link-here/edit?usp=sharing', // Link to a PDF or Sheet with 60 selected teams
+    PPT_TEMPLATE_LINK: 'https://docs.google.com/presentation/d/1cjw4qvC81f7wGc8u_nMacxcPz-oR_3xX/edit?usp=sharing&ouid=112636361630830687880&rtpof=true&sd=true', // Link to the PPT template
     // ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 2 announcement
     ANNOUNCEMENT_BANNER: '',
 

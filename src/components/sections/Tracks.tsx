@@ -48,7 +48,9 @@ export default function Tracks(): React.ReactElement {
             <div className="section-container">
                 <div className="text-center mb-8">
                     <h2 className="text-4xl md:text-6xl text-white font-display mb-2 comic-outline">THE MISSION <span className="text-yellow-400">TRACKS</span></h2>
-                    <p className="text-base text-gray-300 font-bold max-w-xl mx-auto uppercase">Pick your arena. Build your legacy. Destroy the static web.</p>
+                    <p className="text-base text-gray-300 font-bold max-w-xl mx-auto uppercase">
+                        Use the examples as inspiration but build <span className="text-white">anything</span> you want.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">

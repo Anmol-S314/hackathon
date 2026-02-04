@@ -11,8 +11,13 @@ import { body, validationResult } from 'express-validator';
 import { createClient } from '@supabase/supabase-js';
 import cron from 'node-cron';
 
-dotenv.config({ path: '.env.local' });
-dotenv.config(); // Also load .env if present
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env') }); // Load root .env
 
 // --- SECURITY UTILS (Anti-SQLi, Anti-XSS, Anti-Prompt Injection) ---
 const MALICIOUS_PATTERNS = [
@@ -74,12 +79,26 @@ app.set('trust proxy', 1);
 // 1. Helment for secure headers
 app.use(helmet());
 
-// 2. CORS (Restrict to your frontend domain in production)
-const allowedOrigin = process.env.CLIENT_URL || '*';
+// 2. CORS - RESTRICTIVE
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    'https://vexstorm26.datavex.ai',
+    'http://localhost:5173'
+].filter(Boolean);
+
 app.use(cors({
-    origin: allowedOrigin, // Update this in .env (e.g., https://datavex.ai)
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-razorpay-signature']
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+            callback(null, true);
+        } else {
+            console.warn(`[CORS BLOCKED] Origin: ${origin}`);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-razorpay-signature'],
+    credentials: true
 }));
 
 // Debug Middleware: Log all requests
@@ -91,18 +110,34 @@ app.use((req, res, next) => {
 // 3. Rate Limiting (Global)
 const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 500, // Increased limit for general API usage
+    max: 500,
     standardHeaders: true,
     legacyHeaders: false,
+    skip: (req) => req.method === 'OPTIONS',
     message: { error: "Too many requests, please try again later." }
 });
 app.use(globalLimiter);
 
-// 4. Stricter Rate Limiting for Registration/Payment
+// 4. Stricter Rate Limiting (Sync with Firebase Functions)
 const authLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000, // 1 hour
-    max: 50, // Strict limit for form submissions (50/hour)
+    windowMs: 60 * 60 * 1000,
+    max: 20, // Strict limit for auth-related tasks
+    skip: (req) => req.method === 'OPTIONS',
     message: { error: "Too many attempts. Please wait a while." }
+});
+
+const registrationLimiter = rateLimit({
+    windowMs: 24 * 60 * 60 * 1000, // 24 hours
+    max: 3,
+    skip: (req) => req.method === 'OPTIONS',
+    message: { error: "Registration limit exceeded for this device/network." }
+});
+
+const otpLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    skip: (req) => req.method === 'OPTIONS',
+    message: { error: "Too many OTP requests. Please try again in 15 minutes." }
 });
 
 app.use(express.json({ limit: '10kb' })); // Limit body size to prevent DoS
@@ -112,19 +147,22 @@ app.use(express.json({ limit: '10kb' })); // Limit body size to prevent DoS
 // Google Sheets
 
 
-// Supabase
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
+// --- INITIALIZE SERVICES ---
 
-// Razorpay
-/*
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-*/
+let supabaseInstance = null;
+function getSupabase() {
+    if (!supabaseInstance) {
+        if (!process.env.SUPABASE_URL) {
+            console.warn("⚠️ SUPABASE_URL missing in environment.");
+            return null;
+        }
+        supabaseInstance = createClient(
+            process.env.SUPABASE_URL,
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+        );
+    }
+    return supabaseInstance;
+}
 
 // Resend - Mock if key is missing
 let resend;
@@ -132,21 +170,11 @@ if (process.env.RESEND_API_KEY) {
     resend = new Resend(process.env.RESEND_API_KEY);
     console.log("✅ Resend Client Initialized");
 } else {
-    console.warn("⚠️  RESEND_API_KEY missing. Using Mock Email Service (Check Console for OTPs).");
+    console.warn("⚠️  RESEND_API_KEY missing. Using Mock");
     resend = {
         emails: {
             send: async ({ to, from, subject, html }) => {
-                console.log(`\n--- [MOCK EMAIL] To: ${to} ---`);
-                console.log(`From: ${from}`);
-                console.log(`Subject: ${subject}`);
-                console.log(`Body Snippet: ${html.substring(0, 200)}...`);
-
-                // Extract OTP for easy viewing
-                const otpMatch = html.match(/>\s*(\d{6})\s*</);
-                if (otpMatch) {
-                    console.log(`🔐 OTP: ${otpMatch[1]}`);
-                }
-                console.log(`-----------------------------\n`);
+                console.log(`[MOCK EMAIL] To: ${to}, Subject: ${subject}`);
                 return { data: { id: 'mock_id' }, error: null };
             }
         }
@@ -157,23 +185,35 @@ const HACKATHON_SENDER = process.env.EMAIL_HACK_FROM || process.env.EMAIL_FROM |
 const CONTACT_RECEIVER = process.env.EMAIL_CONTACT_TO || 'info@datavex.ai';
 
 // --- OTP STORE (In-Memory) ---
-// In production, replace with Redis
-const otpStore = new Map();
+const apiOtpStore = new Map();
 
-// --- HEALTH CHECK (Wake Up) ---
-app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'ok', service: 'DataVex Backend', timestamp: new Date().toISOString() });
+// --- Path Normalization Middleware ---
+app.use((req, res, next) => {
+    // 1. Remove /api prefix if present (handling hosting rewrites or Render proxy)
+    if (req.url.startsWith('/api')) {
+        req.url = req.url.replace(/^\/api/, '') || '/';
+    }
+    console.log(`[ROUTE LOG] Normalized Path: ${req.url}`);
+    next();
+});
+
+// --- HEALTH CHECK ---
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', service: 'DataVex Render Backend', timestamp: new Date().toISOString() });
 });
 
 // --- API ROUTES ---
 
 // 0. Send & Verify OTP
-app.post('/api/send-otp', authLimiter, async (req, res) => {
+app.post('/send-otp', otpLimiter, async (req, res) => {
     const { email, name } = req.body;
     if (!email) return res.status(400).json({ error: "Email is required" });
 
-    // 1. Check if already registered (Supabase First, then Sheets)
+    // 1. Check if already registered
     try {
+        const supabase = getSupabase();
+        if (!supabase) throw new Error("Database not configured");
+
         const { data: existingTeam } = await supabase
             .from('registrations')
             .select('id')
@@ -181,7 +221,7 @@ app.post('/api/send-otp', authLimiter, async (req, res) => {
             .single();
 
         if (existingTeam) {
-            return res.status(400).json({ error: "This email is already registered in our core database." });
+            return res.status(400).json({ error: "Email already registered." });
         }
 
 
@@ -190,7 +230,7 @@ app.post('/api/send-otp', authLimiter, async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
         // Store with 10 min expiry
-        otpStore.set(email, {
+        apiOtpStore.set(email, {
             code: otp,
             expires: Date.now() + 10 * 60 * 1000
         });
@@ -220,13 +260,13 @@ app.post('/api/send-otp', authLimiter, async (req, res) => {
     }
 });
 
-app.post('/api/verify-otp', authLimiter, (req, res) => {
+app.post('/verify-otp', authLimiter, (req, res) => {
     const { email, otp } = req.body;
-    const record = otpStore.get(email);
+    const record = apiOtpStore.get(email);
 
     if (!record) return res.status(400).json({ error: "Request specific OTP first" });
     if (Date.now() > record.expires) {
-        otpStore.delete(email);
+        apiOtpStore.delete(email);
         return res.status(400).json({ error: "Code expired. Request new one." });
     }
     if (record.code !== otp) {
@@ -234,7 +274,7 @@ app.post('/api/verify-otp', authLimiter, (req, res) => {
     }
 
     // OTP Verified
-    otpStore.delete(email); // Prevent reuse
+    apiOtpStore.delete(email); // Prevent reuse
     res.json({ status: 'success', verified: true });
 });
 
@@ -349,19 +389,24 @@ app.post('/api/verify-payment', authLimiter, async (req, res) => {
 });
 */
 
-// 3. Manual Registration (UPI QR)
-app.post('/api/manual-register', authLimiter, async (req, res) => {
-    // Check validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ status: 'failure', errors: errors.array() });
-    }
-
+app.post('/manual-register', registrationLimiter, async (req, res) => {
     try {
-        const { formData: rawFormData, transactionId: rawTxId } = req.body;
+        const { formData: rawFormData, transactionId: rawTxId, deviceId: rawDeviceId, honeypot, duration } = req.body;
 
         const formData = sanitizeObject(rawFormData);
         const transactionId = sanitizeInput(rawTxId);
+        const deviceId = sanitizeInput(rawDeviceId);
+
+        // --- BOT PROTECTION ---
+        if (honeypot && honeypot.length > 0) {
+            console.warn(`[BOT BLOCKED] Honeypot filled: ${honeypot}`);
+            return res.status(400).json({ status: 'failure', error: 'System Error: Validation Failed (Code: 101).' });
+        }
+
+        if (!duration || typeof duration !== 'number' || duration < 5000) {
+            console.warn(`[BOT BLOCKED] Submission too fast: ${duration}ms`);
+            return res.status(400).json({ status: 'failure', error: 'Submission too fast.' });
+        }
 
         const leaderEmail = (formData.leader?.email || '').toLowerCase().trim();
         const teamName = (formData.teamName || '').toLowerCase().trim();
@@ -380,32 +425,32 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
         }
 
         // 1. Check for duplicates (Supabase)
-        try {
-            // Build dynamic OR filter to avoid empty value errors
-            const orFilters = [`leader_email.eq.${leaderEmail}`];
-            if (formData.teamName && formData.teamName.toLowerCase() !== 'solo') {
-                orFilters.push(`team_name.eq.${formData.teamName}`);
-            }
-            if (transactionId && transactionId !== "TEST_PAYMENT_SKIP") {
-                orFilters.push(`transaction_id.eq.${transactionId}`);
-            }
+        const supabase = getSupabase();
+        if (supabase) {
+            try {
+                // Build dynamic OR filter to avoid empty value errors
+                const orFilters = [`leader_email.eq.${leaderEmail}`];
+                if (teamName && teamName !== 'solo') orFilters.push(`team_name.eq.${teamName}`);
+                if (transactionId && transactionId !== "TEST_PAYMENT_SKIP") orFilters.push(`transaction_id.eq.${transactionId}`);
+                if (deviceId) orFilters.push(`device_id.eq.${deviceId}`);
 
-            const { data: dupCheck } = await supabase
-                .from('registrations')
-                .select('leader_email, team_name, transaction_id')
-                .or(orFilters.join(','));
+                const { data: dupCheck } = await supabase
+                    .from('registrations')
+                    .select('leader_email, team_name, transaction_id, device_id')
+                    .or(orFilters.join(','));
 
-            if (dupCheck?.length > 0) {
-                const isEmailDup = dupCheck.some(r => (r.leader_email || '').toLowerCase().trim() === leaderEmail);
-                const isTeamDup = teamName && teamName !== 'solo' && dupCheck.some(r => (r.team_name || '').toLowerCase().trim() === teamName);
-                const isTxDup = transactionId && transactionId !== "TEST_PAYMENT_SKIP" && dupCheck.some(r => r.transaction_id === transactionId);
+                if (dupCheck?.length > 0) {
+                    const isEmailDup = dupCheck.some(r => r.leader_email?.toLowerCase().trim() === leaderEmail);
+                    const isTeamDup = teamName !== 'solo' && dupCheck.some(r => r.team_name?.toLowerCase().trim() === teamName);
+                    const isDeviceDup = deviceId && dupCheck.some(r => r.device_id === deviceId);
 
-                if (isEmailDup) return res.status(400).json({ status: 'failure', error: 'Email already registered.' });
-                if (isTeamDup) return res.status(400).json({ status: 'failure', error: 'Team name already taken.' });
-                if (isTxDup) return res.status(400).json({ status: 'failure', error: 'Transaction ID used.' });
+                    if (isEmailDup) return res.status(400).json({ status: 'failure', error: 'Email already registered.' });
+                    if (isTeamDup) return res.status(400).json({ status: 'failure', error: 'Team name taken.' });
+                    if (isDeviceDup) return res.status(400).json({ status: 'failure', error: 'Only one registration allowed per device.' });
+                }
+            } catch (e) {
+                console.warn("Supabase duplicate check failed:", e.message);
             }
-        } catch (e) {
-            console.warn("Supabase check failed, falling back to Sheets:", e.message);
         }
 
 
@@ -419,10 +464,9 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
         // --- DOUBLE WRITE START ---
 
         // A. Write to Supabase
-        try {
-            const { error: sbError } = await supabase
-                .from('registrations')
-                .insert([{
+        if (supabase) {
+            try {
+                const { error: sbError } = await supabase.from('registrations').insert([{
                     registration_id: registrationId,
                     team_name: formData.teamName || 'Solo',
                     type: formData.type,
@@ -452,14 +496,14 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
                     payment_method: 'MANUAL_Payment',
                     mode: 'QR_CODE_MODE',
                     amount: '350',
+                    device_id: deviceId,
                     status: 'PENDING_VERIFICATION'
                 }]);
-
-            if (sbError) throw sbError;
-            console.log("✅ Saved to Supabase");
-        } catch (e) {
-            console.error("❌ Supabase Write Error:", e.message);
-            // We continue anyway since Sheets is the primary for now
+                if (sbError) throw sbError;
+                console.log("✅ Saved to Supabase");
+            } catch (e) {
+                console.error("Supabase Save Error:", e);
+            }
         }
 
 
@@ -501,7 +545,7 @@ app.post('/api/manual-register', authLimiter, async (req, res) => {
 });
 
 // 4. Contact Form Endpoint
-app.post('/api/contact', authLimiter, async (req, res) => {
+app.post('/contact', authLimiter, async (req, res) => {
     try {
         let { name, email, company, phone, message, projectStage, budget, aiUsage, location, employees, experience } = req.body;
 
@@ -591,89 +635,93 @@ app.post('/api/contact', authLimiter, async (req, res) => {
 // --- CRON JOBS ---
 
 // Run at 11:55 PM every day
-cron.schedule('55 23 * * *', async () => {
+// Run at 09:00 AM every day (Sync with Firebase Schedule)
+cron.schedule('0 9 * * *', async () => {
     console.log("⏰ Running Daily Contact Digest...");
+    const supabase = getSupabase();
+    if (!supabase) {
+        console.error("Digest Skipped: DB not configured");
+        return;
+    }
 
     try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-        const { data: leads, error } = await supabase
+        const { data: contacts, error } = await supabase
             .from('contact_inquiries')
             .select('*')
-            .gte('created_at', today.toISOString());
+            .gte('created_at', twentyFourHoursAgo)
+            .order('created_at', { ascending: false });
 
         if (error) throw error;
 
-        if (!leads || leads.length === 0) {
-            console.log("📭 No new inquiries today.");
+        if (!contacts || contacts.length === 0) {
+            console.log("No new contacts in the last 24h.");
             return;
         }
 
-        console.log(`📨 Found ${leads.length} inquiries. Sending digest...`);
+        console.log(`Found ${contacts.length} new inquiries. Sending digest...`);
 
-        // Generate HTML Table
-        const { data: reportData, error: reportError } = await resend.emails.send({
-            from: `DataVex Digest <${HACKATHON_SENDER}>`,
-            to: CONTACT_RECEIVER,
-            subject: `Daily Inquiry Digest: ${leads.length} New Leads`,
-            html: `
-                <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee;">
-                    <h2 style="color: #8B5CF6;">Daily Lead Digest</h2>
-                    <p><strong>Date:</strong> ${today.toLocaleDateString()}</p>
-                    <p>Total New Inquiries: <strong>${leads.length}</strong></p>
+        const cards = contacts.map(c => `
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 24px; background-color: #ffffff;">
+                <h3 style="margin: 0 0 16px 0; color: #4F46E5; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    New Contact Submission
+                </h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <strong style="color: #111827; font-size: 14px; display: block; margin-bottom: 8px;">Contact Info</strong>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px;">
+                        <div><span style="color: #6b7280;">Name:</span> <span style="color: #111827;">${c.name}</span></div>
+                        <div><span style="color: #6b7280;">Email:</span> <span style="color: #111827;">${c.email}</span></div>
+                        <div><span style="color: #6b7280;">Phone:</span> <span style="color: #111827;">${c.phone || 'N/A'}</span></div>
+                        <div><span style="color: #6b7280;">Company:</span> <span style="color: #111827;">${c.company || 'Not Specified'}</span></div>
+                        <div><span style="color: #6b7280;">Location:</span> <span style="color: #111827;">${c.location || 'Not Specified'}</span></div>
+                    </div>
+                </div>
 
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px;">
-                        <thead style="background: #f3f4f6; text-align: left;">
-                            <tr>
-                                <th style="padding: 8px; border: 1px solid #ddd;">Contact</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">Company & Loc</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">Details (Stage, Teams, Tech)</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">AI & Budget</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">Project Goal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${leads.map(lead => `
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
-                                        <strong>${lead.name}</strong><br/>
-                                        <a href="mailto:${lead.email}" style="color: #4f46e5;">${lead.email}</a><br/>
-                                        ${lead.phone || '-'}
-                                    </td>
-                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
-                                        <strong>${lead.company || '-'}</strong><br/>
-                                        ${lead.location || '-'}
-                                    </td>
-                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
-                                        <strong>Stage:</strong> ${lead.project_stage || '-'}<br/>
-                                        <strong>Size:</strong> ${lead.employees || '-'}<br/>
-                                        <strong>Exp:</strong> ${lead.experience || '-'}
-                                    </td>
-                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
-                                        <strong>Use:</strong> ${lead.ai_usage || '-'}<br/>
-                                        <strong>Bud:</strong> ${lead.budget || '-'}
-                                    </td>
-                                    <td style="padding: 8px; border: 1px solid #ddd; vertical-align: top;">
-                                        ${(lead.message || '').replace(/\n/g, '<br/>')}
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
+                <div style="margin-bottom: 20px;">
+                    <strong style="color: #111827; font-size: 14px; display: block; margin-bottom: 8px;">Project Qualification</strong>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px;">
+                        <div><span style="color: #6b7280;">Project Stage:</span> <span style="color: #111827;">${c.project_stage || 'Not Specified'}</span></div>
+                        <div><span style="color: #6b7280;">Estimated Budget:</span> <span style="color: #111827;">${c.budget || 'Not Specified'}</span></div>
+                        <div><span style="color: #6b7280;">AI Usage:</span> <span style="color: #111827;">${c.ai_usage || 'Not Specified'}</span></div>
+                        <div><span style="color: #6b7280;">Employees:</span> <span style="color: #111827;">${c.employees || 'Not Specified'}</span></div>
+                        <div><span style="color: #6b7280;">Tech Experience:</span> <span style="color: #111827;">${c.experience || 'Not Specified'}</span></div>
+                    </div>
+                </div>
 
-                    <p style="margin-top: 30px; font-size: 12px; color: #888;">
-                        This automated report was generated by the DataVex Server.
+                <div>
+                    <strong style="color: #111827; font-size: 14px; display: block; margin-bottom: 8px;">Main Goal & Message</strong>
+                    <div style="background-color: #f9fafb; padding: 12px; border-radius: 6px; color: #374151; font-size: 14px; line-height: 1.5;">
+                        ${c.message || 'No message provided.'}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 12px; font-size: 12px; color: #9ca3af; text-align: right;">
+                    Received: ${new Date(c.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                </div>
+            </div>
+        `).join('');
+
+        const html = `
+            <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; background-color: #f3f4f6; padding: 24px;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <h2 style="color: #1F2937; margin: 0;">DataVex Daily Digest</h2>
+                    <p style="color: #6B7280; font-size: 16px; margin-top: 8px;">
+                        You received <strong>${contacts.length}</strong> new inquiries in the last 24 hours.
                     </p>
                 </div>
-            `
-        });
+                ${cards}
+            </div>
+        `;
 
-        if (reportError) {
-            console.error("❌ Daily Digest Failed:", reportError);
-        } else {
-            console.log("✅ Daily Digest Sent Successfully:", reportData);
-        }
+        await resend.emails.send({
+            from: `DataVex Digest <${HACKATHON_SENDER}>`,
+            to: CONTACT_RECEIVER,
+            subject: `📊 Daily Leads: ${contacts.length} New Inquiries`,
+            html: html
+        });
+        console.log("✅ Digest Email Sent Successfully");
     } catch (err) {
         console.error("❌ Daily Digest Failed:", err);
     }

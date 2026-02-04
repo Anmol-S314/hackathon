@@ -13,23 +13,23 @@ interface Phase {
 const phases: Phase[] = [
     {
         nr: "01",
-        title: "Registration",
+        title: "Phase 1",
         date: HACKATHON_CONFIG.TIMELINE.REGISTRATION,
-        desc: "Assemble your squad of elite engineers. Secure your spot in the arena.",
+        desc: "Assemble your squad of elite engineers. Submit your innovative idea to secure your spot.",
         color: "bg-cyan-400"
     },
     {
         nr: "02",
-        title: "Development",
+        title: "Interim",
         date: HACKATHON_CONFIG.TIMELINE.DEVELOPMENT,
-        desc: "The grind begins. Build your agentic solutions in the remote phase.",
+        desc: "Our council reviews all submissions. The top 60 teams will be selected for the grand finale.",
         color: "bg-yellow-400"
     },
     {
         nr: "03",
         title: "Finale",
         date: HACKATHON_CONFIG.TIMELINE.FINALE,
-        desc: "Final stand at Skill Labs. Pitch your creation to the Council.",
+        desc: "The final showdown at Skill Labs. 24 hours to build, deploy, and pitch to victory.",
         color: "bg-pink-primary"
     }
 ];
@@ -96,7 +96,7 @@ export default function Timeline(): React.ReactElement {
                         transition={{ delay: 0.2, type: "spring" }}
                         viewport={{ once: true }}
                     >
-                        <div className="comic-card h-full bg-yellow-400 !p-6 relative border-[3px] shadow-[8px_8px_0px_#000] flex flex-col md:flex-row gap-5 items-center">
+                        <div className="comic-card h-full bg-yellow-400 !p-6 relative border-[3px] shadow-[8px_8px_0px_#000] flex flex-col md:flex-row gap-5 items-start md:items-center">
                             <div className="md:w-1/4">
                                 <span className="text-4xl font-display text-black/20 block mb-1">{phases[1].nr}</span>
                                 <div className="bg-black text-white px-3 py-0.5 font-comic text-xl inline-block -rotate-2 shadow-[2px_2px_0px_#00FFCC]">

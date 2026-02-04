@@ -5,14 +5,27 @@ import { HACKATHON_CONFIG } from '../config';
 
 const CountdownTimer: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [targetLabel, setTargetLabel] = useState('COUNTDOWN');
 
   useEffect(() => {
-    // Set target date to roughly 3 weeks from now
-    const targetDate = new Date(HACKATHON_CONFIG.HACKATHON_DATE).getTime();
+    const now = new Date();
+    const deadlineDate = new Date(HACKATHON_CONFIG.REGISTRATION_DEADLINE);
+    const hackathonDate = new Date(HACKATHON_CONFIG.HACKATHON_DATE);
+
+    // Determine target: if registration is still open, countdown to deadline
+    // otherwise, countdown to the hackathon itself
+    let target;
+    if (now < deadlineDate) {
+      target = deadlineDate.getTime();
+      setTargetLabel('PHASE 1 CLOSES IN');
+    } else {
+      target = hackathonDate.getTime();
+      setTargetLabel('HACKATHON STARTS IN');
+    }
 
     const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
+      const currentTime = new Date().getTime();
+      const difference = target - currentTime;
 
       if (difference > 0) {
         setTimeLeft({
@@ -40,7 +53,7 @@ const CountdownTimer: React.FC = () => {
     <div className="flex flex-col items-center gap-2 mt-8">
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 bg-neon-green rounded-full animate-pulse shadow-[0_0_8px_#84CC16]" />
-        <span className="text-white font-display text-xs tracking-widest uppercase">COUNTDOWN</span>
+        <span className="text-white font-display text-xs tracking-widest uppercase">{targetLabel}</span>
       </div>
 
       <div className="flex gap-3">

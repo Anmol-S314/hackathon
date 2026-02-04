@@ -10,13 +10,9 @@ export default function Hero(): React.ReactElement {
     return (
         <section className="relative w-full max-w-[100vw] min-h-[100dvh] flex items-center justify-center pt-24 md:pt-8 overflow-hidden bg-[#0a001a] -mt-1">
             <ComicFlairOverlay />
-
-
-            <DesktopFloatingBadges />
-
-            <div className="section-container z-10 text-center">
+            <div className="section-container z-10 text-center pb-20">
                 <HeroContent />
-                <MobileFloatingBadges />
+                <HeroBadgesSection />
             </div>
         </section>
     );
@@ -91,7 +87,7 @@ function HeroContent(): React.ReactElement {
                         )}
                     </div>
 
-                    {/* Optimized Mobile Robot: Only mount if mobile to save WebGL context */}
+                    {/* Mobile Only Robot - Moved lower in the flow if needed */}
                     <div className="lg:hidden w-full h-[350px] relative z-0 mt-8 pointer-events-auto">
                         <MobileRobotContainer />
                     </div>
@@ -131,129 +127,70 @@ function SponsorsBlock(): React.ReactElement {
     );
 }
 
-function DesktopFloatingBadges(): React.ReactElement {
-    return (
-        <div className="hidden lg:block pointer-events-none">
-            <DesktopInternshipBadge />
-            <DesktopMerchBadge />
-        </div>
-    );
-}
-
-function MobileFloatingBadges(): React.ReactElement {
+function HeroBadgesSection(): React.ReactElement {
     const [isMobileMerchFlipped, setIsMobileMerchFlipped] = useState(false);
 
     return (
-        <div className="flex flex-col items-center gap-8 mt-12 lg:hidden w-full px-4 relative z-20">
-            <InternshipBadgeContent
-                rotateClass="-rotate-2"
-                containerClass="w-full max-w-sm mx-auto"
-            />
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-14 mt-12 lg:mt-16 w-full px-4 relative z-20 max-w-6xl mx-auto">
+            {/* Internship Highlight */}
+            <motion.div
+                whileHover={{ scale: 1.02, rotate: -1 }}
+                className="w-full max-w-[340px] lg:max-w-sm"
+            >
+                <InternshipBadgeContent
+                    rotateClass="-rotate-2"
+                    containerClass="w-full"
+                />
+            </motion.div>
 
-            <MobileMerchBadge
-                isFlipped={isMobileMerchFlipped}
-                onToggle={() => setIsMobileMerchFlipped(!isMobileMerchFlipped)}
-            />
+            {/* Merch Highlight */}
+            <motion.div
+                whileHover={{ scale: 1.02, rotate: 1 }}
+                className="w-full max-w-[340px] lg:max-w-sm"
+            >
+                <div
+                    className="bg-pink-primary border-[4px] border-black p-5 shadow-[8px_8px_0px_#000] rotate-2 relative group cursor-pointer w-full"
+                    onClick={() => setIsMobileMerchFlipped(!isMobileMerchFlipped)}
+                >
+                    <span className="absolute -top-4 -right-4 bg-yellow-400 border-2 border-black px-2 py-1 text-xs font-bold rotate-12 z-20">MERCH!</span>
+                    <div className="flex items-center justify-center gap-6">
+                        <div className="relative w-28 h-28 lg:w-36 lg:h-36 shrink-0">
+                            <img
+                                src="/assets/new/tshirt_front-Photoroom.png"
+                                alt="T-Shirt Front"
+                                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isMobileMerchFlipped ? 'lg:group-hover:opacity-0 opacity-0' : 'opacity-100'}`}
+                            />
+                            <img
+                                src="/assets/new/tshirt_back-Photoroom.png"
+                                alt="T-Shirt Back"
+                                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isMobileMerchFlipped ? 'opacity-100' : 'lg:group-hover:opacity-100 opacity-0'}`}
+                            />
+                        </div>
+                        <div className="text-left">
+                            <h4 className="text-white font-display text-3xl lg:text-4xl uppercase leading-none mb-1">OFFICIAL<br />MERCH</h4>
+                            <p className="text-black font-bold text-[10px] uppercase opacity-80 md:hidden">
+                                <span className="flex items-center gap-1 mt-1 text-purple-900">
+                                    <RotateCw size={12} className="animate-spin-slow" /> Tap to Flip
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
         </div>
     );
 }
 
-function DesktopInternshipBadge(): React.ReactElement {
-    return (
-        <motion.div
-            animate={{ y: [0, 20, 0], rotate: [-2, -4, -2] }}
-            transition={{ repeat: Infinity, duration: 5 }}
-            className="absolute top-40 right-40 z-20 pointer-events-auto"
-        >
-            <InternshipBadgeContent
-                rotateClass="-rotate-3"
-                scaleClass="scale-110"
-                originClass="origin-bottom-right"
-            />
-        </motion.div>
-    );
-}
-
-function DesktopMerchBadge(): React.ReactElement {
-    return (
-        <motion.div
-            animate={{ y: [0, -20, 0], rotate: [2, 4, 2] }}
-            transition={{ repeat: Infinity, duration: 4 }}
-            className="absolute top-40 left-40 z-20 pointer-events-auto"
-        >
-            <div className="bg-pink-primary border-[4px] border-black p-4 shadow-[10px_10px_0px_#000] rotate-2 relative group cursor-pointer">
-                <span className="absolute -top-6 -right-6 bg-yellow-400 border-2 border-black px-2 py-1 text-xs font-bold rotate-12 z-20">MERCH!</span>
-                <div className="relative w-32 h-32 md:w-64 md:h-64">
-                    <img
-                        src="/assets/new/tshirt_front-Photoroom.png"
-                        alt="T-Shirt Front"
-                        className="absolute inset-0 w-full h-full object-contain group-hover:opacity-0 transition-opacity duration-300"
-                    />
-                    <img
-                        src="/assets/new/tshirt_back-Photoroom.png"
-                        alt="T-Shirt Back"
-                        className="absolute inset-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                </div>
-            </div>
-        </motion.div>
-    );
-}
-
-interface InternshipBadgeContentProps {
-    rotateClass?: string;
-    scaleClass?: string;
-    originClass?: string;
-    containerClass?: string;
-}
-
+// Keep the internal content helper clean and compact
 function InternshipBadgeContent({
     rotateClass = '',
-    scaleClass = '',
-    originClass = '',
     containerClass = ''
-}: InternshipBadgeContentProps): React.ReactElement {
+}: any): React.ReactElement {
     return (
-        <div className={`bg-cyan-500 border-[4px] border-black p-6 shadow-[6px_6px_0px_#000] lg:shadow-[10px_10px_0px_#000] ${rotateClass} ${scaleClass} ${originClass} ${containerClass}`}>
-            <span className="text-black font-display text-xl lg:text-2xl block leading-none">GUARANTEED</span>
+        <div className={`bg-cyan-500 border-[4px] border-black p-6 lg:p-8 shadow-[8px_8px_0px_#000] ${rotateClass} ${containerClass}`}>
+            <span className="text-black font-display text-2xl lg:text-3xl block leading-none lowercase">guaranteed</span>
             <span className="text-white font-display text-3xl lg:text-4xl block leading-tight">INTERNSHIPS!</span>
-            <span className="text-black font-bold text-xs block mt-1 uppercase">FOR ALL WINNING TEAMS</span>
-        </div>
-    );
-}
-
-interface MobileMerchBadgeProps {
-    isFlipped: boolean;
-    onToggle: () => void;
-}
-
-function MobileMerchBadge({ isFlipped, onToggle }: MobileMerchBadgeProps): React.ReactElement {
-    return (
-        <div
-            className="bg-pink-primary border-[4px] border-black p-4 shadow-[6px_6px_0px_#000] rotate-1 relative w-full max-w-sm mx-auto cursor-pointer transition-transform active:scale-95"
-            onClick={onToggle}
-        >
-            <span className="absolute -top-4 -right-4 bg-yellow-400 border-2 border-black px-2 py-1 text-xs font-bold rotate-12 z-20">MERCH!</span>
-            <div className="flex items-center justify-center gap-4">
-                <div className="w-24 h-24 relative">
-                    <img
-                        src="/assets/new/tshirt_front-Photoroom.png"
-                        alt="T-Shirt Front"
-                        className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isFlipped ? 'opacity-0' : 'opacity-100'}`}
-                    />
-                    <img
-                        src="/assets/new/tshirt_back-Photoroom.png"
-                        alt="T-Shirt Back"
-                        className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isFlipped ? 'opacity-100' : 'opacity-0'}`}
-                    />
-                </div>
-                <div className="text-white font-display text-2xl uppercase leading-none text-left">
-                    Swag<br />
-                    <span className="text-sm font-sans font-bold text-black opacity-70 flex items-center gap-1 mt-1">
-                        {isFlipped ? "(Tap for Front)" : "(Tap for Back)"} <RotateCw size={14} className="animate-pulse" />
-                    </span>
-                </div>
-            </div>
+            <span className="text-black font-bold text-xs lg:text-sm block mt-2 uppercase tracking-tight">FOR 15 best performers</span>
         </div>
     );
 }
