@@ -117,6 +117,18 @@ function RobotCharacter({ action, setAction }: RobotCharacterProps): React.React
         };
     }, [setAction]);
 
+    // Auto-reset action to idle
+    useEffect(() => {
+        if (action === 'idle') return;
+
+        const duration = action === 'dance' ? 4000 : 2500;
+        const timer = setTimeout(() => {
+            setAction((prev) => (prev === action ? 'idle' : prev));
+        }, duration);
+
+        return () => clearTimeout(timer);
+    }, [action, setAction]);
+
     useEffect(function handleBlinkLoop() {
         const interval = setInterval(() => {
             setBlink(true);
@@ -127,8 +139,6 @@ function RobotCharacter({ action, setAction }: RobotCharacterProps): React.React
 
     const handleActionTrigger = (newAction: ActionType): void => {
         setAction(newAction);
-        const duration = newAction === 'dance' ? 4000 : 2500;
-        setTimeout(() => setAction((prev: ActionType) => prev === newAction ? 'idle' : prev), duration);
     };
 
     useFrame(function animateRobot(state, delta) {
@@ -305,8 +315,13 @@ function RobotCharacter({ action, setAction }: RobotCharacterProps): React.React
  * Main Robot Interaction Wrapper.
  * Adds touch-to-interact logic for mobile users.
  */
-export default function VexCharacter(): React.ReactElement {
-    const [action, setAction] = useState<ActionType>('idle');
+export default function VexCharacter({
+    action,
+    setAction
+}: {
+    action: ActionType;
+    setAction: (action: ActionType | ((prev: ActionType) => ActionType)) => void;
+}): React.ReactElement {
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
     useEffect(() => {
@@ -328,9 +343,6 @@ export default function VexCharacter(): React.ReactElement {
         const randomIndex = Math.floor(Math.random() * actions.length);
         const newAction = actions[randomIndex];
         setAction(newAction);
-        // Reset to idle after a while
-        const duration = newAction === 'dance' ? 4000 : 2500;
-        setTimeout(() => setAction((prev) => prev === newAction ? 'idle' : prev), duration);
     }
 
     return (
@@ -353,20 +365,8 @@ export default function VexCharacter(): React.ReactElement {
                 <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 1.8} minPolarAngle={Math.PI / 2.2} />
             </Canvas>
 
-            {/* Interaction Hints */}
-            <div className="absolute bottom-6 left-6 lg:left-auto lg:right-[80px] flex flex-col gap-2 pointer-events-none select-none">
-                {isMobile ? (
-                    <div className="bg-neon-green border-2 border-black px-4 py-2 shadow-[4px_4px_0px_#000] rotate-1">
-                        <p className="text-black font-bold text-sm uppercase">TAP ROBOT TO INTERACT!</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-2 gap-3">
-                        <kbd className="bg-yellow-400 border-2 border-black px-3 py-1 shadow-[4px_4px_0px_#000] -rotate-2 text-black font-bold text-xs">[W]: WAVE</kbd>
-                        <kbd className="bg-pink-500 border-2 border-black px-3 py-1 shadow-[4px_4px_0px_#000] rotate-1 text-white font-bold text-xs">[A]: PARTY</kbd>
-                        <kbd className="bg-cyan-400 border-2 border-black px-3 py-1 shadow-[4px_4px_0px_#000] rotate-1 text-black font-bold text-xs">[D]: THINK</kbd>
-                    </div>
-                )}
-            </div>
         </div>
     );
 }
+
+export type { ActionType };

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-
+import { Hand, Music, Brain } from 'lucide-react';
 import Hero from './sections/Hero';
 import Tracks from './sections/Tracks';
 import Prizes from './sections/Prizes';
@@ -12,6 +11,8 @@ import FAQ from './sections/FAQ';
 import Footer from './sections/Footer';
 import YakshaganaPeepersFrames from './YakshaganaPeepersFrames';
 import VexCharacter from './animations/VexCharacter';
+import type { ActionType } from './animations/VexCharacter';
+import { RobotControlButton, VisibilityToggle } from './animations/RobotControls';
 import AnnouncementPost from './AnnouncementPost';
 
 
@@ -39,7 +40,7 @@ export default function HackathonPage(): React.ReactElement {
 
             {/* Global Hackathon Page Animations */}
             <YakshaganaPeepersFrames />
-            <DesktopRobotContainer />
+            {/* <DesktopRobotContainer /> */}
 
 
             <Navbar isScrolled={isScrolled} />
@@ -97,6 +98,8 @@ function Logo({ isScrolled }: { isScrolled: boolean }): React.ReactElement {
 // Isolated component to handle conditional rendering of the heavy 3D robot on desktop
 function DesktopRobotContainer(): React.ReactElement | null {
     const [isDesktop, setIsDesktop] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [action, setAction] = useState<ActionType>('idle');
 
     useEffect(() => {
         const check = () => setIsDesktop(window.innerWidth >= 1024);
@@ -105,12 +108,64 @@ function DesktopRobotContainer(): React.ReactElement | null {
         return () => window.removeEventListener('resize', check);
     }, []);
 
+    const triggerAction = (newAction: ActionType) => {
+        setAction(newAction);
+    };
+
     if (!isDesktop) return null;
 
     return (
-        <div className="hidden lg:block fixed -right-20 -bottom-4 z-[110] w-[500px] h-[600px] pointer-events-none">
-            <div className="w-full h-full">
-                <VexCharacter />
+        <div className="hidden lg:block fixed right-6 bottom-6 z-[120]">
+            {/* Control Stack */}
+            <div className="flex flex-col gap-3 items-center">
+                <VisibilityToggle
+                    isVisible={isVisible}
+                    onToggle={() => setIsVisible(!isVisible)}
+                    isMobile={false}
+                />
+
+                {isVisible && (
+                    <>
+                        <RobotControlButton
+                            onClick={() => triggerAction('hi')}
+                            title="Wave"
+                            bgColor="bg-yellow-400"
+                            icon={<Hand size={22} className="text-black" />}
+                            label="Wave!"
+                            isMobile={false}
+                        />
+
+                        <RobotControlButton
+                            onClick={() => triggerAction('dance')}
+                            title="Party"
+                            bgColor="bg-pink-primary"
+                            icon={<Music size={22} className="text-white" />}
+                            label="Party!"
+                            isMobile={false}
+                        />
+
+                        <RobotControlButton
+                            onClick={() => triggerAction('thinking')}
+                            title="Think"
+                            bgColor="bg-cyan-400"
+                            icon={<Brain size={22} className="text-black" />}
+                            label="Think?"
+                            isMobile={false}
+                        />
+                    </>
+                )}
+            </div>
+
+            {/* Robot Container */}
+            <div className={`fixed -right-16 xl:-right-8 2xl:-right-4 -bottom-32 z-[40] 
+                lg:w-[320px] lg:h-[420px] 
+                xl:w-[420px] xl:h-[520px] 
+                2xl:w-[520px] 2xl:h-[620px] 
+                pointer-events-none transition-all duration-700 ease-in-out
+                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-32'}`}>
+                <div className="w-full h-full">
+                    <VexCharacter action={action} setAction={setAction} />
+                </div>
             </div>
         </div>
     );
@@ -130,7 +185,7 @@ function NavLinks({ isScrolled }: { isScrolled: boolean }): React.ReactElement {
             <a href="#schedule" className="hover:text-purple-primary transition-colors">Plan</a>
             <a href="#faq" className="hover:text-purple-primary transition-colors">FAQ</a>
             <Link to="/register" className={btnClass}>
-                JOIN ARENA
+                JOIN NOW
             </Link>
         </div>
     );

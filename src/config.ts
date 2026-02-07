@@ -18,7 +18,9 @@ export const HACKATHON_CONFIG = {
 
     // Contact & Socials
     CONTACT_EMAIL: 'info@datavex.ai',
-    COMPANY_NAME: 'VexStorm', // or DataVex
+    COMPANY_NAME: 'DataVex',
+    ORGANIZER: 'DataVex AI',
+    TAGLINE: '',
     SOCIAL_LINKS: {
         LINKEDIN: 'https://www.linkedin.com/company/datavexai-pvt-ltd/?originalSubdomain=in',
     },
@@ -33,7 +35,25 @@ export const HACKATHON_CONFIG = {
     LOCATION: {
         NAME: 'TCE Skill Labs, Sahyadri College, Mangalore',
         MAP_EMBED_URL: 'https://maps.google.com/maps?q=Sahyadri+College+of+Engineering+%26+Management,+Mangalore&t=&z=15&ie=UTF8&iwloc=&output=embed'
-    }
+    },
+
+    // Sponsors Configuration
+    SPONSORS: [
+        {
+            name: 'EdventureX',
+            logo: '/assets/new/edventurex-Photoroom.png',
+            className: 'h-8'
+        },
+        {
+            name: 'Slogan',
+            logo: '/assets/new/edventurex_slogan-Photoroom.png',
+            isSlogan: true,
+            className: 'w-full'
+        },
+        
+        // Add more sponsors here! 
+        // { name: 'New Sponsor', logo: '/path/to/logo.png', className: 'h-8' }
+    ]
 };
 
 /**

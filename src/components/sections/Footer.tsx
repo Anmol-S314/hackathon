@@ -58,14 +58,10 @@ export default function Footer(): React.ReactElement {
                     </div>
                 </div>
 
-                <div className="mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-6">
                     <p className="text-white font-bold text-sm uppercase tracking-widest bg-black px-4 py-1">
-                        © 2026 {HACKATHON_CONFIG.COMPANY_NAME}. Organized by Team Challengers.
+                        Organized by <span className="text-yellow-400">{HACKATHON_CONFIG.ORGANIZER}</span>
                     </p>
-                    <div className="flex items-center gap-3 bg-black px-6 py-2 border-[2px] border-white/20">
-                        <div className="w-3 h-3 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_#84CC16]" />
-                        <span className="text-xs text-white font-mono uppercase tracking-[0.2em]">System Status: Optimal</span>
-                    </div>
                 </div>
             </div>
         </footer>

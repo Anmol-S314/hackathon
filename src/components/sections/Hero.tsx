@@ -1,18 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { RotateCw, ExternalLink } from 'lucide-react';
+import { RotateCw, ExternalLink, Hand, Music, Brain } from 'lucide-react';
 import { HACKATHON_CONFIG } from '../../config';
 import CountdownTimer from '../CountdownTimer';
 import VexCharacter from '../animations/VexCharacter';
+import type { ActionType } from '../animations/VexCharacter';
+import { RobotControlButton, VisibilityToggle } from '../animations/RobotControls';
 
 export default function Hero(): React.ReactElement {
     return (
         <section className="relative w-full max-w-[100vw] min-h-[100dvh] flex items-center justify-center pt-24 md:pt-8 overflow-hidden bg-[#0a001a] -mt-1">
             <ComicFlairOverlay />
-            <div className="section-container z-10 text-center pb-20">
+            <div className="section-container z-10 text-center pb-4 md:pb-32">
                 <HeroContent />
                 <HeroBadgesSection />
+            </div>
+
+            {/* Desktop Only Bottom Sponsors Bar */}
+            <div className="hidden md:flex absolute bottom-0 left-0 w-full h-16 items-end justify-center pb-2 z-30 pointer-events-none">
+                {/* Solid Background (No Gradient) */}
+                <div className="absolute inset-0 bg-[#0a001a] z-0" />
+
+                {/* Comic Dots Pattern Overlay */}
+                <div
+                    className="absolute inset-0 z-0 opacity-20"
+                    style={{
+                        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                        backgroundSize: '20px 20px',
+                        backgroundPosition: 'bottom center'
+                    }}
+                />
+
+                <div className="flex items-center gap-6 relative z-10 pointer-events-auto">
+                    <span className="text-white font-display text-sm uppercase tracking-widest comic-outline transform -rotate-1 mr-2">
+                        Powered By
+                    </span>
+
+                    {HACKATHON_CONFIG.SPONSORS.map((sponsor, index) => (
+                        sponsor.isSlogan ? (
+                            <div key={index} className="bg-cyan-300 border-[2px] border-black p-2 rotate-1 max-w-[140px]">
+                                <img
+                                    src={sponsor.logo}
+                                    alt={sponsor.name}
+                                    className={`${sponsor.className || 'w-full'} object-contain`}
+                                />
+                            </div>
+                        ) : (
+                            <div key={index} className="bg-white border-[2px] border-white/20 p-2 rounded-sm flex flex-col items-center hover:scale-105 transition-transform">
+                                <img
+                                    src={sponsor.logo}
+                                    alt={sponsor.name}
+                                    className={`${sponsor.className || 'h-8'} object-contain`}
+                                />
+                            </div>
+                        )
+                    ))}
+                </div>
             </div>
         </section>
     );
@@ -50,13 +94,13 @@ function HeroContent(): React.ReactElement {
                         />
                     </div>
 
-                    <h2 className="text-3xl md:text-5xl text-yellow-500 font-stencil drop-shadow-[5px_5px_0px_#000] -rotate-1 mb-8">
+                    <h2 className="text-3xl md:text-3xl lg:text-4xl text-yellow-500 font-stencil drop-shadow-[5px_5px_0px_#000] -rotate-1 mb-6 md:mb-6">
                         Code the future!
                     </h2>
 
                     <SponsorsBlock />
 
-                    <div className="mb-12 w-full flex justify-center">
+                    <div className="mb-8 w-full flex justify-center">
                         <CountdownTimer />
                     </div>
 
@@ -87,10 +131,10 @@ function HeroContent(): React.ReactElement {
                         )}
                     </div>
 
-                    {/* Mobile Only Robot - Moved lower in the flow if needed */}
-                    <div className="lg:hidden w-full h-[350px] relative z-0 mt-8 pointer-events-auto">
+                    {/* Mobile Only Robot - Hidden for Yaks Frames Trial */}
+                    {/* <div className="lg:hidden w-full relative z-20 mt-8 pointer-events-auto">
                         <MobileRobotContainer />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </motion.div>
@@ -99,29 +143,33 @@ function HeroContent(): React.ReactElement {
 
 function SponsorsBlock(): React.ReactElement {
     return (
-        <div className="flex flex-col items-center mb-10">
-            <h3 className="text-xl md:text-2xl font-display text-white mb-4 uppercase tracking-widest comic-outline transform -rotate-1">
+        <div className="flex flex-col items-center mb-8 md:hidden">
+            <h3 className="text-xl md:text-lg font-display text-white mb-3 md:mb-2 uppercase tracking-widest comic-outline transform -rotate-1">
                 Powered By
             </h3>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                <div className="relative group">
-                    <div className="absolute inset-0 bg-yellow-400 border-[3px] border-black shadow-[4px_4px_0px_#000] translate-x-1 translate-y-1 -z-10" />
-                    <div className="bg-white border-[3px] border-black p-3 md:p-4 flex flex-col items-center">
-                        <img
-                            src="/assets/new/edventurex-Photoroom.png"
-                            alt="EdventureX"
-                            className="h-12 md:h-16 object-contain"
-                        />
-                    </div>
-                </div>
-
-                <div className="bg-cyan-300 border-[3px] border-black p-3 md:p-4 shadow-[4px_4px_0px_#000] rotate-2 max-w-[200px]">
-                    <img
-                        src="/assets/new/edventurex_slogan-Photoroom.png"
-                        alt="Slogan"
-                        className="w-full object-contain"
-                    />
-                </div>
+            <div className="flex flex-col items-center justify-center gap-6">
+                {HACKATHON_CONFIG.SPONSORS.map((sponsor: any, index: number) => (
+                    sponsor.isSlogan ? (
+                        <div key={index} className="bg-cyan-300 border-[3px] border-black p-3 md:p-2 shadow-[4px_4px_0px_#000] rotate-2 max-w-[200px] md:max-w-[150px]">
+                            <img
+                                src={sponsor.logo}
+                                alt={sponsor.name}
+                                className={`${sponsor.className || 'w-full'} object-contain`}
+                            />
+                        </div>
+                    ) : (
+                        <div key={index} className="relative group">
+                            <div className="absolute inset-0 bg-yellow-400 border-[3px] border-black shadow-[4px_4px_0px_#000] translate-x-1 translate-y-1 -z-10" />
+                            <div className="bg-white border-[3px] border-black p-3 md:p-3 flex flex-col items-center">
+                                <img
+                                    src={sponsor.logo}
+                                    alt={sponsor.name}
+                                    className={`${sponsor.className?.replace('h-8', 'h-10') || 'h-10'} object-contain`}
+                                />
+                            </div>
+                        </div>
+                    )
+                ))}
             </div>
         </div>
     );
@@ -131,7 +179,7 @@ function HeroBadgesSection(): React.ReactElement {
     const [isMobileMerchFlipped, setIsMobileMerchFlipped] = useState(false);
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-14 mt-12 lg:mt-16 w-full px-4 relative z-20 max-w-6xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-14 mt-2 lg:mt-16 w-full px-4 relative z-20 max-w-6xl mx-auto">
             {/* Internship Highlight */}
             <motion.div
                 whileHover={{ scale: 1.02, rotate: -1 }}
@@ -189,7 +237,7 @@ function InternshipBadgeContent({
     return (
         <div className={`bg-cyan-500 border-[4px] border-black p-6 lg:p-8 shadow-[8px_8px_0px_#000] ${rotateClass} ${containerClass}`}>
             <span className="text-black font-display text-2xl lg:text-3xl block leading-none lowercase">guaranteed</span>
-            <span className="text-white font-display text-3xl lg:text-4xl block leading-tight">INTERNSHIPS!</span>
+            <span className="text-white font-display text-3xl lg:text-4xl block leading-tight">15 INTERNSHIPS!</span>
             <span className="text-black font-bold text-xs lg:text-sm block mt-2 uppercase tracking-tight">FOR 15 best performers</span>
         </div>
     );
@@ -197,6 +245,8 @@ function InternshipBadgeContent({
 
 function MobileRobotContainer(): React.ReactElement | null {
     const [isMobile, setIsMobile] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [action, setAction] = useState<ActionType>('idle');
 
     useEffect(() => {
         const check = () => setIsMobile(window.innerWidth < 1024);
@@ -205,7 +255,56 @@ function MobileRobotContainer(): React.ReactElement | null {
         return () => window.removeEventListener('resize', check);
     }, []);
 
+    const triggerAction = (newAction: ActionType) => {
+        setAction(newAction);
+    };
+
     if (!isMobile) return null;
 
-    return <VexCharacter />;
+    return (
+        <div className="w-full relative flex flex-col items-center">
+            {/* Mobile Control Stack */}
+            <div className="flex gap-4 mb-4 z-20">
+                <VisibilityToggle
+                    isVisible={isVisible}
+                    onToggle={() => setIsVisible(!isVisible)}
+                    isMobile={true}
+                />
+
+                {isVisible && (
+                    <>
+                        <RobotControlButton
+                            onClick={() => triggerAction('hi')}
+                            title="Wave"
+                            bgColor="bg-yellow-400"
+                            icon={<Hand size={22} className="text-black" />}
+                            isMobile={true}
+                        />
+
+                        <RobotControlButton
+                            onClick={() => triggerAction('dance')}
+                            title="Party"
+                            bgColor="bg-pink-primary"
+                            icon={<Music size={22} className="text-white" />}
+                            isMobile={true}
+                        />
+
+                        <RobotControlButton
+                            onClick={() => triggerAction('thinking')}
+                            title="Think"
+                            bgColor="bg-cyan-400"
+                            icon={<Brain size={22} className="text-black" />}
+                            isMobile={true}
+                        />
+                    </>
+                )}
+            </div>
+
+            {/* Mobile Robot Container - Pulled tightly against next section */}
+            <div className={`w-full h-[380px] transition-all duration-700 ease-in-out -mb-16
+                ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90 pointer-events-none'}`}>
+                <VexCharacter action={action} setAction={setAction} />
+            </div>
+        </div>
+    );
 }

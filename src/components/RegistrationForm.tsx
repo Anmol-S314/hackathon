@@ -40,7 +40,7 @@ const TRACKS = [
     { id: 'Lore-Keeper', label: 'LORE-KEEPER', sub: 'Education AI', color: 'bg-red-500' }
 ];
 
-const YEARS = ['3RD YEAR', '4TH YEAR', 'POST GRAD'];
+const YEARS = ['2ND YEAR', '3RD YEAR', '4TH YEAR', 'POST GRAD'];
 
 const INITIAL_PERSON: PersonInfo = {
     name: '',
