@@ -40,7 +40,7 @@ export default function HackathonPage(): React.ReactElement {
 
             {/* Global Hackathon Page Animations */}
             <YakshaganaPeepersFrames />
-            {/* <DesktopRobotContainer /> */}
+            <DesktopRobotContainer />
 
 
             <Navbar isScrolled={isScrolled} />

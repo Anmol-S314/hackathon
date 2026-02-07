@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, EyeOff, Hand, Music, Brain } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import type { ActionType } from './VexCharacter';
 
 /**
@@ -77,7 +77,7 @@ export function useRobotAction() {
 
         // Auto-reset logic moved here
         const duration = newAction === 'dance' ? 4000 : 2500;
-        const timer = setTimeout(() => {
+        setTimeout(() => {
             setAction(prev => prev === newAction ? 'idle' : prev);
         }, duration);
 

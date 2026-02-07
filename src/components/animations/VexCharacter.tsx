@@ -322,12 +322,6 @@ export default function VexCharacter({
     action: ActionType;
     setAction: (action: ActionType | ((prev: ActionType) => ActionType)) => void;
 }): React.ReactElement {
-    const [isMobile, setIsMobile] = useState<boolean>(false);
-
-    useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
-    }, []);
-
     const actions: ActionType[] = ['hi', 'dance', 'thinking'];
 
     const dragStart = useRef<{ x: number, y: number }>({ x: 0, y: 0 });

@@ -131,10 +131,10 @@ function HeroContent(): React.ReactElement {
                         )}
                     </div>
 
-                    {/* Mobile Only Robot - Hidden for Yaks Frames Trial */}
-                    {/* <div className="lg:hidden w-full relative z-20 mt-8 pointer-events-auto">
+                    {/* Mobile Only Robot */}
+                    <div className="lg:hidden w-full relative z-20 mt-8 pointer-events-auto">
                         <MobileRobotContainer />
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </motion.div>
@@ -300,8 +300,8 @@ function MobileRobotContainer(): React.ReactElement | null {
                 )}
             </div>
 
-            {/* Mobile Robot Container - Pulled tightly against next section */}
-            <div className={`w-full h-[380px] transition-all duration-700 ease-in-out -mb-16
+            {/* Mobile Robot Container */}
+            <div className={`w-full h-[320px] md:h-[380px] transition-all duration-700 ease-in-out relative z-30
                 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90 pointer-events-none'}`}>
                 <VexCharacter action={action} setAction={setAction} />
             </div>
