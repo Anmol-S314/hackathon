@@ -693,10 +693,12 @@
                 window.location.protocol === 'file:';
 
             const backendUrl = isLocal
-                ? 'http://localhost:5001/vexstorm-e3375/asia-south1/api'
-                : 'https://asia-south1-vexstorm-e3375.cloudfunctions.net/api';
+                ? 'http://localhost:5000'
+                : 'https://vexstorm-backend.onrender.com';
 
             console.log('Using Backend URL:', backendUrl);
+
+
 
             // Mobile menu functionality
             document.getElementById('mobile-menu-button').addEventListener('click', () => {

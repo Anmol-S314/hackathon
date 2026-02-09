@@ -83,12 +83,15 @@ app.use(helmet());
 const allowedOrigins = [
     process.env.CLIENT_URL,
     'https://vexstorm26.datavex.ai',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
 ].filter(Boolean);
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
+        // Allow requests with no origin (like mobile apps or curl) or 'null' origin (file://)
+        if (!origin || origin === 'null') return callback(null, true);
         if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
             callback(null, true);
         } else {
@@ -189,7 +192,14 @@ const apiOtpStore = new Map();
 
 // --- Path Normalization Middleware ---
 app.use((req, res, next) => {
-    // 1. Remove /api prefix if present (handling hosting rewrites or Render proxy)
+    // 1. Remove Firebase internal path if present (happens in emulator)
+    // Example: /project-id/region/function-name/path -> /path
+    const firebasePrefix = /^\/[^\/]+\/[^\/]+\/[^\/]+/;
+    if (firebasePrefix.test(req.url)) {
+        req.url = req.url.replace(firebasePrefix, '') || '/';
+    }
+
+    // 2. Remove /api prefix if present (handling hosting rewrites or Render proxy)
     if (req.url.startsWith('/api')) {
         req.url = req.url.replace(/^\/api/, '') || '/';
     }
@@ -578,27 +588,30 @@ app.post('/contact', authLimiter, async (req, res) => {
         }
 
         // --- SUPABASE LOGGING (Contact Inquiries) ---
-        try {
-            const { error: sbContactError } = await supabase
-                .from('contact_inquiries')
-                .insert([{
-                    name, email, phone, company, location,
-                    project_stage: projectStage,
-                    budget,
-                    ai_usage: aiUsage,
-                    employees,
-                    experience,
-                    message,
-                    created_at: new Date().toISOString()
-                }]);
+        const supabase = getSupabase();
+        if (supabase) {
+            try {
+                const { error: sbContactError } = await supabase
+                    .from('contact_inquiries')
+                    .insert([{
+                        name, email, phone, company, location,
+                        project_stage: projectStage,
+                        budget,
+                        ai_usage: aiUsage,
+                        employees,
+                        experience,
+                        message,
+                        created_at: new Date().toISOString()
+                    }]);
 
-            if (sbContactError) {
-                console.warn("⚠️ Supabase Contact Log Failed (Table might be missing):", sbContactError.message);
-            } else {
-                console.log("✅ Contact Inquiry saved to Supabase");
+                if (sbContactError) {
+                    console.warn("⚠️ Supabase Contact Log Failed (Table might be missing):", sbContactError.message);
+                } else {
+                    console.log("✅ Contact Inquiry saved to Supabase");
+                }
+            } catch (e) {
+                console.error("❌ Supabase Contact Exception:", e.message);
             }
-        } catch (e) {
-            console.error("❌ Supabase Contact Exception:", e.message);
         }
 
         // Email validation
@@ -616,7 +629,7 @@ app.post('/contact', authLimiter, async (req, res) => {
             subject: `New Project Inquiry from ${name}`,
             html: `...` // (Snippet omitted for brevity)
         });
-
+ 
         if (emailError) {
              console.error("❌ Resend API Error:", emailError);
              // return res.status(400).json({ error: "Failed to send email. " + emailError.message });
