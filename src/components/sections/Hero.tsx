@@ -132,14 +132,14 @@ function HeroContent(): React.ReactElement {
 
 function SponsorsBlock(): React.ReactElement {
     return (
-        <div className="flex flex-col items-center mb-8 md:hidden">
-            <h3 className="text-xl md:text-lg font-display text-white mb-3 md:mb-2 uppercase tracking-widest comic-outline transform -rotate-1">
+        <div className="flex flex-col items-center mb-8 md:hidden overflow-hidden w-full">
+            <h3 className="text-lg font-display text-white mb-4 uppercase tracking-widest comic-outline transform -rotate-1">
                 Powered By
             </h3>
-            <div className="flex flex-col items-center justify-center gap-6">
+            <div className="flex flex-row flex-wrap items-center justify-center gap-x-6 gap-y-8 px-4">
                 {HACKATHON_CONFIG.SPONSORS.map((sponsor: any, index: number) => (
                     sponsor.isSlogan ? (
-                        <div key={index} className="bg-white border-[3px] border-black p-3 md:p-2 shadow-[4px_4px_0px_#000] rotate-2 max-w-[200px] md:max-w-[150px]">
+                        <div key={index} className="bg-white border-[3px] border-black p-2 shadow-[4px_4px_0px_#000] rotate-1 max-w-[160px] w-full">
                             <img
                                 src={sponsor.logo}
                                 alt={sponsor.name}
@@ -148,12 +148,12 @@ function SponsorsBlock(): React.ReactElement {
                         </div>
                     ) : (
                         <div key={index} className="relative group">
-                            <div className="absolute inset-0 bg-yellow-400 border-[3px] border-black shadow-[4px_4px_0px_#000] translate-x-1 translate-y-1 -z-10" />
-                            <div className="bg-white border-[3px] border-black p-3 md:p-3 flex flex-col items-center">
+                            <div className="absolute inset-0 bg-yellow-400 border-[2px] border-black shadow-[3px_3px_0px_#000] translate-x-1 translate-y-1 -z-10" />
+                            <div className="bg-white border-[2px] border-black p-2 flex flex-col items-center justify-center min-w-[100px]">
                                 <img
                                     src={sponsor.logo}
                                     alt={sponsor.name}
-                                    className={`${sponsor.className?.replace('h-8', 'h-10') || 'h-10'} object-contain`}
+                                    className={`${sponsor.className || 'h-8'} object-contain max-w-full`}
                                 />
                             </div>
                         </div>

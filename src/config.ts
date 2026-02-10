@@ -52,7 +52,7 @@ export const HACKATHON_CONFIG = {
         },
 
         // Add more sponsors here! 
-        // { name: 'New Sponsor', logo: '/path/to/logo.png', className: 'h-8' }
+        { name: 'Datavex', logo: '/assets/datavex-logo-v2.jpeg', className: 'h-10 md:h-12 w-32 md:w-48 object-contain' }
     ]
 };
 
