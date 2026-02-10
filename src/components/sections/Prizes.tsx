@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
  */
 export default function Prizes(): React.ReactElement {
     return (
-        <section id="prizes" className="py-12 bg-[#1a0033] relative overflow-hidden">
+        <section id="prizes" className="py-12 bg-transparent relative overflow-hidden">
             <div className="section-container">
                 <PrizeHeader />
                 <PrizeGrid />
@@ -32,9 +32,13 @@ function PrizeHeader(): React.ReactElement {
 function PrizeGrid(): React.ReactElement {
     return (
         <div className="flex flex-col border-[4px] border-black shadow-[12px_12px_0px_#000] md:shadow-[20px_20px_0px_#000] overflow-hidden rounded-[2rem] bg-black">
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-                <GrandPrize />
-                <SidePrizes />
+            <div className="flex flex-col lg:flex-row">
+                <div className="lg:w-1/2">
+                    <GrandPrize />
+                </div>
+                <div className="lg:w-1/2">
+                    <SidePrizes />
+                </div>
             </div>
             {/* <ConsolationBanner /> */}
         </div>
@@ -45,19 +49,19 @@ function PrizeGrid(): React.ReactElement {
 
 function GrandPrize(): React.ReactElement {
     return (
-        <div className="lg:col-span-6 bg-[#8B5CF6] p-6 relative flex flex-col items-center justify-center min-h-[350px] border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black overflow-hidden text-center z-10">
+        <div className="bg-[#8B5CF6] p-6 relative flex flex-col items-center justify-center min-h-[250px] border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black overflow-hidden text-center z-10 w-full h-full">
             {/* 1st Place Tag */}
             <motion.div
                 initial={{ scale: 0, rotate: -15 }}
-                whileInView={{ scale: 1.2, rotate: 6 }}
-                className="absolute top-6 left-6 bg-orange-500 border-[4px] border-black px-4 py-2 rotate-6 shadow-[4px_4px_0px_#000]"
+                whileInView={{ scale: 1, rotate: 6 }}
+                className="absolute top-3 left-3 lg:top-6 lg:left-6 bg-orange-500 border-[3px] lg:border-[4px] border-black px-3 py-1 lg:px-4 lg:py-2 rotate-6 shadow-[3px_3px_0px_#000] lg:shadow-[4px_4px_0px_#000] z-20"
             >
-                <span className="text-white font-display text-4xl">1 ST</span>
+                <span className="text-white font-display text-2xl lg:text-4xl">1 ST</span>
             </motion.div>
 
             <div>
                 <h3 className="text-5xl md:text-7xl text-white font-display leading-[0.8] tracking-tighter mb-4">
-                    <span className="block opacity-60 text-comic-stroke tracking-widest">GRAND</span>
+                    <span className="block text-pop">GRAND</span>
                     <span className="block text-pop">CHAMPION</span>
                 </h3>
                 <div className="text-5xl md:text-8xl font-display text-neon-green [text-shadow:4px_4px_0px_#000]">
@@ -73,25 +77,31 @@ function GrandPrize(): React.ReactElement {
 
 function SidePrizes(): React.ReactElement {
     return (
-        <div className="lg:col-span-6 bg-[#7c3aed] flex flex-col font-display">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 flex-grow">
-                <SecondPlace />
-                <ThirdPlace />
+        <div className="bg-[#7c3aed] flex flex-col font-display h-full">
+            <div className="flex border-b-[4px] border-black">
+                <div className="w-[61.8%] border-r-[4px] border-black">
+                    <SecondPlace />
+                </div>
+                <div className="w-[38.2%]">
+                    <ThirdPlace />
+                </div>
             </div>
-            <InternshipSlot />
+            <div className="flex-grow flex flex-col">
+                <InternshipSlot />
+            </div>
         </div>
     );
 }
 
 function SecondPlace(): React.ReactElement {
     return (
-        <div className="p-6 border-b-[4px] border-black flex items-center gap-4 hover:bg-black/10 transition-colors group">
-            <div className="w-16 h-16 rounded-full bg-cyan-400 border-[3px] border-black flex items-center justify-center shadow-[4px_4px_0px_#000] rotate-3 group-hover:rotate-12 transition-transform shrink-0">
-                <span className="text-black text-2xl">2</span>
+        <div className="p-4 md:p-6 flex flex-col items-center justify-center gap-2 hover:bg-black/10 transition-colors group h-full">
+            <div className="w-12 h-12 rounded-full bg-cyan-400 border-[3px] border-black flex items-center justify-center shadow-[4px_4px_0px_#000] rotate-3 group-hover:rotate-12 transition-transform shrink-0">
+                <span className="text-black text-xl">2</span>
             </div>
-            <div>
-                <div className="text-3xl text-cyan-400 [text-shadow:2px_2px_0px_#000]">₹20,000</div>
-                <div className="text-white text-lg font-medium uppercase italic leading-none">RUNNER UP</div>
+            <div className="text-center">
+                <div className="text-2xl md:text-3xl text-cyan-400 [text-shadow:2px_2px_0px_#000]">₹20,000</div>
+                <div className="text-white text-xs md:text-sm font-medium uppercase italic leading-none">RUNNER UP</div>
             </div>
         </div>
     );
@@ -99,13 +109,13 @@ function SecondPlace(): React.ReactElement {
 
 function ThirdPlace(): React.ReactElement {
     return (
-        <div className="p-6 border-b-[4px] border-black flex items-center gap-4 hover:bg-black/10 transition-colors group">
-            <div className="w-16 h-16 rounded-full bg-yellow-400 border-[3px] border-black flex items-center justify-center shadow-[4px_4px_0px_#000] -rotate-3 group-hover:rotate-12 transition-transform shrink-0">
-                <span className="text-black text-2xl">3</span>
+        <div className="p-4 md:p-6 flex flex-col items-center justify-center gap-2 hover:bg-black/10 transition-colors group">
+            <div className="w-12 h-12 rounded-full bg-yellow-400 border-[3px] border-black flex items-center justify-center shadow-[4px_4px_0px_#000] -rotate-3 group-hover:rotate-12 transition-transform shrink-0">
+                <span className="text-black text-xl">3</span>
             </div>
-            <div>
-                <div className="text-3xl text-yellow-400 [text-shadow:2px_2px_0px_#000]">₹10,000</div>
-                <div className="text-white text-lg font-medium uppercase italic leading-none">THIRD PLACE</div>
+            <div className="text-center">
+                <div className="text-2xl md:text-3xl text-yellow-400 [text-shadow:2px_2px_0px_#000]">₹10,000</div>
+                <div className="text-white text-xs md:text-sm font-medium uppercase italic leading-none">THIRD PLACE</div>
             </div>
         </div>
     );
@@ -115,29 +125,26 @@ function InternshipSlot(): React.ReactElement {
     return (
         <motion.div
             whileHover={{ scale: 1.01 }}
-            className="p-6 md:p-8 bg-pink-primary flex flex-col md:flex-row items-start md:items-center justify-between gap-6 group relative cursor-default transition-all shadow-inner"
+            className="flex-grow p-6 md:p-8 bg-pink-primary flex flex-col items-center justify-center gap-2 group relative cursor-default transition-all shadow-inner overflow-hidden"
         >
-            <div className="flex items-center gap-6 z-10">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white border-[3px] border-black flex items-center justify-center shadow-[4px_4px_0px_#000] rotate-6 group-hover:rotate-12 transition-transform shrink-0">
-                    <span className="text-pink-primary text-2xl md:text-3xl font-bold">★</span>
-                </div>
-                <div className="flex flex-col items-start text-left">
-                    <h4 className="text-xl md:text-2xl lg:text-3xl text-white [text-shadow:2px_2px_0px_#000] font-display uppercase italic leading-[0.9] mb-1">
-                        Internships
-                    </h4>
-                    <p className="text-white text-xs md:text-base font-medium uppercase tracking-wide max-w-[140px] md:max-w-none">
-                        6-Month Stipend-Based
+            {/* Background Graphic */}
+            <div className="absolute -bottom-4 -right-4 opacity-10 transform rotate-12">
+                <span className="text-white text-9xl font-display">★</span>
+            </div>
+
+            <div className="flex flex-col items-center z-10 text-center px-4">
+                <h4 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white [text-shadow:3px_3px_0px_#000] font-display uppercase italic leading-none mb-4">
+                    15 <span className="text-yellow-400">Internships</span>
+                </h4>
+                <div className="flex flex-col items-center gap-2">
+                    <p className="text-white text-sm md:text-lg font-normal uppercase tracking-wider">
+                        6-Month Duration
                     </p>
+                    <div className="bg-black text-white px-4 py-1.5 rounded-sm rotate-1 shadow-[4px_4px_0px_rgba(0,0,0,0.2)]">
+                        <span className="text-xs md:text-sm font-medium uppercase tracking-widest">Stipend-Based</span>
+                    </div>
                 </div>
             </div>
-
-            {/* Floating "Sticker" Badge - Made slightly smaller */}
-            <div className="absolute -top-8 -right-0 md:-right-5 z-20 bg-yellow-400 border-[3px] border-black px-4 py-3 rotate-12 shadow-[8px_8px_0px_#000] group-hover:rotate-6 group-hover:scale-105 transition-all duration-300 pointer-events-none">
-                <div className="text-black font-display text-3xl md:text-5xl leading-none text-center">15+</div>
-                <div className="text-black text-[10px] md:text-sm font-medium uppercase leading-none text-center tracking-tighter mt-1">DIRECT OFFERS</div>
-                <div className="text-black/60 text-[7px] md:text-[8px] font-medium uppercase leading-none text-center mt-2 border-t border-black/20 pt-1">FOR TOP CANDIDATES</div>
-            </div>
-
         </motion.div>
     );
 }

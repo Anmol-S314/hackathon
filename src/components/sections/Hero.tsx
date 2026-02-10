@@ -10,8 +10,8 @@ import { RobotControlButton, VisibilityToggle } from '../animations/RobotControl
 
 export default function Hero(): React.ReactElement {
     return (
-        <section className="relative w-full max-w-[100vw] min-h-[100dvh] flex items-center justify-center pt-24 md:pt-8 overflow-hidden bg-[#0a001a] -mt-1">
-            <ComicFlairOverlay />
+        <section className="relative w-full max-w-[100vw] min-h-[100dvh] flex items-center justify-center pt-24 md:pt-8 overflow-hidden bg-transparent -mt-1">
+            {/* <ComicFlairOverlay /> */}
             <div className="section-container z-10 text-center pb-4 md:pb-32">
                 <HeroContent />
                 <HeroBadgesSection />
@@ -20,17 +20,17 @@ export default function Hero(): React.ReactElement {
             {/* Desktop Only Bottom Sponsors Bar */}
             <div className="hidden md:flex absolute bottom-0 left-0 w-full h-16 items-end justify-center pb-2 z-30 pointer-events-none">
                 {/* Solid Background (No Gradient) */}
-                <div className="absolute inset-0 bg-[#0a001a] z-0" />
+                <div className="absolute inset-0 bg-transparent z-0" />
 
                 {/* Comic Dots Pattern Overlay */}
-                <div
+                {/* <div
                     className="absolute inset-0 z-0 opacity-20"
                     style={{
                         backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
                         backgroundSize: '20px 20px',
                         backgroundPosition: 'bottom center'
                     }}
-                />
+                /> */}
 
                 <div className="flex items-center gap-6 relative z-10 pointer-events-auto">
                     <span className="text-white font-display text-sm uppercase tracking-widest comic-outline transform -rotate-1 mr-2">
@@ -39,7 +39,7 @@ export default function Hero(): React.ReactElement {
 
                     {HACKATHON_CONFIG.SPONSORS.map((sponsor, index) => (
                         sponsor.isSlogan ? (
-                            <div key={index} className="bg-cyan-300 border-[2px] border-black p-2 rotate-1 max-w-[140px]">
+                            <div key={index} className="bg-white border-[2px] border-black p-2 rotate-1 max-w-[140px]">
                                 <img
                                     src={sponsor.logo}
                                     alt={sponsor.name}
@@ -62,18 +62,7 @@ export default function Hero(): React.ReactElement {
     );
 }
 
-function ComicFlairOverlay(): React.ReactElement {
-    return (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
-            <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
-            <svg className="absolute inset-0 w-full h-full opacity-30">
-                <line x1="0" y1="0" x2="100%" y2="100%" stroke="white" strokeWidth="0.5" />
-                <line x1="100%" y1="0" x2="0" y2="100%" stroke="white" strokeWidth="0.5" />
-                <line x1="50%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="0.5" />
-            </svg>
-        </div>
-    );
-}
+
 
 
 
@@ -106,7 +95,7 @@ function HeroContent(): React.ReactElement {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
                         {HACKATHON_CONFIG.HACKATHON_PHASE === 'PHASE_1' ? (
-                            <Link to="/register" className="btn-comic-primary text-xl md:text-2xl px-8 md:px-12 py-4 md:py-5 w-full sm:w-auto text-center">
+                            <Link to="/register" className="btn-comic-primary text-xl md:text-2xl px-8 md:px-12 py-4 md:py-5 w-full sm:w-auto text-center opacity-[0.85]">
                                 Register Now!
                             </Link>
                         ) : HACKATHON_CONFIG.HACKATHON_PHASE === 'SELECTION' ? (
@@ -150,7 +139,7 @@ function SponsorsBlock(): React.ReactElement {
             <div className="flex flex-col items-center justify-center gap-6">
                 {HACKATHON_CONFIG.SPONSORS.map((sponsor: any, index: number) => (
                     sponsor.isSlogan ? (
-                        <div key={index} className="bg-cyan-300 border-[3px] border-black p-3 md:p-2 shadow-[4px_4px_0px_#000] rotate-2 max-w-[200px] md:max-w-[150px]">
+                        <div key={index} className="bg-white border-[3px] border-black p-3 md:p-2 shadow-[4px_4px_0px_#000] rotate-2 max-w-[200px] md:max-w-[150px]">
                             <img
                                 src={sponsor.logo}
                                 alt={sponsor.name}
@@ -197,7 +186,7 @@ function HeroBadgesSection(): React.ReactElement {
                 className="w-full max-w-[340px] lg:max-w-sm"
             >
                 <div
-                    className="bg-pink-primary border-[4px] border-black p-5 shadow-[8px_8px_0px_#000] rotate-2 relative group cursor-pointer w-full"
+                    className="bg-white border-[2px] border-black p-5 shadow-[8px_8px_0px_#000] rotate-2 relative group cursor-pointer w-full"
                     onClick={() => setIsMobileMerchFlipped(!isMobileMerchFlipped)}
                 >
                     <span className="absolute -top-4 -right-4 bg-yellow-400 border-2 border-black px-2 py-1 text-xs font-bold rotate-12 z-20">MERCH!</span>
@@ -215,7 +204,7 @@ function HeroBadgesSection(): React.ReactElement {
                             />
                         </div>
                         <div className="text-left">
-                            <h4 className="text-white font-display text-3xl lg:text-4xl uppercase leading-none mb-1">OFFICIAL<br />MERCH</h4>
+                            <h4 className="text-black font-display text-3xl lg:text-4xl uppercase leading-none mb-1">OFFICIAL<br /><span className="text-purple-primary">MERCH</span></h4>
                             <p className="text-black font-bold text-[10px] uppercase opacity-80 md:hidden">
                                 <span className="flex items-center gap-1 mt-1 text-purple-900">
                                     <RotateCw size={12} className="animate-spin-slow" /> Tap to Flip
@@ -235,9 +224,9 @@ function InternshipBadgeContent({
     containerClass = ''
 }: any): React.ReactElement {
     return (
-        <div className={`bg-cyan-500 border-[4px] border-black p-6 lg:p-8 shadow-[8px_8px_0px_#000] ${rotateClass} ${containerClass}`}>
+        <div className={`bg-white border-[2px] border-black p-6 lg:p-8 shadow-[8px_8px_0px_#000] ${rotateClass} ${containerClass}`}>
             <span className="text-black font-display text-2xl lg:text-3xl block leading-none lowercase">guaranteed</span>
-            <span className="text-white font-display text-3xl lg:text-4xl block leading-tight">INTERNSHIPS!</span>
+            <span className="text-purple-primary font-display text-3xl lg:text-4xl block leading-tight">INTERNSHIPS!</span>
             <span className="text-black font-bold text-xs lg:text-sm block mt-2 uppercase tracking-tight">FOR 15 best performers</span>
         </div>
     );

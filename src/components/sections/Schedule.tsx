@@ -74,9 +74,10 @@ function ScheduleColumn({ title, events, color }: ScheduleColumnProps): React.Re
  */
 export default function Schedule(): React.ReactElement {
     return (
-        <section id="schedule" className="py-12 bg-[#05001a] relative overflow-hidden">
+        <section id="schedule" className="py-12 bg-transparent relative overflow-hidden">
             {/* Background scanline effect */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none opacity-20" />
+            {/* Background scanline effect removed */}
+            {/* <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none opacity-20" /> */}
 
             <div className="section-container relative z-10">
                 <div className="text-center mb-10">

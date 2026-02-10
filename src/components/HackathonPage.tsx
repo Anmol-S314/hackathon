@@ -34,7 +34,7 @@ export default function HackathonPage(): React.ReactElement {
     }, []);
 
     return (
-        <div className="bg-purple-dark min-h-screen relative overflow-x-hidden">
+        <div className="bg-transparent min-h-screen relative overflow-x-hidden">
             <AnnouncementPost />
 
 

@@ -44,7 +44,7 @@ export default function Tracks(): React.ReactElement {
     const navigate = useNavigate();
 
     return (
-        <section id="tracks" className="py-12 bg-purple-dark">
+        <section id="tracks" className="py-12 bg-transparent">
             <div className="section-container">
                 <div className="text-center mb-8">
                     <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline mb-2">

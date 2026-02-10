@@ -29,8 +29,8 @@ export default function SubmissionRules(): React.ReactElement {
     ];
 
     return (
-        <section id="submission" className="py-16 bg-[#1a0033] relative overflow-hidden">
-            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 2px, transparent 2px)', backgroundSize: '30px 30px' }} />
+        <section id="submission" className="py-16 bg-transparent relative overflow-hidden">
+            {/* <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 2px, transparent 2px)', backgroundSize: '30px 30px' }} /> */}
 
             <div className="section-container relative z-10">
                 <div className="text-center mb-10">

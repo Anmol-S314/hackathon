@@ -18,8 +18,8 @@ html {
     min-height: 100dvh;
   }
 
-  /* Comic Halftone Overlay */
-  body::before {
+  /* Global Comic Halftone Overlay Removed */
+  /* body::before {
     content: "";
     position: fixed;
     top: 0;
@@ -30,7 +30,7 @@ html {
     background-size: 15px 15px;
     pointer-events: none;
     z-index: 0;
-  }
+  } */
 
   h1,
   h2,

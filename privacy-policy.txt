@@ -1,0 +1,54 @@
+Privacy Policy
+Datavex AI Pvt. Ltd.
+Last updated: February 2026
+1. Introduction
+Datavex AI Pvt. Ltd. (“Datavex”, “we”, “our”, or “us”) respects your privacy.
+This Privacy Policy explains how we handle information when you visit our website.
+Our website is intended as a static informational page and does not actively collect personal data from visitors.
+
+2. Information We Do Not Collect
+We do not:
+Require user registration
+Provide login or account features
+Collect personal information through forms
+Store user-submitted data on the website
+
+3. Automatically Collected Data
+Like most websites, basic technical information may be automatically processed by your browser or hosting infrastructure, such as:
+IP address
+Browser type
+Device type
+Date and time of access
+This information is used only for:
+Server security
+Performance monitoring
+Basic technical operations
+We do not use this data to personally identify visitors.
+
+4. Cookies and Tracking
+Our website:
+Does not use tracking cookies
+Does not use advertising trackers
+Does not run behavioral analytics
+If any cookies are present, they are strictly necessary for basic website functionality.
+
+5. Third-Party Links
+Our website may contain links to external websites or platforms.
+We are not responsible for the privacy practices of those third-party sites.
+
+6. Data Security
+Since we do not collect or store personal data through the website, the risk of personal data exposure is minimal.
+We maintain reasonable technical safeguards at the hosting level.
+
+7. Children’s Privacy
+Our website is not directed toward children under the age of 18, and we do not knowingly collect personal information from children.
+
+8. Changes to This Policy
+We may update this Privacy Policy from time to time.
+Any changes will be posted on this page with the updated date.
+
+9. Contact Information
+If you have any questions about this Privacy Policy, you may contact:
+Datavex AI Pvt. Ltd.
+Email: info@datavex.ai
+Website: https://datavex.ai

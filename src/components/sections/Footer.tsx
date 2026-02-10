@@ -7,7 +7,7 @@ import { HACKATHON_CONFIG } from '../../config';
  */
 export default function Footer(): React.ReactElement {
     return (
-        <footer className="py-12 bg-[#1a0033]">
+        <footer className="py-12 bg-transparent">
             <div className="section-container">
                 <div className="comic-card bg-white grid grid-cols-1 md:grid-cols-4 gap-8 !p-8">
                     <div className="md:col-span-2">

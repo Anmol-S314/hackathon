@@ -40,10 +40,10 @@ const phases: Phase[] = [
  */
 export default function Timeline(): React.ReactElement {
     return (
-        <section id="timeline" className="py-12 bg-[#1a0033] relative overflow-hidden">
+        <section id="timeline" className="py-12 bg-transparent relative overflow-hidden">
             {/* Retro Comic Halftone Print Effect */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none"
-                style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
+            {/* <div className="absolute inset-0 opacity-10 pointer-events-none"
+                style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '10px 10px' }} /> */}
 
             <div className="section-container relative z-10">
                 <div className="text-center mb-10">

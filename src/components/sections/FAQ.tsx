@@ -50,7 +50,7 @@ export default function FAQ(): React.ReactElement {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
-        <section id="faq" className="py-10 bg-[#1a0033]">
+        <section id="faq" className="py-10 bg-transparent">
             <div className="section-container max-w-3xl">
                 <FAQHeader />
                 <div className="space-y-4">
