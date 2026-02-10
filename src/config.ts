@@ -6,13 +6,13 @@ export const HACKATHON_CONFIG = {
     SHOW_PHASE_2_RESULTS: false, // Set to true to show the selected 60 teams section
 
     // Dates
-    HACKATHON_DATE: '2026-02-14T23:59:59', // Target date for countdown (End of Phase 1)
-    REGISTRATION_DEADLINE: '2026-02-14T23:59:59', // Optional: Auto-close date
+    HACKATHON_DATE: '2026-02-15T23:59:59', // Target date for countdown (End of Phase 1)
+    REGISTRATION_DEADLINE: '2026-02-15T23:59:59', // Optional: Auto-close date
 
     // Timeline Display Dates
     TIMELINE: {
-        REGISTRATION: 'NOW - FEB 14',
-        DEVELOPMENT: 'FEB 15',
+        REGISTRATION: 'NOW - FEB 15',
+        DEVELOPMENT: 'FEB 16 - FEB 17',
         FINALE: 'FEB 21 - FEB 22'
     },
 
