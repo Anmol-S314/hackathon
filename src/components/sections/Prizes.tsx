@@ -19,10 +19,10 @@ export default function Prizes(): React.ReactElement {
 function PrizeHeader(): React.ReactElement {
     return (
         <div className="flex flex-col items-center mb-10 text-center">
-            <h2 className="text-6xl md:text-7xl text-white font-display uppercase italic tracking-tighter comic-outline">
-                PRIZES
+            <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline mb-2">
+                THE <span className="text-yellow-400">PRIZES</span>
             </h2>
-            <p className="text-base text-white font-bold max-w-2xl mt-2">
+            <p className="text-base text-white font-bold uppercase mt-2">
                 The ultimate battle for the top spot. Secure your place in history and claim your rewards.
             </p>
         </div>
@@ -91,7 +91,7 @@ function SecondPlace(): React.ReactElement {
             </div>
             <div>
                 <div className="text-3xl text-cyan-400 [text-shadow:2px_2px_0px_#000]">₹20,000</div>
-                <div className="text-white text-lg uppercase italic leading-none">RUNNER UP</div>
+                <div className="text-white text-lg font-medium uppercase italic leading-none">RUNNER UP</div>
             </div>
         </div>
     );
@@ -105,7 +105,7 @@ function ThirdPlace(): React.ReactElement {
             </div>
             <div>
                 <div className="text-3xl text-yellow-400 [text-shadow:2px_2px_0px_#000]">₹10,000</div>
-                <div className="text-white text-lg uppercase italic leading-none">THIRD PLACE</div>
+                <div className="text-white text-lg font-medium uppercase italic leading-none">THIRD PLACE</div>
             </div>
         </div>
     );
@@ -125,7 +125,7 @@ function InternshipSlot(): React.ReactElement {
                     <h4 className="text-xl md:text-2xl lg:text-3xl text-white [text-shadow:2px_2px_0px_#000] font-display uppercase italic leading-[0.9] mb-1">
                         Internships
                     </h4>
-                    <p className="text-white/80 text-[10px] md:text-xs font-bold uppercase tracking-wide">
+                    <p className="text-white text-xs md:text-base font-medium uppercase tracking-wide max-w-[140px] md:max-w-none">
                         6-Month Stipend-Based
                     </p>
                 </div>
@@ -134,8 +134,8 @@ function InternshipSlot(): React.ReactElement {
             {/* Floating "Sticker" Badge - Made slightly smaller */}
             <div className="absolute -top-8 -right-0 md:-right-5 z-20 bg-yellow-400 border-[3px] border-black px-4 py-3 rotate-12 shadow-[8px_8px_0px_#000] group-hover:rotate-6 group-hover:scale-105 transition-all duration-300 pointer-events-none">
                 <div className="text-black font-display text-3xl md:text-5xl leading-none text-center">15+</div>
-                <div className="text-black text-[10px] md:text-sm font-black uppercase leading-none text-center tracking-tighter mt-1">DIRECT OFFERS</div>
-                <div className="text-black/60 text-[7px] md:text-[8px] font-bold uppercase leading-none text-center mt-2 border-t border-black/20 pt-1">FOR TOP CANDIDATES</div>
+                <div className="text-black text-[10px] md:text-sm font-medium uppercase leading-none text-center tracking-tighter mt-1">DIRECT OFFERS</div>
+                <div className="text-black/60 text-[7px] md:text-[8px] font-medium uppercase leading-none text-center mt-2 border-t border-black/20 pt-1">FOR TOP CANDIDATES</div>
             </div>
 
         </motion.div>

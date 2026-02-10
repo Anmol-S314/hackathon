@@ -6,20 +6,20 @@ export const HACKATHON_CONFIG = {
     SHOW_PHASE_2_RESULTS: false, // Set to true to show the selected 60 teams section
 
     // Dates
-    HACKATHON_DATE: '2026-02-21T09:00:00', // Target date for countdown
-    REGISTRATION_DEADLINE: '2026-02-11T23:59:59', // Optional: Auto-close date
+    HACKATHON_DATE: '2026-02-14T23:59:59', // Target date for countdown (End of Phase 1)
+    REGISTRATION_DEADLINE: '2026-02-14T23:59:59', // Optional: Auto-close date
 
     // Timeline Display Dates
     TIMELINE: {
-        REGISTRATION: 'NOW - FEB 11',
-        DEVELOPMENT: 'FEB 12 - FEB 15',
+        REGISTRATION: 'NOW - FEB 14',
+        DEVELOPMENT: 'FEB 15',
         FINALE: 'FEB 21 - FEB 22'
     },
 
     // Contact & Socials
     CONTACT_EMAIL: 'info@datavex.ai',
     COMPANY_NAME: 'DataVex',
-    ORGANIZER: 'DataVex AI',
+    ORGANIZER: 'DataVex.AI',
     TAGLINE: '',
     SOCIAL_LINKS: {
         LINKEDIN: 'https://www.linkedin.com/company/datavexai-pvt-ltd/?originalSubdomain=in',
@@ -28,8 +28,8 @@ export const HACKATHON_CONFIG = {
     // Phase 2 Data (Future Proofing)
     PHASE_2_TEAMS_LINK: 'https://docs.google.com/presentation/d/your-template-link-here/edit?usp=sharing', // Link to a PDF or Sheet with 60 selected teams
     PPT_TEMPLATE_LINK: 'https://docs.google.com/presentation/d/1cjw4qvC81f7wGc8u_nMacxcPz-oR_3xX/edit?usp=sharing&ouid=112636361630830687880&rtpof=true&sd=true', // Link to the PPT template
-    // ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 2 announcement
-    ANNOUNCEMENT_BANNER: '',
+    ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 2 announcement
+    // ANNOUNCEMENT_BANNER: '',
 
     // Location
     LOCATION: {
@@ -50,7 +50,7 @@ export const HACKATHON_CONFIG = {
             isSlogan: true,
             className: 'w-full'
         },
-        
+
         // Add more sponsors here! 
         // { name: 'New Sponsor', logo: '/path/to/logo.png', className: 'h-8' }
     ]

@@ -243,7 +243,7 @@ export default function RegistrationForm(): React.ReactElement {
                     <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white font-bold mb-8 transition-colors">
                         <ArrowLeft size={20} /> BACK TO HOME
                     </Link>
-                    <div className="bg-white border-[4px] border-black p-8 shadow-[8px_8px_0px_#000] text-center">
+                    <div className="bg-white border-[2px] border-black p-8 shadow-[4px_4px_0px_#000] text-center">
                         <h2 className="text-4xl font-display text-black mb-4 uppercase italic">
                             Access <span className="text-red-500">Denied!</span>
                         </h2>
@@ -271,14 +271,14 @@ export default function RegistrationForm(): React.ReactElement {
                 <div className="max-w-3xl mx-auto w-full">
                     {/* Header */}
                     <header className="mb-8 flex items-center gap-4">
-                        <Link to="/" className="text-white hover:text-neon-green transition-colors p-2 -ml-2">
+                        <Link to="/" className="text-white hover:text-[#0369a1] active:text-[#0369a1] transition-colors p-2 -ml-2">
                             <ArrowLeft size={28} />
                         </Link>
                         <div>
                             <h1 className="text-3xl md:text-5xl font-display text-white uppercase leading-none mb-1">
                                 REGISTRATION
                             </h1>
-                            <p className="text-neon-green font-bold text-xs md:text-sm uppercase tracking-wider">
+                            <p className="text-[#0369a1] font-bold text-xs md:text-sm uppercase tracking-wider">
                                 Join the Arena
                             </p>
                         </div>
@@ -289,7 +289,7 @@ export default function RegistrationForm(): React.ReactElement {
                         {(['info', 'details'] as FormStep[]).map(s => (
                             <div
                                 key={s}
-                                className={`h-2 flex-1 border-2 border-black transition-colors ${s === step ? 'bg-neon-green' : 'bg-gray-300'}`}
+                                className={`h-2 flex-1 border-2 border-black transition-colors ${s === step ? 'bg-[#0369a1]' : 'bg-gray-300'}`}
                             />
                         ))}
                     </div>
@@ -364,7 +364,7 @@ export default function RegistrationForm(): React.ReactElement {
 function PaymentModal({ transactionId, setTransactionId, isLoading, onSubmit, onClose }: any): React.ReactElement {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-white max-w-md w-full border-[4px] border-black shadow-[8px_8px_0px_#FACC15] p-8 text-center space-y-6 relative">
+            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-white max-w-md w-full border-[2px] border-black shadow-[4px_4px_0px_#FACC15] p-8 text-center space-y-6 relative">
                 <button onClick={onClose} className="absolute top-4 right-4 text-black font-bold">X</button>
                 <h3 className="text-3xl font-display uppercase">SCAN TO PAY</h3>
                 <div className="bg-gray-100 border-2 border-black p-4 inline-block">
@@ -511,13 +511,13 @@ function StepInfo({
                                 key={track.id}
                                 type="button"
                                 onClick={() => setFormData(prev => ({ ...prev, track: track.id }))}
-                                className={`p-6 border-[3px] border-black text-left transition-all transform active:scale-[0.98] ${formData.track === track.id
-                                    ? `${track.color} text-white shadow-[6px_6px_0px_#000]`
-                                    : 'bg-white text-black hover:shadow-[4px_4px_0px_#000]'
+                                className={`p-6 border-[2px] border-black text-left transition-all transform active:scale-[0.98] ${formData.track === track.id
+                                    ? `${track.color} text-white shadow-[2px_2px_0px_#000]`
+                                    : 'bg-white text-black hover:shadow-[2px_2px_0px_#000]'
                                     }`}
                             >
                                 <div className="font-display text-lg uppercase mb-1">{track.label}</div>
-                                <div className={`text-[10px] font-bold uppercase transition-opacity ${formData.track === track.id ? 'opacity-100' : 'opacity-60'}`}>
+                                <div className={`text-[10px] font-medium uppercase transition-opacity ${formData.track === track.id ? 'opacity-100' : 'opacity-60'}`}>
                                     {track.sub}
                                 </div>
                             </button>
@@ -559,7 +559,7 @@ function StepInfo({
                 colleges={COLLEGES}
             />
 
-            <button onClick={validateAndProceed} type="button" className="btn-comic-primary w-full !text-base !py-4 shadow-[6px_6px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+            <button onClick={validateAndProceed} type="button" className="btn-comic-primary !bg-[#0369a1] !text-white hover:!bg-[#025a8b] w-full !text-base !py-4 shadow-[6px_6px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
                 CONFIRM SQUAD
             </button>
         </motion.div >
@@ -590,7 +590,7 @@ function PersonFieldsSection({
 
     return (
         <div className="space-y-3 pt-4 border-t-2 border-black border-dashed">
-            <h3 className="text-sm font-display text-black uppercase mb-1 bg-neon-green inline-block px-2 border-2 border-black -rotate-1">{title}</h3>
+            <h3 className="text-sm font-display text-white uppercase mb-1 bg-[#0369a1] inline-block px-2 border-2 border-black -rotate-1 shadow-[2px_2px_0px_#000]">{title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <input className="input-field text-sm" placeholder="NAME *" name="name" value={data.name} onChange={(e) => onFieldChange(e, section)} required />
 
@@ -647,7 +647,7 @@ function PersonFieldsSection({
                                                 }));
                                                 setActiveDropdown(null);
                                             }}
-                                            className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
+                                            className="p-3 text-xs font-bold text-black hover:bg-[#0369a1] hover:text-white cursor-pointer uppercase border-b border-black last:border-0"
                                         >
                                             {c}
                                         </div>
@@ -684,7 +684,7 @@ function PersonFieldsSection({
                                             }));
                                             setActiveDropdown(null);
                                         }}
-                                        className="p-3 text-xs font-bold text-black hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0"
+                                        className="p-3 text-xs font-bold text-black hover:bg-[#0369a1] hover:text-white cursor-pointer uppercase border-b border-black last:border-0"
                                     >
                                         {y}
                                     </div>
@@ -721,7 +721,7 @@ function PersonFieldsSection({
                                             }));
                                             setActiveDropdown(null);
                                         }}
-                                        className={`p-3 text-xs font-bold hover:bg-neon-green cursor-pointer uppercase border-b border-black last:border-0 ${data.shirtSize === s ? 'bg-neon-green text-black' : 'text-black'}`}
+                                        className={`p-3 text-xs font-bold hover:bg-[#0369a1] hover:text-white cursor-pointer uppercase border-b border-black last:border-0 ${data.shirtSize === s ? 'bg-[#0369a1] text-white' : 'text-black'}`}
                                     >
                                         {s}
                                     </div>
@@ -759,7 +759,7 @@ function StepDetails({ formData, isLoading, onFieldChange, onBack }: any): React
                 </div>
             </div>
 
-            <div className="bg-purple-100 p-4 border-[3px] border-black shadow-[6px_6px_0px_#000]">
+            <div className="bg-purple-100 p-4 border-[2px] border-black shadow-[3px_3px_0px_#000]">
                 <div className="flex items-center gap-3">
                     <Info size={24} className="shrink-0 text-purple-600" />
                     <div className="text-[10px] font-bold uppercase leading-tight text-black">

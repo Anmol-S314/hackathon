@@ -80,8 +80,12 @@ export default function Schedule(): React.ReactElement {
 
             <div className="section-container relative z-10">
                 <div className="text-center mb-10">
-                    <h2 className="text-4xl md:text-6xl text-white font-display mb-2 comic-outline">BATTLE <span className="text-neon-green">PLAN</span></h2>
-                    <p className="text-base text-gray-400 font-bold uppercase tracking-[0.2em]">Operational Schedule: Phase 2 & 3</p>
+                    <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline mb-2">
+                        BATTLE <span className="text-yellow-400">PLAN</span>
+                    </h2>
+                    <p className="text-base text-white font-bold uppercase mt-2">
+                        Operational Schedule: Phase 2 & 3
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">

@@ -47,9 +47,11 @@ export default function Tracks(): React.ReactElement {
         <section id="tracks" className="py-12 bg-purple-dark">
             <div className="section-container">
                 <div className="text-center mb-8">
-                    <h2 className="text-4xl md:text-6xl text-white font-display mb-2 comic-outline">THE MISSION <span className="text-yellow-400">TRACKS</span></h2>
-                    <p className="text-base text-gray-300 font-bold max-w-xl mx-auto uppercase">
-                        Use the examples as inspiration but build <span className="text-white">anything</span> you want.
+                    <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline mb-2">
+                        MISSION <span className="text-yellow-400">TRACKS</span>
+                    </h2>
+                    <p className="text-base text-white font-bold uppercase mt-2">
+                        Use the examples as inspiration but build anything you want.
                     </p>
                 </div>
 

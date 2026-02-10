@@ -237,7 +237,7 @@ function InternshipBadgeContent({
     return (
         <div className={`bg-cyan-500 border-[4px] border-black p-6 lg:p-8 shadow-[8px_8px_0px_#000] ${rotateClass} ${containerClass}`}>
             <span className="text-black font-display text-2xl lg:text-3xl block leading-none lowercase">guaranteed</span>
-            <span className="text-white font-display text-3xl lg:text-4xl block leading-tight">15 INTERNSHIPS!</span>
+            <span className="text-white font-display text-3xl lg:text-4xl block leading-tight">INTERNSHIPS!</span>
             <span className="text-black font-bold text-xs lg:text-sm block mt-2 uppercase tracking-tight">FOR 15 best performers</span>
         </div>
     );
@@ -301,8 +301,10 @@ function MobileRobotContainer(): React.ReactElement | null {
             </div>
 
             {/* Mobile Robot Container */}
-            <div className={`w-full h-[320px] md:h-[380px] transition-all duration-700 ease-in-out relative z-30
-                ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90 pointer-events-none'}`}>
+            <div className={`w-full transition-all duration-700 ease-in-out relative z-30
+                ${isVisible
+                    ? 'opacity-100 translate-y-0 scale-100 h-[320px] md:h-[380px] visible'
+                    : 'opacity-0 translate-y-10 scale-90 h-0 invisible pointer-events-none'}`}>
                 <VexCharacter action={action} setAction={setAction} />
             </div>
         </div>

@@ -22,7 +22,7 @@ const phases: Phase[] = [
         nr: "02",
         title: "Interim",
         date: HACKATHON_CONFIG.TIMELINE.DEVELOPMENT,
-        desc: "Our council reviews all submissions. The top 60 teams will be selected for the grand finale.",
+        desc: "Our council reviews all submissions. The top teams will be selected for the grand finale.",
         color: "bg-yellow-400"
     },
     {
@@ -47,53 +47,40 @@ export default function Timeline(): React.ReactElement {
 
             <div className="section-container relative z-10">
                 <div className="text-center mb-10">
-                    <h2 className="text-4xl md:text-6xl text-white font-display mb-2 comic-outline">MISSION <span className="text-yellow-400">CHRONICLES</span></h2>
-                    <p className="text-base text-white font-bold uppercase tracking-widest italic">The Sequential Story of the Hack</p>
+                    <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline mb-2">
+                        MISSION <span className="text-yellow-400">CHRONICLES</span>
+                    </h2>
+                    <p className="text-base text-white font-bold uppercase mt-2">
+                        The Sequential Story of the Hack
+                    </p>
                 </div>
 
                 {/* Adaptive Comic Grid Panels */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-                    {/* Panel 1: Wide intro */}
+                    {/* Panel 1: Phase 1 - Wide intro */}
                     <motion.div
-                        className="md:col-span-8 group"
+                        className="md:col-span-12 group"
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ type: "spring", stiffness: 100 }}
                         viewport={{ once: true }}
                     >
-                        <div className="comic-card h-full bg-cyan-400 !p-5 relative border-[3px] shadow-[6px_6px_0px_#000] rotate-1 group-hover:rotate-0 transition-transform">
+                        <div className="comic-card h-full bg-cyan-400 !p-5 relative border-[3px] shadow-[6px_6px_0px_#000] rotate-[0.5deg] group-hover:rotate-0 transition-transform">
                             <div className="absolute top-2 right-2 bg-black text-white px-2 py-0.5 font-comic text-base rotate-3 shadow-[2px_2px_0px_#FF00E5]">
                                 {phases[0].date}
                             </div>
                             <span className="text-3xl font-display text-black opacity-10 absolute bottom-2 left-2">{phases[0].nr}</span>
                             <h3 className="text-2xl font-display text-black mb-2 leading-none uppercase">{phases[0].title}</h3>
-                            <p className="text-black font-bold text-base leading-tight max-w-lg">{phases[0].desc}</p>
+                            <p className="text-black font-bold text-base leading-tight max-w-2xl">{phases[0].desc}</p>
                         </div>
                     </motion.div>
 
-                    {/* Panel 2: Tall/Narrow Decorative */}
-                    <motion.div
-                        className="md:col-span-4"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.1, type: "spring" }}
-                        viewport={{ once: true }}
-                    >
-                        <div className="comic-card h-full bg-white !p-6 border-[4px] shadow-[8px_8px_0px_#000] -rotate-2 hover:rotate-0 transition-transform flex flex-col justify-center overflow-hidden relative">
-                            <div className="absolute -right-2 -top-2 text-6xl font-display text-purple-primary opacity-10 rotate-12">POW!</div>
-                            <div className="bg-pink-primary text-white px-3 py-0.5 font-comic text-xl mb-4 self-start transform -rotate-3 shadow-[3px_3px_0px_#000]">
-                                PROTOCOL
-                            </div>
-                            <p className="font-display text-2xl text-black leading-none uppercase italic">SYNC COMPLETE. READY FOR DEPLOYMENT.</p>
-                        </div>
-                    </motion.div>
-
-                    {/* Panel 3: Square Content */}
+                    {/* Panel 2: Interim - Square Content */}
                     <motion.div
                         className="md:col-span-12 group"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, type: "spring" }}
+                        transition={{ delay: 0.1, type: "spring" }}
                         viewport={{ once: true }}
                     >
                         <div className="comic-card h-full bg-yellow-400 !p-6 relative border-[3px] shadow-[8px_8px_0px_#000] flex flex-col md:flex-row gap-5 items-start md:items-center">

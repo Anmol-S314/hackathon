@@ -34,16 +34,12 @@ export default function SubmissionRules(): React.ReactElement {
 
             <div className="section-container relative z-10">
                 <div className="text-center mb-10">
-                    <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        className="inline-block"
-                    >
-                        <h2 className="text-4xl md:text-6xl text-white font-display mb-1 comic-outline italic tracking-tighter">
-                            MISSION <span className="text-yellow-400">PROTOCOLS</span>
-                        </h2>
-                        <div className="h-1.5 w-full bg-red-600 border-2 border-black -rotate-1 skew-x-12" />
-                    </motion.div>
+                    <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline mb-2">
+                        MISSION <span className="text-yellow-400">PROTOCOLS</span>
+                    </h2>
+                    <p className="text-base text-white font-bold uppercase mt-2">
+                        Operation Guidelines & Submission Briefing
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -97,12 +93,12 @@ export default function SubmissionRules(): React.ReactElement {
 
                 {/* Simplified Advisory Note */}
                 <div className="max-w-2xl mx-auto">
-                    <div className="bg-yellow-400 border-[3px] border-black p-4 shadow-[6px_6px_0px_#000] flex items-center gap-4 relative overflow-hidden">
-                        <div className="bg-black text-yellow-400 p-2 border-2 border-yellow-400 shrink-0">
-                            <AlertTriangle size={24} />
+                    <div className="bg-yellow-400 border-[3px] border-black p-6 md:p-8 shadow-[6px_6px_0px_#000] flex items-center gap-6 relative overflow-hidden">
+                        <div className="bg-black text-yellow-400 p-3 border-2 border-yellow-400 shrink-0 shadow-[2px_2px_0px_#000]">
+                            <AlertTriangle size={32} />
                         </div>
-                        <p className="text-black font-black text-xs md:text-sm uppercase leading-tight italic">
-                            <span className="text-red-600 underline mr-1">NOTE:</span>
+                        <p className="text-black font-bold text-sm md:text-base uppercase leading-snug italic">
+                            <span className="text-red-600 underline mr-1 text-base md:text-lg">NOTE:</span>
                             Phase 2 problem statements are provided by VexStorm & may be different from your Phase 1 PPT concept.
                         </p>
                     </div>

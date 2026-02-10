@@ -89,9 +89,14 @@ function Logo({ isScrolled }: { isScrolled: boolean }): React.ReactElement {
     const yearColor = isScrolled ? 'text-purple-primary' : 'text-yellow-400';
 
     return (
-        <Link to="/" className={`font-display text-3xl tracking-tighter transition-all ${logoColor}`}>
-            <span className="text-pop">VEXSTORM'</span><span className={yearColor}>26</span>
-        </Link>
+        <a href="https://datavex.ai" target="_blank" rel="noopener noreferrer" className={`font-display flex flex-col md:flex-row md:items-baseline gap-1.5 transition-all ${logoColor} group`}>
+            <div className="text-2xl md:text-3xl tracking-tighter">
+                <span className="text-pop">VEXSTORM'</span><span className={yearColor}>26</span>
+            </div>
+            <span className={`text-[12px] md:text-sm font-bold tracking-[0.2em] uppercase font-comic group-hover:underline decoration-2 underline-offset-4 transition-all ${isScrolled ? 'text-black/60' : 'text-white/80'}`}>
+                by <span className={yearColor}>DATAVEX.AI</span>
+            </span>
+        </a>
     );
 }
 
@@ -161,8 +166,8 @@ function DesktopRobotContainer(): React.ReactElement | null {
                 lg:w-[320px] lg:h-[420px] 
                 xl:w-[420px] xl:h-[520px] 
                 2xl:w-[520px] 2xl:h-[620px] 
-                pointer-events-none transition-all duration-700 ease-in-out
-                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-32'}`}>
+                transition-all duration-700 ease-in-out
+                ${isVisible ? 'opacity-100 translate-y-0 pointer-events-auto visible' : 'opacity-0 translate-y-32 pointer-events-none invisible'}`}>
                 <div className="w-full h-full">
                     <VexCharacter action={action} setAction={setAction} />
                 </div>
@@ -177,7 +182,7 @@ function NavLinks({ isScrolled }: { isScrolled: boolean }): React.ReactElement {
         : 'btn-comic !py-2 !px-4 text-xs';
 
     return (
-        <div className={`hidden md:flex items-center gap-4 lg:gap-8 text-base lg:text-md font-display uppercase italic ${textColor}`}>
+        <div className={`hidden md:flex items-center gap-4 lg:gap-8 text-base font-display uppercase tracking-tight ${textColor}`}>
             <a href="#tracks" className="hover:text-purple-primary transition-colors">Tracks</a>
             <a href="#submission" className="hover:text-purple-primary transition-colors">Rules</a>
             <a href="#prizes" className="hover:text-purple-primary transition-colors">Prizes</a>

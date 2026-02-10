@@ -73,7 +73,7 @@ export default function FAQ(): React.ReactElement {
 function FAQHeader(): React.ReactElement {
     return (
         <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-widest comic-outline">
+            <h2 className="text-4xl md:text-6xl text-white font-display uppercase tracking-tight comic-outline">
                 THE <span className="text-yellow-400">FAQS</span>
             </h2>
             <p className="text-base text-white font-bold uppercase mt-2">Intelligence Briefing & Protocols</p>
@@ -94,7 +94,7 @@ function FAQCard({ faq, isOpen, onToggle }: FAQCardProps): React.ReactElement {
                 onClick={onToggle}
                 className="w-full p-4 md:px-6 flex items-center justify-between text-left hover:bg-black/5 transition-colors duration-200"
             >
-                <span className="text-xl md:text-2xl font-display text-black uppercase italic">{faq.q}</span>
+                <span className="text-2xl md:text-3xl font-comic text-black uppercase tracking-wide">{faq.q}</span>
                 <ToggleButton isOpen={isOpen} />
             </button>
 
