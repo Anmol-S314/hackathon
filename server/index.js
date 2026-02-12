@@ -133,14 +133,14 @@ const authLimiter = rateLimit({
 
 const registrationLimiter = rateLimit({
     windowMs: 24 * 60 * 60 * 1000, // 24 hours
-    max: 3,
+    max: 500, // Handle high-volume college traffic
     skip: (req) => req.method === 'OPTIONS',
     message: { error: "Registration limit exceeded for this device/network." }
 });
 
 const otpLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 5,
+    max: 50, // More breathing room for teams in labs
     skip: (req) => req.method === 'OPTIONS',
     message: { error: "Too many OTP requests. Please try again in 15 minutes." }
 });
