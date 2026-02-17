@@ -13,7 +13,7 @@ const day1: Event[] = [
     { time: "11:00 AM", label: "Hackathon Commencement", icon: Zap },
     { time: "12:30 PM", label: "Fuel Up: Lunch Break", icon: Utensils },
     { time: "05:00 PM", label: "Mentor Evaluation: Round 1", icon: Users },
-    { time: "07:30 PM", label: "Night Ops: Dinner", icon: Utensils },
+    { time: "08:15 PM", label: "Night Ops: Dinner", icon: Utensils },
 ];
 
 const day2: Event[] = [
@@ -21,7 +21,7 @@ const day2: Event[] = [
     { time: "09:00 AM", label: "Mentor Evaluation: Round 2", icon: Users },
     { time: "11:00 AM", label: "Phase 2 Termination", icon: Clock },
     { time: "12:30 PM", label: "Fuel Up: Lunch Break", icon: Utensils },
-    { time: "02:00 PM", label: "Top 15 Selection", icon: Trophy },
+    { time: "02:00 PM", label: "Top Teams Selection", icon: Trophy },
     { time: "02:15 PM", label: "Phase 3: The Pitch", icon: Play },
     { time: "04:30 PM", label: "Crowning & Distribution", icon: Trophy },
 ];
