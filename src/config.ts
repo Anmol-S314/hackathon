@@ -1,8 +1,8 @@
 const CONFIG_BASE = {
     // Top Level Toggles (Manual Overrides)
     IS_REGISTRATION_OPEN: true, // Set to false to manually close registrations
-    HACKATHON_PHASE: 'PHASE_1', // 'PHASE_1', 'SELECTION', 'PHASE_2'
-    SHOW_PHASE_2_RESULTS: false, // Set to true to show the selected 60 teams section
+    HACKATHON_PHASE: 'PHASE_2', // 'PHASE_1', 'SELECTION', 'PHASE_2'
+    SHOW_PHASE_2_RESULTS: true, // Set to true to show the selected 60 teams section
 
     // Dates
     HACKATHON_DATE: '2026-02-21T00:00:00', // Target date for countdown (End of Phase 1)
@@ -25,7 +25,7 @@ const CONFIG_BASE = {
     },
 
     // Phase 2 Data (Future Proofing)
-    PHASE_2_TEAMS_LINK: 'https://docs.google.com/presentation/d/your-template-link-here/edit?usp=sharing', // Link to a PDF or Sheet with 60 selected teams
+    PHASE_2_TEAMS_LINK: 'https://docs.google.com/spreadsheets/d/1DtFMVW9bpOfsFz9JgP8ITt6T1LBAXU2iVGcEsqUXwGE/edit?usp=sharing', // Link to a PDF or Sheet with 60 selected teams
     PPT_TEMPLATE_LINK: 'https://docs.google.com/presentation/d/1cjw4qvC81f7wGc8u_nMacxcPz-oR_3xX/edit?usp=sharing&ouid=112636361630830687880&rtpof=true&sd=true', // Link to the PPT template
     ANNOUNCEMENT_BANNER: 'PHASE 1 REGISTRATIONS CLOSING SOON!- SECURE YOUR SPOT NOW', // Custom text for Phase 1
     // ... other properties remain in CONFIG_BASE
